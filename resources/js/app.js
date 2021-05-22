@@ -26,7 +26,7 @@ window.axios = axios;
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('novaweb-db', require('./components/novawebDb.vue').default);
+Vue.component('novamplus', require('./components/novamplus.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
