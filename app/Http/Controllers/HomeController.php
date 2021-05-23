@@ -21,8 +21,21 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function mplus()
     {
-        return view('home');
+        return view('mplus');
     }
+    public function various()
+    {
+        return view('various');
+    }
+    public function mplusArchives()
+    {
+        return view('archives.mplus');
+    }
+    public function variousArchives()
+    {
+        return view('archives.various');
+    }
+
 }

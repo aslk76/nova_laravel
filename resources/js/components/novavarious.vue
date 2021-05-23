@@ -96,17 +96,7 @@
               { text: 'Tank Name', value: 'tank_name', filterable: false },
               { text: 'Tank Realm', value: 'tank_realm', filterable: false },
               { text: 'Tank Cut', value: 'tank_cut', filterable: false },
-              { text: 'Healer Name', value: 'healer_name', filterable: false },
-              { text: 'Healer Realm', value: 'healer_realm', filterable: false },
-              { text: 'Healer Cut', value: 'healer_cut', filterable: false },
-              { text: 'DPS1 Name', value: 'dps1_name', filterable: false },
-              { text: 'DPS1 Realm', value: 'dps1_realm', filterable: false },
-              { text: 'DPS1 Cut', value: 'dps1_cut', filterable: false },
-              { text: 'DPS2 Cut', value: 'dps2_name', filterable: false },
-              { text: 'DPS2 Realm', value: 'dps2_realm', filterable: false },
-              { text: 'DPS2 Cut', value: 'dps2_cut', filterable: false },
-            //   { text: 'Collected', value: 'collected', filterable: false },
-            //   { text: 'Edited', value: 'edited_at', filterable: false },
+
           ],
           headers: [
               { text: 'ID', value: 'id', filterable: false },
@@ -116,23 +106,7 @@
               { text: 'Boost Realm', value: 'boost_realm' },
               { text: 'Boost Pot', value: 'boost_pot', filterable: false },
               { text: 'Adv Name', value: 'adv_name', filterable: false },
-            //   { text: 'Adv Realm', value: 'adv_realm', filterable: false },
-
-            //   { text: 'Adv Cut', value: 'adv_cut', filterable: false },
-            //   { text: 'Tank Name', value: 'tank_name', filterable: false },
-            //   { text: 'Tank Realm', value: 'tank_realm', filterable: false },
-            //   { text: 'Tank Cut', value: 'tank_cut', filterable: false },
-            //   { text: 'Healer Name', value: 'healer_name', filterable: false },
-            //   { text: 'Healer Realm', value: 'healer_realm', filterable: false },
-            //   { text: 'Healer Cut', value: 'healer_cut', filterable: false },
-            //   { text: 'DPS1 Name', value: 'dps1_name', filterable: false },
-            //   { text: 'DPS1 Realm', value: 'dps1_realm', filterable: false },
-            //   { text: 'DPS1 Cut', value: 'dps1_cut', filterable: false },
-            //   { text: 'DPS2 Cut', value: 'dps2_name', filterable: false },
-            //   { text: 'DPS2 Realm', value: 'dps2_realm', filterable: false },
-            //   { text: 'DPS2 Cut', value: 'dps2_cut', filterable: false },
               { text: 'Collected', value: 'collected', filterable: false },
-            //   { text: 'Edited', value: 'edited_at', filterable: false },
 
 
           ],
@@ -142,7 +116,7 @@
     methods: {
         getItems() {
             axios
-            .get('/getAll')
+            .get('/getAllVarious')
             .then ((response) => {
                 this.items = response.data
                 console.log(response.data)
@@ -151,7 +125,7 @@
         },
         onCheckboxClicked(id, status) {
             axios
-            .post('/changeCheckbox', {
+            .post('/changeCheckboxVarious', {
                 id: id,
                 status: status
             })
@@ -162,7 +136,7 @@
         },
         showAllianceRuns() {
             axios
-            .get('/getAllAllianceRuns')
+            .get('/getAllAllianceVarious')
             .then ((response) => {
                 this.items = response.data
                 console.log(response.data)
@@ -171,7 +145,7 @@
         },
         showHordeRuns() {
             axios
-            .get('/getAllHordeRuns')
+            .get('/getAllHordeVarious')
             .then ((response) => {
                 this.items = response.data
                 console.log(response.data)
@@ -181,7 +155,7 @@
 
         showDialog(row) {
             axios
-            .get('/getSpecificRun/' + row.id)
+            .get('/getSpecificVarious/' + row.id)
             .then ((response) => {
                 this.itemsFromDialog = response.data
                 console.log(response.data)

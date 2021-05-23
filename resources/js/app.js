@@ -27,6 +27,10 @@ window.axios = axios;
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('nova-mplus', require('./components/novamplus.vue').default);
+Vue.component('nova-various', require('./components/novavarious.vue').default);
+Vue.component('nova-archives-mplus', require('./components/archives/novamplus.vue').default);
+Vue.component('nova-archives-various', require('./components/archives/novavarious.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

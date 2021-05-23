@@ -34,10 +34,19 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/mplus') }}">Mythic Plus A</a>
+                            <a class="nav-link" href="{{ url('/mplus') }}">Mythic Plus</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/various') }}">Various Services</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                Archives
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ url('/archives/mplus') }}">Mythic Plus</a>
+                                <a class="dropdown-item" href="{{ url('/archives/various') }}">Various Services</a>
+                            </div>
                         </li>
                     </ul>
 
