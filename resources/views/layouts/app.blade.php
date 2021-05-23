@@ -34,7 +34,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/mplus') }}">Mythic Plus E</a>
+                            <a class="nav-link" href="{{ url('/mplus') }}">Mythic Plus A</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/various') }}">Various Services</a>
