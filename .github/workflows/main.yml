@@ -15,7 +15,7 @@ jobs:
       env:
         HOST: ${{ secrets.SSH_HOST }}
         USERNAME: ${{ secrets.SSH_USER }}
-        KEY: ${{ secrets.SSH_RSA }}
+        PASSWORD: ${{ secrets.SSH_PASSWORD }}
       with:
         source: "."
         target: "/var/www/html/nova_web"
