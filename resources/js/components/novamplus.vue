@@ -10,7 +10,7 @@
                 text
                 style="color: red; font-size: 10px;"
                 @click="showHordeRuns()"
-            >HORDE</v-btn>
+            >Horde things</v-btn>
             <v-divider vertical style="padding: 5px;"></v-divider>
             <v-btn
                 elevation="6"
