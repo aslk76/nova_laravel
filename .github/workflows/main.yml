@@ -20,7 +20,7 @@ jobs:
         KEY: ${{ secrets.SSH_RSA }}
       with:
         source: "."
-        target: "/var/www/discord"
+        target: "/var/www/html/nova_web"
 
     - name: Restart Server
       uses: appleboy/ssh-action@master
