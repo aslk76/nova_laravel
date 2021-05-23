@@ -3,7 +3,7 @@
 @section('content')
     <body>
         <div id="app">
-            <novamplus></novamplus>
+            <nova-mplus></nova-mplus>
         </div>
     </body>
 @endsection
