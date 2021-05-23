@@ -1,9 +1,7 @@
 name: Deploy
 
-on:
-  push:
-      branches:
-        - master
+on: [push]
+
 jobs:
   build:
 
@@ -17,15 +15,15 @@ jobs:
       env:
         HOST: ${{ secrets.SSH_HOST }}
         USERNAME: ${{ secrets.SSH_USER }}
-        KEY: ${{ secrets.SSH_RSA }}
+        PASSWORD: ${{ secrets.SSH_PASSWORD }}
       with:
         source: "."
-        target: "/var/www/discord"
+        target: "/var/www/html/nova_web"
 
     - name: Restart Server
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
         USERNAME: ${{ secrets.SSH_USER }}
-        KEY: ${{ secrets.SSH_RSA }}
+        PASSWORD: ${{ secrets.SSH_PASSWORD }}
         script: systemctl restart NOVA_Laravel.service
