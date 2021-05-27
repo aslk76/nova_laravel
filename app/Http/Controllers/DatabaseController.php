@@ -49,8 +49,8 @@ class DatabaseController extends Controller
     public function getAllVarious()
     {
         $curweek = DB::select("SELECT cur1, cur2 from variables");
-        $startday = date('d/m/Y', strtotime($curweek[0]->cur1));
-        $endday = date('d/m/Y', strtotime($curweek[0]->cur2));
+        $startday = date('Y/m/d', strtotime($curweek[0]->cur1));
+        $endday = date('Y/m/d', strtotime($curweek[0]->cur2));
         $items = Various::whereNull('deleted_at')->whereBetween('boost_date', [$startday, $endday])->get();
         return $items;
     }
@@ -85,8 +85,8 @@ class DatabaseController extends Controller
     public function getAllArchivesMplus()
     {
         $curweek = DB::select("SELECT cur1, cur2 from variables");
-        $startday = date('d/m/Y', strtotime($curweek[0]->cur1));
-        $endday = date('d/m/Y', strtotime($curweek[0]->cur2));
+        $startday = date('Y/m/d', strtotime($curweek[0]->cur1));
+        $endday = date('Y/m/d', strtotime($curweek[0]->cur2));
         $items = Mplus::whereNull('deleted_at')->whereBetween('boost_date', [$startday, $endday])->where('collected', 1)->get();
         return $items;
     }
@@ -120,8 +120,8 @@ class DatabaseController extends Controller
     public function getAllArchivesVarious()
     {
         $curweek = DB::select("SELECT cur1, cur2 from variables");
-        $startday = date('d/m/Y', strtotime($curweek[0]->cur1));
-        $endday = date('d/m/Y', strtotime($curweek[0]->cur2));
+        $startday = date('Y/m/d', strtotime($curweek[0]->cur1));
+        $endday = date('Y/m/d', strtotime($curweek[0]->cur2));
         $items = Various::whereNull('deleted_at')->whereBetween('boost_date', [$startday, $endday])->where('collected', 1)->get();
         return $items;
     }
