@@ -23,7 +23,7 @@ class DatabaseController extends Controller
             $startday = date('Y/m/d', strtotime($week[0]->pre1));
             $endday = date('Y/m/d', strtotime($week[0]->pre2. ' + 1 day'));
         }
-        $items = Mplus::whereNull('deleted_at')->whereBetween('boost_date', [$startday, $endday])->where('collected', 0)->get();
+        $items = Mplus::whereNull('deleted_at')->whereBetween('boost_date', [$startday, $endday])->where('collected', 0)->where('missing', 0)->get();
         return $items;
     }
     public function getSpecificMplus($id)
@@ -120,7 +120,7 @@ class DatabaseController extends Controller
             $startday = date('Y/m/d', strtotime($week[0]->pre1));
             $endday = date('Y/m/d', strtotime($week[0]->pre2. ' + 1 day'));
         }
-        $items = Various::whereNull('deleted_at')->whereBetween('boost_date', [$startday, $endday])->where('collected', 0)->get();
+        $items = Various::whereNull('deleted_at')->whereBetween('boost_date', [$startday, $endday])->where('collected', 0)->where('missing', 0)->get();
         return $items;
     }
     public function getSpecificVarious($id)
