@@ -26,4 +26,4 @@ jobs:
         host: ${{ secrets.SSH_HOST }}
         USERNAME: ${{ secrets.SSH_USER }}
         PASSWORD: ${{ secrets.SSH_PASSWORD }}
-        script: sudo chown www-data:www-data /var/www/html/nova_web || chmod -R  775 /var/www/html/nova_web
+        script: sudo chown -R www-data:www-data /var/www/html/nova_web || chmod -R  775 /var/www/html/nova_web
