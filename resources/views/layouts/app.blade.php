@@ -33,36 +33,40 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                    @if (Auth::user()->role <= 1)
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/mplus') }}">Mythic Plus</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/various') }}">Various Services</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Archives
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ url('/archives/mplus') }}">Mythic Plus</a>
-                                <a class="dropdown-item" href="{{ url('/archives/various') }}">Various Services</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Missing
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ url('/missing/mplus') }}">Mythic Plus</a>
-                                <a class="dropdown-item" href="{{ url('/missing/various') }}">Various Services</a>
-                            </div>
-                        </li>
+                    @if (Auth::user())
+                        @if (Auth::user()->role <= 1)
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/mplus') }}">Mythic Plus</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/various') }}">Various Services</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Archives
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ url('/archives/mplus') }}">Mythic Plus</a>
+                                    <a class="dropdown-item" href="{{ url('/archives/various') }}">Various Services</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Missing
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ url('/missing/mplus') }}">Mythic Plus</a>
+                                    <a class="dropdown-item" href="{{ url('/missing/various') }}">Various Services</a>
+                                </div>
+                            </li>
+                        @endif
                     @endif
-                    @if (Auth::user()->role <= 2)
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/balanceops') }}">Balance Operations</a>
-                        </li>
+                    @if (Auth::user())
+                        @if (Auth::user()->role <= 2)
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/balanceops') }}">Balance Operations</a>
+                            </li>
+                        @endif
                     @endif
                     </ul>
 
