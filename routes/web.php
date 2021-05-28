@@ -14,48 +14,66 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
+Route::group(['middleware' => ['auth', 'banker']], function() {
+    Route::get('/mplus', 'HomeController@mplus')->name('mplus');
+    Route::get('/various', 'HomeController@various')->name('various');
+    Route::get('/archives/mplus', 'HomeController@mplusArchives')->name('mplus');
+    Route::get('/archives/various', 'HomeController@variousArchives')->name('various');
+    Route::get('/missing/mplus', 'HomeController@mplusMissing')->name('mplus');
+    Route::get('/missing/various', 'HomeController@variousMissing')->name('various');
+    Route::get('/balanceops', 'HomeController@balanceops')->name('balanceops');
 
-Route::get('/mplus', 'HomeController@mplus')->name('mplus');
-Route::get('/various', 'HomeController@various')->name('mplus');
-Route::get('/archives/mplus', 'HomeController@mplusArchives')->name('mplus');
-Route::get('/archives/various', 'HomeController@variousArchives')->name('mplus');
+    // ######################### MPLUS ROUTES ####################################
+    Route::get('/getAllMplus/{id}', 'DatabaseController@getAllMplus');
+    Route::get('/getSpecificMplus/{id}', 'DatabaseController@getSpecificMplus');
+    Route::get('/getAllAllianceMplus/{id}', 'DatabaseController@getAllAllianceMplus');
+    Route::get('/getAllHordeMplus/{id}', 'DatabaseController@getAllHordeMplus');
 
-// ######################### MPLUS ROUTES ####################################
-Route::get('/getAllMplus', 'DatabaseController@getAllMplus');
-Route::get('/getSpecificMplus/{id}', 'DatabaseController@getSpecificMplus');
-Route::get('/getAllAllianceMplus', 'DatabaseController@getAllAllianceMplus');
-Route::get('/getAllHordeMplus', 'DatabaseController@getAllHordeMplus');
+    Route::post('/saveRunMplus', 'DatabaseController@saveRunMplus');
+    Route::post('/changeCheckboxMplus', 'DatabaseController@changeCheckboxMplus');
+    // ###########################################################################
 
-Route::post('/changeCheckboxMplus', 'DatabaseController@changeCheckboxMplus');
+    // ######################### VARIOUS ROUTES ####################################
+    Route::get('/getAllVarious/{id}', 'DatabaseController@getAllVarious');
+    Route::get('/getSpecificVarious/{id}', 'DatabaseController@getSpecificVarious');
+    Route::get('/getAllAllianceVarious/{id}', 'DatabaseController@getAllAllianceVarious');
+    Route::get('/getAllHordeVarious/{id}', 'DatabaseController@getAllHordeVarious');
+
+    Route::post('/saveRunVarious', 'DatabaseController@saveRunVarious');
+    Route::post('/changeCheckboxVarious', 'DatabaseController@changeCheckboxVarious');
+    // ###########################################################################
+
+    // ######################### MPLUS ARCHIVES ROUTES ####################################
+    Route::get('/getAllArchivesMplus', 'DatabaseController@getAllArchivesMplus');
+    Route::get('/getAllAllianceArchivesMplus', 'DatabaseController@getAllAllianceArchivesMplus');
+    Route::get('/getAllHordeArchivesMplus', 'DatabaseController@getAllHordeArchivesMplus');
+    // ###########################################################################
+
+    // ######################### VARIOUS ARCHIVES ROUTES ####################################
+    Route::get('/getAllArchivesVarious', 'DatabaseController@getAllArchivesVarious');
+    Route::get('/getAllAllianceArchivesVarious', 'DatabaseController@getAllAllianceArchivesVarious');
+    Route::get('/getAllHordeArchivesVarious', 'DatabaseController@getAllHordeArchivesVarious');
+    // ###########################################################################
+
+    // ######################### MPLUS MISSING ROUTES ####################################
+    Route::get('/getAllMissingMplus', 'DatabaseController@getAllMissingMplus');
+    Route::get('/getAllAllianceMissingMplus', 'DatabaseController@getAllAllianceMissingMplus');
+    Route::get('/getAllHordeMissingMplus', 'DatabaseController@getAllHordeMissingMplus');
+    // ###########################################################################
+
+    // ######################### VARIOUS MISSING ROUTES ####################################
+    Route::get('/getAllMissingVarious', 'DatabaseController@getAllMissingVarious');
+    Route::get('/getAllAllianceMissingVarious', 'DatabaseController@getAllAllianceMissingVarious');
+    Route::get('/getAllHordeMissingVarious', 'DatabaseController@getAllHordeMissingVarious');
+    // ###########################################################################
+});
+Route::group(['middleware' => ['auth', 'manager']], function() {
+// ######################### BALANCE OPERATIONS ROUTES ####################################
+Route::get('/getBalanceOps/{id}', 'DatabaseController@getBalanceOps');
 // ###########################################################################
+});
 
-// ######################### VARIOUS ROUTES ####################################
-Route::get('/getAllVarious', 'DatabaseController@getAllVarious');
-Route::get('/getSpecificVarious/{id}', 'DatabaseController@getSpecificVarious');
-Route::get('/getAllAllianceVarious', 'DatabaseController@getAllAllianceVarious');
-Route::get('/getAllHordeVarious', 'DatabaseController@getAllHordeVarious');
-
-Route::post('/changeCheckboxVarious', 'DatabaseController@changeCheckboxVarious');
-// ###########################################################################
-
-// ######################### MPLUS ARCHIVES ROUTES ####################################
-Route::get('/getAllArchivesMplus', 'DatabaseController@getAllArchivesMplus');
-Route::get('/getSpecificArchivesMplus/{id}', 'DatabaseController@getSpecificArchivesMplus');
-Route::get('/getAllAllianceArchivesMplus', 'DatabaseController@getAllAllianceArchivesMplus');
-Route::get('/getAllHordeArchivesMplus', 'DatabaseController@getAllHordeArchivesMplus');
-
-Route::post('/changeCheckboxArchivesMplus', 'DatabaseController@changeCheckboxArchivesMplus');
-// ###########################################################################
-
-// ######################### VARIOUS ARCHIVES ROUTES ####################################
-Route::get('/getAllArchivesVarious', 'DatabaseController@getAllArchivesVarious');
-Route::get('/getSpecificArchivesVarious/{id}', 'DatabaseController@getSpecificArchivesVarious');
-Route::get('/getAllAllianceArchivesVarious', 'DatabaseController@getAllAllianceArchivesVarious');
-Route::get('/getAllHordeArchivesVarious', 'DatabaseController@getAllHordeArchivesVarious');
-
-Route::post('/changeCheckboxArchivesVarious', 'DatabaseController@changeCheckboxArchivesVarious');
-// ###########################################################################

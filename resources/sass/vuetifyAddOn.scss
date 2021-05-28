@@ -1,0 +1,27 @@
+.menutitle {
+    position: relative;
+    width: 100%;
+    height: 34px;
+}
+
+.menutitle .close-button-dialog {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.menutitle .save-button-dialog {
+    position: absolute;
+    top: 0;
+    right: 50px;
+}
+
+.data-table-dialog {
+    padding-top: 20px;
+}
+
+.weekSelector {
+    padding-bottom: -30px;
+    padding-left: 20px;
+    width: 150px;
+}

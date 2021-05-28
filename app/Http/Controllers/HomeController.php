@@ -37,5 +37,16 @@ class HomeController extends Controller
     {
         return view('archives.various');
     }
-
+    public function mplusMissing()
+    {
+        return view('missing.mplus');
+    }
+    public function variousMissing()
+    {
+        return view('missing.various');
+    }
+    public function balanceops()
+    {
+        return view('balanceops');
+    }
 }

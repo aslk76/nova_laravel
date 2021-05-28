@@ -15,7 +15,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -33,6 +33,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+                    @if (Auth::user()->role <= 1)
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/mplus') }}">Mythic Plus</a>
                         </li>
@@ -48,6 +49,21 @@
                                 <a class="dropdown-item" href="{{ url('/archives/various') }}">Various Services</a>
                             </div>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                Missing
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ url('/missing/mplus') }}">Mythic Plus</a>
+                                <a class="dropdown-item" href="{{ url('/missing/various') }}">Various Services</a>
+                            </div>
+                        </li>
+                    @endif
+                    @if (Auth::user()->role <= 2)
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/balanceops') }}">Balance Operations</a>
+                        </li>
+                    @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -57,11 +73,11 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
-                            @if (Route::has('register'))
+                            {{-- @if (Route::has('register'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
-                            @endif
+                            @endif --}}
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
