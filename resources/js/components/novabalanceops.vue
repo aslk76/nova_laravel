@@ -73,7 +73,7 @@
                 </div>
             </v-menu>
         </template>
-        <template v-slot:header.author="{header}">
+        <template v-slot:header.name="{header}">
             {{header.text}}
             <v-menu offset-y :close-on-content-click="false">
                 <template v-slot:activator="{ on, attrs }">
