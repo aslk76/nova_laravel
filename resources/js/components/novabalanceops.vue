@@ -151,7 +151,7 @@
             return item.command.toLowerCase().includes(this.commandIssued.toLowerCase());
         },
         filterName(item) {
-            return item.command.toLowerCase().includes(this.responsibleName.toLowerCase());
+            return item.name.toLowerCase().includes(this.responsibleName.toLowerCase());
         },
     },
     computed: {
