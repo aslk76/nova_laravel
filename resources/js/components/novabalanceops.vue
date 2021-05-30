@@ -166,7 +166,7 @@
             }
 
             if (this.responsibleName) {
-                conditions.push(this.filterCommand);
+                conditions.push(this.responsibleName);
             }
 
             if (conditions.length > 0) {
