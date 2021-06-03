@@ -7,7 +7,7 @@ use Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
-class Top100Current extends Model
+class TopPrevious extends Model
 {
-    public $table = "TOP_100_Current";
+    public $table = "TOP_Previous";
 }

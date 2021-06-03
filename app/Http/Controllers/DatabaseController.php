@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Mplus;
 use App\Various;
 use App\Balanceops;
-use App\Top100Current;
-use App\Top100Previous;
+use App\TopCurrent;
+use App\TopPrevious;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
@@ -297,7 +297,7 @@ class DatabaseController extends Controller
             $arrayItems = [];
             if ($weekid == 1) {
                 if ($faction == 'Horde') {
-                    $items = Top100Current::where('name', 'LIKE', '%[H]')->take(10)->get();
+                    $items = TopCurrent::where('name', 'LIKE', '%[H]')->take(10)->get();
                     foreach ($items as $item) {
                         $element = new \stdClass;
                         $element->name = $item->name;
@@ -305,7 +305,7 @@ class DatabaseController extends Controller
                         array_push($arrayItems, $element);
                     }
                 } elseif ($faction == 'Alliance') {
-                    $items = Top100Current::where('name', 'LIKE', '%[A]')->take(10)->get();
+                    $items = TopCurrent::where('name', 'LIKE', '%[A]')->take(10)->get();
                     foreach ($items as $item) {
                         $element = new \stdClass;
                         $element->name = $item->name;
@@ -315,7 +315,7 @@ class DatabaseController extends Controller
                 }
             } elseif ($weekid == 2) {
                 if ($faction == 'Horde') {
-                    $items = Top100Previous::where('name', 'LIKE', '%[H]')->take(10)->get();
+                    $items = TopPrevious::where('name', 'LIKE', '%[H]')->take(10)->get();
                     foreach ($items as $item) {
                         $element = new \stdClass;
                         $element->name = $item->name;
@@ -323,7 +323,7 @@ class DatabaseController extends Controller
                         array_push($arrayItems, $element);
                     }
                 } elseif ($faction == 'Alliance') {
-                    $items = Top100Previous::where('name', 'LIKE', '%[A]')->take(10)->get();
+                    $items = TopPrevious::where('name', 'LIKE', '%[A]')->take(10)->get();
                     foreach ($items as $item) {
                         $element = new \stdClass;
                         $element->name = $item->name;
