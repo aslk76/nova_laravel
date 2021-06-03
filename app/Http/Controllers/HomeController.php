@@ -49,4 +49,8 @@ class HomeController extends Controller
     {
         return view('balanceops');
     }
+    public function topboosters()
+    {
+        return view('topboosters');
+    }
 }

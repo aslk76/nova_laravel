@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Mplus;
 use App\Various;
 use App\Balanceops;
+use App\Top100Current;
+use App\Top100Previous;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
@@ -269,25 +271,68 @@ class DatabaseController extends Controller
 
         // ########### BALANCE OPS API #############
         public function getBalanceOps($weekid)
-    {
-        if ($weekid == 1) {
-            $items = Balanceops::whereNull('deleted_at')->get();
+        {
+            if ($weekid == 1) {
+                $items = Balanceops::whereNull('deleted_at')->get();
+                return $items;
+            }
+            if ($weekid == 2) {
+                $week = DB::select("SELECT cur1, cur2 from variables");
+                $startday = date('Y/m/d', strtotime($week[0]->cur1));
+                $endday = date('Y/m/d', strtotime($week[0]->cur2. ' + 1 day'));
+            } elseif ($weekid == 3) {
+                $week = DB::select("SELECT pre1, pre2 from variables");
+                $startday = date('Y/m/d', strtotime($week[0]->pre1));
+                $endday = date('Y/m/d', strtotime($week[0]->pre2. ' + 1 day'));
+            } elseif ($weekid == 4) {
+                $week = DB::select("SELECT pre1, pre2 from variables");
+                $startday = date('Y/m/d', strtotime($week[0]->pre1. ' - 7 days'));
+                $endday = date('Y/m/d', strtotime($week[0]->pre2. ' - 6 days'));
+            }
+            $items = Balanceops::whereNull('deleted_at')->whereBetween('date', [$startday, $endday])->get();
             return $items;
         }
-        if ($weekid == 2) {
-            $week = DB::select("SELECT cur1, cur2 from variables");
-            $startday = date('Y/m/d', strtotime($week[0]->cur1));
-            $endday = date('Y/m/d', strtotime($week[0]->cur2. ' + 1 day'));
-        } elseif ($weekid == 3) {
-            $week = DB::select("SELECT pre1, pre2 from variables");
-            $startday = date('Y/m/d', strtotime($week[0]->pre1));
-            $endday = date('Y/m/d', strtotime($week[0]->pre2. ' + 1 day'));
-        } elseif ($weekid == 4) {
-            $week = DB::select("SELECT pre1, pre2 from variables");
-            $startday = date('Y/m/d', strtotime($week[0]->pre1. ' - 7 days'));
-            $endday = date('Y/m/d', strtotime($week[0]->pre2. ' - 6 days'));
+
+        public function getTopBoosters($faction, $weekid) {
+            $arrayItems = [];
+            if ($weekid == 1) {
+                if ($faction == 'Horde') {
+                    $items = Top100Current::where('name', 'LIKE', '%[H]')->take(10)->get();
+                    foreach ($items as $item) {
+                        $element = new \stdClass;
+                        $element->name = $item->name;
+                        $element->balance = $item->Current_Week_Balance;
+                        array_push($arrayItems, $element);
+                    }
+                } elseif ($faction == 'Alliance') {
+                    $items = Top100Current::where('name', 'LIKE', '%[A]')->take(10)->get();
+                    foreach ($items as $item) {
+                        $element = new \stdClass;
+                        $element->name = $item->name;
+                        $element->balance = $item->Current_Week_Balance;
+                        array_push($arrayItems, $element);
+                    }
+                }
+            } elseif ($weekid == 2) {
+                if ($faction == 'Horde') {
+                    $items = Top100Previous::where('name', 'LIKE', '%[H]')->take(10)->get();
+                    foreach ($items as $item) {
+                        $element = new \stdClass;
+                        $element->name = $item->name;
+                        $element->balance = $item->Previous_Week_Balance;
+                        array_push($arrayItems, $element);
+                    }
+                } elseif ($faction == 'Alliance') {
+                    $items = Top100Previous::where('name', 'LIKE', '%[A]')->take(10)->get();
+                    foreach ($items as $item) {
+                        $element = new \stdClass;
+                        $element->name = $item->name;
+                        $element->balance = $item->Previous_Week_Balance;
+                        array_push($arrayItems, $element);
+                    }
+                }
+            }
+
+            return $arrayItems;
         }
-        $items = Balanceops::whereNull('deleted_at')->whereBetween('date', [$startday, $endday])->get();
-        return $items;
     }
-}

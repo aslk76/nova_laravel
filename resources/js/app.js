@@ -32,6 +32,7 @@ Vue.component('nova-archives-various', require('./components/archives/novavariou
 Vue.component('nova-missing-mplus', require('./components/missing/novamplus.vue').default);
 Vue.component('nova-missing-various', require('./components/missing/novavarious.vue').default);
 Vue.component('nova-balanceops', require('./components/novabalanceops.vue').default);
+Vue.component('nova-topboosters', require('./components/novatopboosters.vue').default);
 
 Vue.config.silent = true
 /**

@@ -26,6 +26,7 @@ Route::group(['middleware' => ['auth', 'banker']], function() {
     Route::get('/missing/mplus', 'HomeController@mplusMissing')->name('mplus');
     Route::get('/missing/various', 'HomeController@variousMissing')->name('various');
     Route::get('/balanceops', 'HomeController@balanceops')->name('balanceops');
+    Route::get('/topboosters', 'HomeController@topboosters')->name('topboosters');
 
     // ######################### MPLUS ROUTES ####################################
     Route::get('/getAllMplus/{id}', 'DatabaseController@getAllMplus');
@@ -72,8 +73,9 @@ Route::group(['middleware' => ['auth', 'banker']], function() {
     // ###########################################################################
 });
 Route::group(['middleware' => ['auth', 'manager']], function() {
-// ######################### BALANCE OPERATIONS ROUTES ####################################
-Route::get('/getBalanceOps/{id}', 'DatabaseController@getBalanceOps');
-// ###########################################################################
+    // ######################### BALANCE OPERATIONS ROUTES ####################################
+    Route::get('/getBalanceOps/{id}', 'DatabaseController@getBalanceOps');
+    Route::get('/topboosters/{faction}/{id}', 'DatabaseController@getTopBoosters');
+    // ###########################################################################
 });
 
