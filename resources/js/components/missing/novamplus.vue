@@ -668,10 +668,11 @@
     methods: {
         getItems() {
             axios
-            .get('/getAllMissingMplus')
+            .get('/getAllMissingMplus', { transformResponse: [data => data] })
             .then ((response) => {
-                this.items = response.data
-                console.log(response.data)
+                let parsed = JSON.parse(response.data.replace(/"boost_id":(\d+),/g, '"boost_id":"$1",'))
+                console.log(parsed)
+                this.items = parsed
             })
             .catch(error => console.log(error))
         },
@@ -693,19 +694,21 @@
         },
         showAllianceRuns() {
             axios
-            .get('/getAllAllianceMissingMplus')
+            .get('/getAllAllianceMissingMplus', { transformResponse: [data => data] })
             .then ((response) => {
-                this.items = response.data
-                console.log(response.data)
+                let parsed = JSON.parse(response.data.replace(/"boost_id":(\d+),/g, '"boost_id":"$1",'))
+                console.log(parsed)
+                this.items = parsed
             })
             .catch(error => console.log(error))
         },
         showHordeRuns() {
             axios
-            .get('/getAllHordeMissingMplus')
+            .get('/getAllHordeMissingMplus', { transformResponse: [data => data] })
             .then ((response) => {
-                this.items = response.data
-                console.log(response.data)
+                let parsed = JSON.parse(response.data.replace(/"boost_id":(\d+),/g, '"boost_id":"$1",'))
+                console.log(parsed)
+                this.items = parsed
             })
             .catch(error => console.log(error))
         },
@@ -713,10 +716,11 @@
         showDialog(row) {
             this.editingRow = row;
             axios
-            .get('/getSpecificMplus/' + row.id)
+            .get('/getSpecificMplus/' + row.id, { transformResponse: [data => data] })
             .then ((response) => {
-                this.itemsFromDialog = response.data
-                console.log(response.data)
+                let parsed = JSON.parse(response.data.replace(/"boost_id":(\d+),/g, '"boost_id":"$1",'))
+                console.log(parsed)
+                this.itemsFromDialog = parsed
             })
             .catch(error => console.log(error))
             this.dialog = true;

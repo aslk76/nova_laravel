@@ -137,10 +137,11 @@
     methods: {
         getItems() {
             axios
-            .get('/getBalanceOps/' + this.selectedWeek.id)
+            .get('/getBalanceOps/' + this.selectedWeek.id, { transformResponse: [data => data] })
             .then ((response) => {
-                this.items = response.data
-                console.log(response.data)
+                let parsed = JSON.parse(response.data.replace(/"operation_id":(\d+),/g, '"operation_id":"$1",'))
+                console.log(parsed)
+                this.items = parsed
             })
             .catch(error => console.log(error))
         },
