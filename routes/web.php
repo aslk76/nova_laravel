@@ -27,6 +27,7 @@ Route::group(['middleware' => ['auth', 'banker']], function() {
     Route::get('/missing/various', 'HomeController@variousMissing')->name('various');
     Route::get('/balanceops', 'HomeController@balanceops')->name('balanceops');
     Route::get('/topboosters', 'HomeController@topboosters')->name('topboosters');
+    Route::get('/statistics', 'HomeController@statistics')->name('statistics');
 
     // ######################### MPLUS ROUTES ####################################
     Route::get('/getAllMplus/{id}', 'DatabaseController@getAllMplus');
@@ -70,6 +71,12 @@ Route::group(['middleware' => ['auth', 'banker']], function() {
     Route::get('/getAllMissingVarious', 'DatabaseController@getAllMissingVarious');
     Route::get('/getAllAllianceMissingVarious', 'DatabaseController@getAllAllianceMissingVarious');
     Route::get('/getAllHordeMissingVarious', 'DatabaseController@getAllHordeMissingVarious');
+    // ###########################################################################
+
+    // ######################### STATISTICS ROUTES ####################################
+    Route::get('/getSales', 'DatabaseController@getSales');
+    Route::get('/getEarns', 'DatabaseController@getEarns');
+    Route::get('/getTotal', 'DatabaseController@getTotal');
     // ###########################################################################
 });
 Route::group(['middleware' => ['auth', 'manager']], function() {

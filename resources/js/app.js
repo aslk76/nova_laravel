@@ -33,7 +33,7 @@ Vue.component('nova-missing-mplus', require('./components/missing/novamplus.vue'
 Vue.component('nova-missing-various', require('./components/missing/novavarious.vue').default);
 Vue.component('nova-balanceops', require('./components/novabalanceops.vue').default);
 Vue.component('nova-topboosters', require('./components/novatopboosters.vue').default);
-
+Vue.component('nova-statistics', require('./components/novastatistics.vue').default);
 Vue.config.silent = true
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -46,29 +46,6 @@ Vue.config.silent = true
         options: {
             customProperties: true,
         },
-        themes: {
-            light: {
-                background: '#e4e6ee', // Not automatically applied
-                primary: {
-                    base: '#005da9',
-                    lighten1: '#308AC6',
-                    lighten2: '#EFF6FB',
-                    darken1: '#045DA5',
-                    darken2: '#00448B',
-                    darken3: '#002E73',
-                },
-            },
-            dark: {
-                primary: {
-                    base: '#005da9',
-                    lighten1: '#308AC6',
-                    lighten2: '#EFF6FB',
-                    darken1: '#045DA5',
-                    darken2: '#00448B',
-                    darken3: '#00448B',
-                },
-            }
-        }
     }
 })
 

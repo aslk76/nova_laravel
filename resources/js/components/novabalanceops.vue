@@ -1,7 +1,7 @@
 <template>
-<v-app :dark="true">
-    <div style="position: relative; width: 100%;">
-        <v-select class="weekSelector" style="top: 0; left: 0;"
+<v-app style="background: 0!important; padding-left: 10px; padding-right: 10px;">
+    <div style="position: relative; width: 100%; background: rgba(40, 41, 43, 0.9);border-radius: 5px;">
+        <v-select class="weekSelector blackComponent" style="top: 0; left: 0;"
                 v-model="selectedWeek"
                 :items="weeks"
                 item-text="week"
@@ -21,10 +21,10 @@
             :headers="headers"
             :items="filteredItems"
             :items-per-page="5"
-            class="elevation-1"
+            class="elevation-1 vueTable"
         >
         <template v-slot:header.author="{header}">
-            {{header.text}}
+            <span>{{header.text}}</span>
             <v-menu offset-y :close-on-content-click="false">
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn icon v-bind="attrs" v-on="on">
@@ -49,7 +49,7 @@
             </v-menu>
         </template>
         <template v-slot:header.command="{header}">
-            {{header.text}}
+            <span>{{header.text}}</span>
             <v-menu offset-y :close-on-content-click="false">
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn icon v-bind="attrs" v-on="on">
@@ -74,7 +74,7 @@
             </v-menu>
         </template>
         <template v-slot:header.name="{header}">
-            {{header.text}}
+            <span>{{header.text}}</span>
             <v-menu offset-y :close-on-content-click="false">
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn icon v-bind="attrs" v-on="on">
@@ -98,6 +98,31 @@
                 </div>
             </v-menu>
         </template>
+        <template v-slot:header.operation_id="{header}">
+            <span>{{header.text}}</span>
+            <v-menu offset-y :close-on-content-click="false">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn icon v-bind="attrs" v-on="on">
+                        <span class="material-icons">
+                            filter_alt
+                        </span>
+                    </v-btn>
+                </template>
+                <div style="background-color: white; width: 280px">
+                    <v-text-field v-model="operationId"
+                    class="pa-4"
+                    type="text"
+                    label="Enter the operation id"
+                    ></v-text-field>
+                    <v-btn @click="operationId = ''"
+                    small
+                    text
+                    color="primary"
+                    class="ml-2 mb-2"
+                    >Clear</v-btn>
+                </div>
+            </v-menu>
+        </template>
         </v-data-table>
     </div>
 </v-app>
@@ -111,6 +136,7 @@
             authorName: '',
             commandIssued: '',
             responsibleName: '',
+            operationId: '',
             items: [],
             weeks: [
                 { id: 1, week: "All weeks"},
@@ -154,6 +180,9 @@
         filterName(item) {
             return item.name.toLowerCase().includes(this.responsibleName.toLowerCase());
         },
+        filterOperation(item) {
+            return item.operation_id.toLowerCase().includes(this.operationId.toLowerCase());
+        },
     },
     computed: {
         filteredItems() {
@@ -168,6 +197,10 @@
 
             if (this.responsibleName) {
                 conditions.push(this.filterName);
+            }
+
+            if (this.operationId) {
+                conditions.push(this.filterOperation);
             }
 
             if (conditions.length > 0) {

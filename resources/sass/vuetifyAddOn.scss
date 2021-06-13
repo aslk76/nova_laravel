@@ -2,6 +2,7 @@
     position: relative;
     width: 100%;
     height: 34px;
+    color: white;
 }
 
 .menutitle .close-button-dialog {
@@ -18,10 +19,101 @@
 
 .data-table-dialog {
     padding-top: 20px;
+    background-color: rgba(40, 41, 43, 1)!important;
 }
 
 .weekSelector {
     padding-bottom: -30px;
     padding-left: 20px;
     width: 150px;
+}
+
+.statisticsList {
+    text-align: center;
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+.statisticsList2 {
+
+    text-align: center;
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+
+}
+// .statisticsList li {
+//     color: black;
+// }
+// .statisticsList table tbody tr:nth-child(odd) {
+//     background-color: #C3E6CB;
+// }
+.statisticsList table tbody tr:nth-child(even) {
+    background-color: rgb(80, 80, 80);
+}
+
+// .statisticsList2 table tbody tr:nth-child(odd) {
+//     background-color: #C3E6CB;
+// }
+.statisticsList2 table tbody tr:nth-child(even) {
+    background-color: rgb(80, 80, 80);
+}
+
+.vueTable table tbody tr:nth-child(even) {
+    background-color: rgb(80, 80, 80);
+}
+
+.vueTable table tbody tr:nth-child(even) {
+    background-color: rgb(80, 80, 80);
+}
+
+.vueTable table {
+    background-color: rgb(40 41 43 / 90%);
+    box-shadow: 0px 5px 25px 0px rgb(0 0 0 / 20%);
+    color: white;
+}
+
+.vueTable th, .vueTable td, .vueTable thead th span {
+    border-color: #252525;
+    color: white;
+}
+
+.vuetable thead tr th {
+    background-color: #343a40;
+}
+
+.vueTable table thead tr {
+    background-color: rgba(40, 41, 43, 0.9);
+}
+
+.vueTable table tbody tr:hover {
+    background-color: #5f6266!important;
+}
+
+.vueTable .v-data-footer {
+    background-color: rgba(40, 41, 43, 0.9);
+    color: white!important;
+}
+
+.blackComponent label, .blackComponent input, .blackComponent div > div.v-input__slot > div.v-select__slot > div.v-select__selections > div{
+    color: white!important;
+}
+
+div[id^="list-"] {
+    background-color: rgba(40, 41, 43, 1)!important;
+    padding-top: 0px!important;
+    padding-bottom: 0px!important;
+    color: white;
+}
+
+div[id^="list-"] div {
+    color: white!important;
+}
+
+div[id^="list-"] div:hover {
+    background-color: #5f6266!important;
 }

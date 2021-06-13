@@ -53,4 +53,8 @@ class HomeController extends Controller
     {
         return view('topboosters');
     }
+    public function statistics()
+    {
+        return view('statistics');
+    }
 }

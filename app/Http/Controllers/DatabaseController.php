@@ -237,102 +237,119 @@ class DatabaseController extends Controller
         return $items;
     }
 
-        // ########### MPLUS MISSING API ############
-        public function getAllMissingMplus()
-        {
-            $items = Mplus::whereNull('deleted_at')->where('missing', 1)->get();
-            return $items;
-        }
-        public function getAllAllianceMissingMplus() {
-            $items = Mplus::whereNull('deleted_at')->where('boost_faction', 'Alliance')->where('missing', 1)->get();
-            return $items;
-        }
-
-        public function getAllHordeMissingMplus() {
-            $items = Mplus::whereNull('deleted_at')->where('boost_faction', 'Horde')->where('missing', 1)->get();
-            return $items;
-        }
-
-        // ########### VARIOUS MISSING API ############
-        public function getAllMissingVarious()
-        {
-            $items = Various::whereNull('deleted_at')->where('missing', 1)->get();
-            return $items;
-        }
-        public function getAllAllianceMissingVarious() {
-            $items = Various::whereNull('deleted_at')->where('boost_faction', 'Alliance')->where('missing', 1)->get();
-            return $items;
-        }
-
-        public function getAllHordeMissingVarious() {
-            $items = Various::whereNull('deleted_at')->where('boost_faction', 'Horde')->where('missing', 1)->get();
-            return $items;
-        }
-
-        // ########### BALANCE OPS API #############
-        public function getBalanceOps($weekid)
-        {
-            if ($weekid == 1) {
-                $items = Balanceops::whereNull('deleted_at')->get();
-                return $items;
-            }
-            if ($weekid == 2) {
-                $week = DB::select("SELECT cur1, cur2 from variables");
-                $startday = date('Y/m/d', strtotime($week[0]->cur1));
-                $endday = date('Y/m/d', strtotime($week[0]->cur2. ' + 1 day'));
-            } elseif ($weekid == 3) {
-                $week = DB::select("SELECT pre1, pre2 from variables");
-                $startday = date('Y/m/d', strtotime($week[0]->pre1));
-                $endday = date('Y/m/d', strtotime($week[0]->pre2. ' + 1 day'));
-            } elseif ($weekid == 4) {
-                $week = DB::select("SELECT pre1, pre2 from variables");
-                $startday = date('Y/m/d', strtotime($week[0]->pre1. ' - 7 days'));
-                $endday = date('Y/m/d', strtotime($week[0]->pre2. ' - 6 days'));
-            }
-            $items = Balanceops::whereNull('deleted_at')->whereBetween('date', [$startday, $endday])->get();
-            return $items;
-        }
-
-        public function getTopBoosters($faction, $weekid) {
-            $arrayItems = [];
-            if ($weekid == 1) {
-                if ($faction == 'Horde') {
-                    $items = TopCurrent::where('name', 'LIKE', '%[H]')->take(10)->get();
-                    foreach ($items as $item) {
-                        $element = new \stdClass;
-                        $element->name = $item->name;
-                        $element->balance = $item->Current_Week_Balance;
-                        array_push($arrayItems, $element);
-                    }
-                } elseif ($faction == 'Alliance') {
-                    $items = TopCurrent::where('name', 'LIKE', '%[A]')->take(10)->get();
-                    foreach ($items as $item) {
-                        $element = new \stdClass;
-                        $element->name = $item->name;
-                        $element->balance = $item->Current_Week_Balance;
-                        array_push($arrayItems, $element);
-                    }
-                }
-            } elseif ($weekid == 2) {
-                if ($faction == 'Horde') {
-                    $items = TopPrevious::where('name', 'LIKE', '%[H]')->take(10)->get();
-                    foreach ($items as $item) {
-                        $element = new \stdClass;
-                        $element->name = $item->name;
-                        $element->balance = $item->Previous_Week_Balance;
-                        array_push($arrayItems, $element);
-                    }
-                } elseif ($faction == 'Alliance') {
-                    $items = TopPrevious::where('name', 'LIKE', '%[A]')->take(10)->get();
-                    foreach ($items as $item) {
-                        $element = new \stdClass;
-                        $element->name = $item->name;
-                        $element->balance = $item->Previous_Week_Balance;
-                        array_push($arrayItems, $element);
-                    }
-                }
-            }
-
-            return $arrayItems;
-        }
+    // ########### MPLUS MISSING API ############
+    public function getAllMissingMplus()
+    {
+        $items = Mplus::whereNull('deleted_at')->where('missing', 1)->get();
+        return $items;
     }
+    public function getAllAllianceMissingMplus() {
+        $items = Mplus::whereNull('deleted_at')->where('boost_faction', 'Alliance')->where('missing', 1)->get();
+        return $items;
+    }
+
+    public function getAllHordeMissingMplus() {
+        $items = Mplus::whereNull('deleted_at')->where('boost_faction', 'Horde')->where('missing', 1)->get();
+        return $items;
+    }
+
+    // ########### VARIOUS MISSING API ############
+    public function getAllMissingVarious()
+    {
+        $items = Various::whereNull('deleted_at')->where('missing', 1)->get();
+        return $items;
+    }
+    public function getAllAllianceMissingVarious() {
+        $items = Various::whereNull('deleted_at')->where('boost_faction', 'Alliance')->where('missing', 1)->get();
+        return $items;
+    }
+
+    public function getAllHordeMissingVarious() {
+        $items = Various::whereNull('deleted_at')->where('boost_faction', 'Horde')->where('missing', 1)->get();
+        return $items;
+    }
+
+    // ########### BALANCE OPS API #############
+    public function getBalanceOps($weekid)
+    {
+        if ($weekid == 1) {
+            $items = Balanceops::whereNull('deleted_at')->get();
+            return $items;
+        }
+        if ($weekid == 2) {
+            $week = DB::select("SELECT cur1, cur2 from variables");
+            $startday = date('Y/m/d', strtotime($week[0]->cur1));
+            $endday = date('Y/m/d', strtotime($week[0]->cur2. ' + 1 day'));
+        } elseif ($weekid == 3) {
+            $week = DB::select("SELECT pre1, pre2 from variables");
+            $startday = date('Y/m/d', strtotime($week[0]->pre1));
+            $endday = date('Y/m/d', strtotime($week[0]->pre2. ' + 1 day'));
+        } elseif ($weekid == 4) {
+            $week = DB::select("SELECT pre1, pre2 from variables");
+            $startday = date('Y/m/d', strtotime($week[0]->pre1. ' - 7 days'));
+            $endday = date('Y/m/d', strtotime($week[0]->pre2. ' - 6 days'));
+        }
+        $items = Balanceops::whereNull('deleted_at')->whereBetween('date', [$startday, $endday])->get();
+        return $items;
+    }
+
+    public function getTopBoosters($faction, $weekid) {
+        $arrayItems = [];
+        if ($weekid == 1) {
+            if ($faction == 'Horde') {
+                $items = TopCurrent::where('name', 'LIKE', '%[H]')->take(10)->get();
+                foreach ($items as $item) {
+                    $element = new \stdClass;
+                    $element->name = $item->name;
+                    $element->balance = $item->Current_Week_Balance;
+                    array_push($arrayItems, $element);
+                }
+            } elseif ($faction == 'Alliance') {
+                $items = TopCurrent::where('name', 'LIKE', '%[A]')->take(10)->get();
+                foreach ($items as $item) {
+                    $element = new \stdClass;
+                    $element->name = $item->name;
+                    $element->balance = $item->Current_Week_Balance;
+                    array_push($arrayItems, $element);
+                }
+            }
+        } elseif ($weekid == 2) {
+            if ($faction == 'Horde') {
+                $items = TopPrevious::where('name', 'LIKE', '%[H]')->take(10)->get();
+                foreach ($items as $item) {
+                    $element = new \stdClass;
+                    $element->name = $item->name;
+                    $element->balance = $item->Previous_Week_Balance;
+                    array_push($arrayItems, $element);
+                }
+            } elseif ($faction == 'Alliance') {
+                $items = TopPrevious::where('name', 'LIKE', '%[A]')->take(10)->get();
+                foreach ($items as $item) {
+                    $element = new \stdClass;
+                    $element->name = $item->name;
+                    $element->balance = $item->Previous_Week_Balance;
+                    array_push($arrayItems, $element);
+                }
+            }
+        }
+
+        return $arrayItems;
+    }
+
+    // ########### BALANCE OPS API #############
+    public function getSales()
+    {
+        $items = DB::select("SELECT `name`, `Sales` FROM `Realms_Sales_Earns` ORDER BY 2 DESC");
+        return $items;
+    }
+    public function getEarns()
+    {
+        $items = DB::select("SELECT `name`, `Earns` FROM `Realms_Sales_Earns` ORDER BY 2 DESC");
+        return $items;
+    }
+
+    public function getTotal() {
+        $items = DB::select("SELECT SUM(`Sales`) as Total FROM `Realms_Sales_Earns`");
+        return $items;
+    }
+}

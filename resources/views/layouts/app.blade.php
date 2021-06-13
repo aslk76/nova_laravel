@@ -21,10 +21,11 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
+        <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark shadow-sm navbar-custom">
+            <div class="container" style="padding-top: 0px; padding-bottom: 0px;">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Nova Web') }}
+                    <img src="/images/nova64.png" alt="NovaGaming" width="48">
+                    {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -58,6 +59,9 @@
                                     <a class="dropdown-item" href="{{ url('/missing/mplus') }}">Mythic Plus</a>
                                     <a class="dropdown-item" href="{{ url('/missing/various') }}">Various Services</a>
                                 </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/statistics') }}">Statistics</a>
                             </li>
                         @endif
                     @endif
@@ -110,7 +114,7 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-4 mt-6">
             @yield('content')
         </main>
     </div>

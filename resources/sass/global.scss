@@ -1,0 +1,87 @@
+body {
+  color: #FFF;
+  background-image: url('/images/bg-top.png');
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #202225!important;
+}
+
+a, .btn-link {
+    color: orange;
+}
+
+a:hover, .btn-link:hover {
+    color: darkorange;
+}
+
+
+// Custom mt-
+.mt-6, .my-6 {
+    margin-top: 4rem !important;
+}
+.required {
+  color: red;
+}
+
+
+.search-field {
+    position: relative;
+    width: 100%;
+    background: #e0e0e0;
+    border: 0px;
+    border-right: 0px;
+    padding-bottom: 10px;
+    margin-left: 10px;
+    font-size: 18px;
+    padding: 12px;
+    border-radius: 5px;
+}
+
+.search-field:focus {
+    outline: none;
+}
+
+.remove-search {
+    position: absolute;
+    right: 31px;
+    font-size: 20px;
+    top: 12px;
+}
+
+// Navbar
+.navbar-custom {
+  background: rgb(40 41 43 / 90%) !important;
+  // border-bottom: 1px solid orange;
+  & .active {
+    color: orange !important;
+  }
+}
+
+.btn-orange {
+    color: #4a3000;
+    background-color: orange;
+    border-color: #d48900;
+}
+
+.join-us {
+    background: rgb(40 41 43 / 90%);
+    border-radius: 5px;
+    padding: 30px;
+}
+
+.tabs-custom {
+    background: rgb(40 41 43 / 90%);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.table-custom {
+    background-color: rgb(40 41 43 / 90%);
+    box-shadow: 0px 5px 25px 0px rgb(0 0 0 / 20%);
+}
+
+.table-dark th, .table-dark td, .table-dark thead th {
+    border-color: #252525;
+}

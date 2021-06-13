@@ -1,6 +1,6 @@
 <template>
-<v-app :dark="true">
-    <div>
+<v-app style="background: 0!important; padding-left: 10px; padding-right: 10px;">
+    <div style="background: rgba(40, 41, 43, 0.9);border-radius: 5px;">
     <div style="text-align: center">
         <v-btn
             elevation="6"
@@ -21,7 +21,7 @@
             @click="showAllianceBoosters()"
         >ALLIANCE</v-btn>
     </div>
-    <v-select class="weekSelector"
+    <v-select class="weekSelector blackComponent"
         v-model="selectedWeek"
         :items="weeks"
         item-text="week"
@@ -34,7 +34,7 @@
         :headers="headers"
         :items="items"
         :items-per-page="10"
-        class="elevation-1"
+        class="elevation-1 vueTable"
     ></v-data-table>
     </div>
 </v-app>

@@ -1,7 +1,7 @@
 <template>
-<v-app :dark="true">
-    <div>
-        <div style="text-align: center">
+<v-app style="background: 0!important; padding-left: 10px; padding-right: 10px;">
+    <div style="background: rgba(40, 41, 43, 0.9);border-radius: 5px;">
+        <div style="text-align: center; padding-top: 10px;">
             <v-btn
                 elevation="6"
                 fab
@@ -10,7 +10,7 @@
                 text
                 style="color: red; font-size: 10px;"
                 @click="showHordeRuns()"
-            >HORDE</v-btn>
+            ><img :src="'/images/hordeicon64.png'"></v-btn>
             <v-divider vertical style="padding: 5px;"></v-divider>
             <v-btn
                 elevation="6"
@@ -20,7 +20,7 @@
                 tile
                 style="color:blue; font-size: 10px;"
                 @click="showAllianceRuns()"
-            >ALLIANCE</v-btn>
+            ><img :src="'/images/allianceicon64.png'"></v-btn>
             <v-divider vertical style="padding: 5px;"></v-divider>
             <v-btn
                 elevation="6"
@@ -30,9 +30,9 @@
                 text
                 style="color:black; font-size: 10px;"
                 @click="getItems()"
-            >ALL</v-btn>
-            </div>
-            <v-select class="weekSelector"
+            ><img :src="'/images/allicon64.png'"></v-btn>
+        </div>
+            <v-select class="weekSelector blackComponent"
                 v-model="selectedWeek"
                 :items="weeks"
                 item-text="week"
@@ -48,6 +48,7 @@
             label="Search for Boost Realm"
             single-line
             hide-details
+            class="blackComponent"
         ></v-text-field>
         </v-card-title>
         <v-data-table
@@ -55,7 +56,7 @@
             :items="items"
             :items-per-page="5"
             :search="search"
-            class="elevation-1"
+            class="elevation-1 vueTable"
             @click:row="showDialog"
         >
         <template v-slot:item.collected="{ item }">
@@ -76,14 +77,14 @@
         <template>
         <v-dialog v-model="dialog">
             <v-card class="mx-auto">
-                <v-app-bar color="blue-grey lighten-5" dense>
+                <v-app-bar color="grey darken-3" dense>
                     <v-toolbar-title class="ml-3 menutitle">
-                        <v-btn elevation="2" fab x-small class="save-button-dialog" color="blue-grey lighten-5" @click="saveRunMplus(itemsFromDialog)">
+                        <v-btn elevation="2" fab x-small class="save-button-dialog" color="grey darken-1" @click="saveRunMplus(itemsFromDialog)">
                             <span class="material-icons">
                                 save
                             </span>
                         </v-btn>
-                        <v-btn elevation="2" fab x-small class="close-button-dialog" color="blue-grey lighten-5" @click="dialog = false">
+                        <v-btn elevation="2" fab x-small class="close-button-dialog" color="grey darken-1" @click="dialog = false">
                             <span class="material-icons">
                                 close
                             </span>
@@ -99,7 +100,7 @@
                         :items="itemsFromDialog"
                         :items-per-page="1"
                         :search="search"
-                        class="elevation-1"
+                        class="elevation-1 vueTable"
                     >
                 <template v-slot:item.boost_faction="props">
                     <v-edit-dialog
