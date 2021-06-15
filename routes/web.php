@@ -74,9 +74,9 @@ Route::group(['middleware' => ['auth', 'banker']], function() {
     // ###########################################################################
 
     // ######################### STATISTICS ROUTES ####################################
-    Route::get('/getSales', 'DatabaseController@getSales');
-    Route::get('/getEarns', 'DatabaseController@getEarns');
-    Route::get('/getTotal', 'DatabaseController@getTotal');
+    Route::get('/getSales/{weekId}', 'DatabaseController@getSales');
+    Route::get('/getEarns/{weekId}', 'DatabaseController@getEarns');
+    Route::get('/getTotal/{weekId}', 'DatabaseController@getTotal');
     // ###########################################################################
 });
 Route::group(['middleware' => ['auth', 'manager']], function() {

@@ -337,19 +337,29 @@ class DatabaseController extends Controller
     }
 
     // ########### BALANCE OPS API #############
-    public function getSales()
-    {
-        $items = DB::select("SELECT `name`, `Sales` FROM `Realms_Sales_Earns` ORDER BY 2 DESC");
+    public function getSales($weekId) {
+        if ($weekId == 1) {
+            $items = DB::select("SELECT `name`, `Sales` FROM `Realms_Sales_Earns` ORDER BY 2 DESC");
+        } elseif ($weekId == 2) {
+            $items = DB::select("SELECT `name`, `Sales` FROM `Realms_Sales_Earns_Last` ORDER BY 2 DESC");
+        }
         return $items;
     }
-    public function getEarns()
-    {
-        $items = DB::select("SELECT `name`, `Earns` FROM `Realms_Sales_Earns` ORDER BY 2 DESC");
+    public function getEarns($weekId) {
+        if ($weekId == 1) {
+            $items = DB::select("SELECT `name`, `Earns` FROM `Realms_Sales_Earns` ORDER BY 2 DESC");
+        } elseif ($weekId == 2) {
+            $items = DB::select("SELECT `name`, `Earns` FROM `Realms_Sales_Earns_Last` ORDER BY 2 DESC");
+        }
         return $items;
     }
 
-    public function getTotal() {
-        $items = DB::select("SELECT SUM(`Sales`) as Total FROM `Realms_Sales_Earns`");
+    public function getTotal($weekId) {
+        if ($weekId == 1) {
+            $items = DB::select("SELECT SUM(`Sales`) as Total FROM `Realms_Sales_Earns`");
+        } elseif ($weekId == 2) {
+            $items = DB::select("SELECT SUM(`Sales`) as Total FROM `Realms_Sales_Earns_Last`");
+        }
         return $items;
     }
 }

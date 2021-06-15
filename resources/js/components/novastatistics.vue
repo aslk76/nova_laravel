@@ -1,37 +1,20 @@
 <template>
 <v-app style="background: 0!important; padding-left: 10px; padding-right: 10px;">
     <div style="background: rgba(40, 41, 43, 0.9);border-radius: 5px;">
-        <!-- <div style="text-align: center">
-            <v-btn
-                elevation="6"
-                fab
-                large
-                tile
-                text
-                style="color: red; font-size: 10px;"
-                @click="showHordeRuns()"
-            >HORDE</v-btn>
-            <v-divider vertical style="padding: 5px;"></v-divider>
-            <v-btn
-                elevation="6"
-                fab
-                large
-                text
-                tile
-                style="color:blue; font-size: 10px;"
-                @click="showAllianceRuns()"
-            >ALLIANCE</v-btn>
-            <v-divider vertical style="padding: 5px;"></v-divider>
-            <v-btn
-                elevation="6"
-                fab
-                large
-                tile
-                text
-                style="color:black; font-size: 10px;"
-                @click="getItems()"
-            >ALL</v-btn>
-        </div> -->
+        <v-select class="weekSelector blackComponent" style="top: 0; left: 0;"
+                v-model="selectedWeek"
+                :items="weeks"
+                item-text="week"
+                item-value="id"
+                label="Week"
+                single-line
+                return-object
+        ></v-select>
+        <v-btn elevation="6" fab x-small tile text style="color:black; font-size: 10px; position: absolute; top: 15px; left: 160px;" @click="getAll()">
+            <span class="material-icons">
+                search
+            </span>
+        </v-btn>
         <div class="row justify-content-center">
             <table class="table table-bordered table-dark table-custom" style="width: 39%; text-align: center; margin-top: 20px;">
                 <thead>
@@ -93,13 +76,18 @@
             itemsSales: [],
             itemsEarns: [],
             itemsTotal: [],
+            weeks: [
+                { id: 1, week: "This week"},
+                { id: 2, week: "Last week"},
+            ],
+            selectedWeek: {id: 1, week: "This week"},
         }
     },
 
     methods: {
         getSales() {
             axios
-            .get('/getSales')
+            .get('/getSales/' + this.selectedWeek.id)
             .then ((response) => {
                 this.itemsSales = response.data
             })
@@ -108,7 +96,7 @@
 
         getEarns() {
             axios
-            .get('/getEarns')
+            .get('/getEarns/' + this.selectedWeek.id)
             .then ((response) => {
                 this.itemsEarns = response.data
             })
@@ -118,19 +106,22 @@
 
         getTotal() {
             axios
-            .get('/getTotal')
+            .get('/getTotal/' + this.selectedWeek.id)
             .then ((response) => {
                 console.log(response.data[0])
                 this.itemsTotal = response.data
             })
             .catch(error => console.log(error))
         },
+        getAll() {
+            this.getSales();
+            this.getEarns();
+            this.getTotal();
+        }
     },
 
-    created () {
-        this.getSales();
-        this.getEarns();
-        this.getTotal();
+    beforeMount () {
+        this.getAll();
     }
   }
 </script>
