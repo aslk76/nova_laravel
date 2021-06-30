@@ -35,7 +35,12 @@
         :items="items"
         :items-per-page="10"
         class="elevation-1 vueTable"
-    ></v-data-table>
+    >
+    <template v-slot:item.balance="{ item }">
+        {{item.balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}
+    </template>
+    </v-data-table>
+
     </div>
 </v-app>
 </template>

@@ -23,6 +23,9 @@
             :items-per-page="5"
             class="elevation-1 vueTable"
         >
+        <template v-slot:item.amount="{ item }">
+             {{item.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}
+        </template>
         <template v-slot:header.author="{header}">
             <span>{{header.text}}</span>
             <v-menu offset-y :close-on-content-click="false">

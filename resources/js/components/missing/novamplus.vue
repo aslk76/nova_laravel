@@ -53,12 +53,15 @@
         </v-card-title>
         <v-data-table
             :headers="headers"
-            :items="items"
+            :items="filteredItems"
             :items-per-page="5"
             :search="search"
             class="elevation-1 vueTable"
             @click:row="showDialog"
         >
+        <template v-slot:item.boost_pot="{ item }">
+             {{item.boost_pot.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}
+        </template>
         <template v-slot:item.collected="{ item }">
             <v-simple-checkbox
             v-model="item.collected"
@@ -72,6 +75,31 @@
             enabled
             @click="onCheckboxClicked(item, 'missing', item.missing)"
             ></v-simple-checkbox>
+        </template>
+        <template v-slot:header.boost_date="{header}">
+            <span>{{header.text}}</span>
+            <v-menu offset-y :close-on-content-click="false">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn icon v-bind="attrs" v-on="on">
+                        <span class="material-icons">
+                            filter_alt
+                        </span>
+                    </v-btn>
+                </template>
+                <div style="background-color: white; width: 280px">
+                    <v-text-field v-model="boostDate"
+                    class="pa-4"
+                    type="text"
+                    label="Enter a date"
+                    ></v-text-field>
+                    <v-btn @click="boostDate = ''"
+                    small
+                    text
+                    color="primary"
+                    class="ml-2 mb-2"
+                    >Clear</v-btn>
+                </div>
+            </v-menu>
         </template>
         </v-data-table>
         <template>
@@ -511,6 +539,7 @@
             search: '',
             items: [],
             itemsFromDialog: [],
+            boostDate: '',
             factions: ["Horde", "Alliance"],
             realms: ["Aegwynn [A]", "AeriePeak [A]", "Agamaggan [A]", "Aggra [A]",
               "Aggramar [A]", "Ahn'Qiraj [A]", "Al'Akir [A]", "Alexstrasza [A]", "Alleria [A]", "Alonsus [A]",
@@ -742,8 +771,30 @@
             this.items[index].boost_pot = item[0].boost_pot
             this.items[index].adv_name = item[0].adv_name
 
-        }
+        },
 
+        filterDate(item) {
+            return item.boost_date.toLowerCase().includes(this.boostDate.toLowerCase());
+        },
+
+    },
+    computed: {
+        filteredItems() {
+            let conditions = [];
+
+            if (this.boostDate) {
+                conditions.push(this.filterDate);
+            }
+
+            if (conditions.length > 0) {
+                return this.items.filter((item) => {
+                    return conditions.every((condition) => {
+                        return condition(item);
+                    })
+                })
+            }
+            return this.items;
+        }
     },
 
     created () {
