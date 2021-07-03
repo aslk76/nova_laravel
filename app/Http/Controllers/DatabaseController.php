@@ -8,9 +8,11 @@ use App\Various;
 use App\Balanceops;
 use App\TopCurrent;
 use App\TopPrevious;
+use App\Payments;
+use App\Credits;
 use Illuminate\Support\Facades\DB;
 use Exception;
-
+use Illuminate\Support\Facades\Log;
 class DatabaseController extends Controller
 {
     // ########### MPLUS API ############
@@ -361,5 +363,45 @@ class DatabaseController extends Controller
             $items = DB::select("SELECT SUM(`Sales`) as Total FROM `Realms_Sales_Earns_Last`");
         }
         return $items;
+    }
+
+    public function showPayments($faction) {
+        switch ($faction) {
+            case 'alliance':
+                $items = Credits::where('booster', 'LIKE', '%[A]')->get();
+                break;
+            case 'horde':
+                $items = Credits::where('booster', 'LIKE', '%[H]')->get();
+                break;
+            case 'all':
+                $items = Credits::all();
+                break;
+        }
+        return $items;
+    }
+    public function sendPayment(Request $request) {
+        try {
+            if (is_numeric(preg_replace('/[.,]/', '', $request->item['paying']))) {
+                $payment = new Payments();
+                $payment->booster = $request->item['booster'];
+                $payment->paymentdate = date("Y-m-d H:i:s");
+                $payment->amount = preg_replace('/[.,]/', '', $request->item['paying']);
+                $payment->save();
+            } else {
+                return Response('wrongvalue');
+            }
+        } catch (Exception $e) {
+            Log::error("Error in sendPayment: ". $e);
+        }
+    }
+
+    private function formatAbbreviationToNumber($number) {
+        $abbrevs = array(12 => "T", 9 => "B", 6 => "M", 3 => "K", 0 => "");
+
+        foreach($abbrevs as $exponent => $abbrev) {
+            if(strtoupper(substr($number, -1)) == $abbrev) {
+                return substr_replace($number, "", -1) * pow(10, $exponent);
+            }
+        }
     }
 }

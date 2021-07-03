@@ -21,6 +21,11 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+
+    public function home()
+    {
+        return view('home');
+    }
     public function mplus()
     {
         return view('mplus');
@@ -56,5 +61,9 @@ class HomeController extends Controller
     public function statistics()
     {
         return view('statistics');
+    }
+    public function payments()
+    {
+        return view('payments');
     }
 }

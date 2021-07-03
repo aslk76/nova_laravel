@@ -34,6 +34,7 @@ Vue.component('nova-missing-various', require('./components/missing/novavarious.
 Vue.component('nova-balanceops', require('./components/novabalanceops.vue').default);
 Vue.component('nova-topboosters', require('./components/novatopboosters.vue').default);
 Vue.component('nova-statistics', require('./components/novastatistics.vue').default);
+Vue.component('nova-payments', require('./components/novapayments.vue').default);
 Vue.config.silent = true
 /**
  * Next, we will create a fresh Vue application instance and attach it to

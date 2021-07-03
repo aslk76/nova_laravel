@@ -14,7 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('welcome');
+});
+
+Route::get('/home', function () {
+    return view('welcome');
 });
 
 Auth::routes();
@@ -28,6 +32,7 @@ Route::group(['middleware' => ['auth', 'banker']], function() {
     Route::get('/balanceops', 'HomeController@balanceops')->name('balanceops');
     Route::get('/topboosters', 'HomeController@topboosters')->name('topboosters');
     Route::get('/statistics', 'HomeController@statistics')->name('statistics');
+    Route::get('/payments', 'HomeController@payments')->name('payments');
 
     // ######################### MPLUS ROUTES ####################################
     Route::get('/getAllMplus/{id}', 'DatabaseController@getAllMplus');
@@ -77,6 +82,12 @@ Route::group(['middleware' => ['auth', 'banker']], function() {
     Route::get('/getSales/{weekId}', 'DatabaseController@getSales');
     Route::get('/getEarns/{weekId}', 'DatabaseController@getEarns');
     Route::get('/getTotal/{weekId}', 'DatabaseController@getTotal');
+    // ###########################################################################
+
+    // ######################### PAYMENTS ROUTES ####################################
+    Route::get('/payments/{faction}', 'DatabaseController@showPayments');
+    Route::post('/payments/save', 'DatabaseController@sendPayment');
+    // Route::get('/getTotal/{weekId}', 'DatabaseController@getTotal');
     // ###########################################################################
 });
 Route::group(['middleware' => ['auth', 'manager']], function() {
