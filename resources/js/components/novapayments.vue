@@ -45,7 +45,7 @@
         <v-data-table
             :headers="headers"
             :items="items"
-            :items-per-page="5"
+            :items-per-page="-1"
             :search="search"
             class="elevation-1 vueTable"
         >

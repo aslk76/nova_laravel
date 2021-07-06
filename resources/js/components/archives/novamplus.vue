@@ -688,6 +688,7 @@
               { text: 'Boost Realm', value: 'boost_realm' },
               { text: 'Boost Pot', value: 'boost_pot', filterable: false },
               { text: 'Adv Name', value: 'adv_name', filterable: false },
+              { text: 'Collected at', value: 'edited_at', filterable: false },
               { text: 'Collected', value: 'collected', filterable: false },
               { text: 'Missing', value: 'missing', filterable: false },
           ],

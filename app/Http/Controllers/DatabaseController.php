@@ -211,64 +211,64 @@ class DatabaseController extends Controller
     // ########### MPLUS ARCHIVES API ############
     public function getAllArchivesMplus()
     {
-        $items = Mplus::whereNull('deleted_at')->where('collected', 1)->get();
+        $items = Mplus::whereNull('deleted_at')->where('collected', 1)->orderBy('edited_at', 'DESC')->get();
         return $items;
     }
     public function getAllAllianceArchivesMplus() {
-        $items = Mplus::whereNull('deleted_at')->where('boost_faction', 'Alliance')->where('collected', 1)->get();
+        $items = Mplus::whereNull('deleted_at')->where('boost_faction', 'Alliance')->where('collected', 1)->orderBy('edited_at', 'DESC')->get();
         return $items;
     }
 
     public function getAllHordeArchivesMplus() {
-        $items = Mplus::whereNull('deleted_at')->where('boost_faction', 'Horde')->where('collected', 1)->get();
+        $items = Mplus::whereNull('deleted_at')->where('boost_faction', 'Horde')->where('collected', 1)->orderBy('edited_at', 'DESC')->get();
         return $items;
     }
 
     // ########### VARIOUS ARCHIVES API ############
     public function getAllArchivesVarious()
     {
-        $items = Various::whereNull('deleted_at')->where('collected', 1)->get();
+        $items = Various::whereNull('deleted_at')->where('collected', 1)->orderBy('edited_at', 'DESC')->get();
         return $items;
     }
     public function getAllAllianceArchivesVarious() {
-        $items = Various::whereNull('deleted_at')->where('boost_faction', 'Alliance')->where('collected', 1)->get();
+        $items = Various::whereNull('deleted_at')->where('boost_faction', 'Alliance')->where('collected', 1)->orderBy('edited_at', 'DESC')->get();
         return $items;
     }
 
     public function getAllHordeArchivesVarious() {
-        $items = Various::whereNull('deleted_at')->where('boost_faction', 'Horde')->where('collected', 1)->get();
+        $items = Various::whereNull('deleted_at')->where('boost_faction', 'Horde')->where('collected', 1)->orderBy('edited_at', 'DESC')->get();
         return $items;
     }
 
     // ########### MPLUS MISSING API ############
     public function getAllMissingMplus()
     {
-        $items = Mplus::whereNull('deleted_at')->where('missing', 1)->get();
+        $items = Mplus::whereNull('deleted_at')->where('missing', 1)->orderBy('edited_at', 'DESC')->get();
         return $items;
     }
     public function getAllAllianceMissingMplus() {
-        $items = Mplus::whereNull('deleted_at')->where('boost_faction', 'Alliance')->where('missing', 1)->get();
+        $items = Mplus::whereNull('deleted_at')->where('boost_faction', 'Alliance')->where('missing', 1)->orderBy('edited_at', 'DESC')->get();
         return $items;
     }
 
     public function getAllHordeMissingMplus() {
-        $items = Mplus::whereNull('deleted_at')->where('boost_faction', 'Horde')->where('missing', 1)->get();
+        $items = Mplus::whereNull('deleted_at')->where('boost_faction', 'Horde')->where('missing', 1)->orderBy('edited_at', 'DESC')->get();
         return $items;
     }
 
     // ########### VARIOUS MISSING API ############
     public function getAllMissingVarious()
     {
-        $items = Various::whereNull('deleted_at')->where('missing', 1)->get();
+        $items = Various::whereNull('deleted_at')->where('missing', 1)->orderBy('edited_at', 'DESC')->get();
         return $items;
     }
     public function getAllAllianceMissingVarious() {
-        $items = Various::whereNull('deleted_at')->where('boost_faction', 'Alliance')->where('missing', 1)->get();
+        $items = Various::whereNull('deleted_at')->where('boost_faction', 'Alliance')->where('missing', 1)->orderBy('edited_at', 'DESC')->get();
         return $items;
     }
 
     public function getAllHordeMissingVarious() {
-        $items = Various::whereNull('deleted_at')->where('boost_faction', 'Horde')->where('missing', 1)->get();
+        $items = Various::whereNull('deleted_at')->where('boost_faction', 'Horde')->where('missing', 1)->orderBy('edited_at', 'DESC')->get();
         return $items;
     }
 
