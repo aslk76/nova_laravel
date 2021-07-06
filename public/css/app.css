@@ -123,6 +123,10 @@ div[id^=list-] div:hover {
   background-color: #5f6266 !important;
 }
 
+.text-start > .v-input > .v-input__control > .v-input__slot > .v-text-field__slot > input[id^=input-] {
+  color: white !important;
+}
+
 /*!
  * Bootstrap v4.6.0 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors

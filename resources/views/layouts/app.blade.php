@@ -63,6 +63,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url('/statistics') }}">Statistics</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/payments') }}">Payments</a>
+                            </li>
                         @endif
                     @endif
                     @if (Auth::user())
@@ -84,11 +87,9 @@
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
                             @if (Auth::user())
-                                @if (Auth::user()->role <= 0)
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                    </li>
-                                @endif
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
                             @endif
                         @else
                             <li class="nav-item dropdown">

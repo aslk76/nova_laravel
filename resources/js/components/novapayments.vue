@@ -32,15 +32,26 @@
                 @click="showPayments('all')"
             ><img :src="'/images/allicon64.png'"></v-btn>
         </div>
+        <v-card-title>
+        <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search for Boost Realm"
+            single-line
+            hide-details
+            class="blackComponent"
+        ></v-text-field>
+        </v-card-title>
         <v-data-table
             :headers="headers"
             :items="items"
             :items-per-page="5"
+            :search="search"
             class="elevation-1 vueTable"
         >
-        <template v-slot:item.paying="{ item }">
+        <template v-slot:item.paid="{ item }">
             <v-text-field
-            v-model="item.paying"
+                v-model="item.paid"
           ></v-text-field>
         </template>
 
@@ -78,8 +89,18 @@
             </v-btn>
         </template>
         </v-snackbar>
-    </div>
-</v-app>
+        </div>
+        <v-dialog v-model="loading" fullscreen full-width no-click-animation>
+        <v-container fluid fill-height style="background-color: rgba(255, 255, 255, 0.5);">
+            <v-layout justify-center align-center>
+                <v-progress-circular
+                    indeterminate
+                    color="primary">
+                </v-progress-circular>
+            </v-layout>
+        </v-container>
+        </v-dialog>
+    </v-app>
 </template>
 
 <script>
@@ -89,15 +110,18 @@
             dialog: false,
             search: '',
             items: [],
+            actualFaction : '',
             headers: [
-                { text: 'Booster', value: 'booster', filterable: false },
+                { text: 'Booster', value: 'booster'},
                 { text: 'Previous Balance', value: 'pre_balance', filterable: false },
-                { text: 'Paying', value: 'paying', filterable: false },
+                { text: 'Pending', value: 'pending', filterable: false },
+                { text: 'Paid', value: 'paid', filterable: false },
                 { text: 'Actions', value: 'actions', filterable: false },
             ],
             snackbar: false,
             text: `There was an error in your input. Please, recheck it or contact a Developer.`,
             snackbarBadValue: false,
+            loading: false,
             textBadValue: `The amount of payment is over the amount he needs to get paid. Please, recheck it or contact a Developer.`,
         }
     },
@@ -108,10 +132,12 @@
             .get('/payments/' + faction)
             .then ((response) => {
                 this.items = response.data
+                this.actualFaction = faction;
             })
             .catch(error => console.log(error));
         },
         sendPayment(item) {
+            this.loading = true;
             //if (item.pre_balance >= item.paying) {
                 axios
                 .post('/payments/save', {
@@ -119,18 +145,23 @@
                 })
                 .then ((response) => {
                     console.log(response)
+                    this.loading = false;
                     if (response.data == 'wrongvalue') {
                         this.snackbar = true;
+                    } else {
+                        this.showPayments(this.actualFaction);
                     }
                 })
                 .catch(function (error) {
+                    this.loading = false;
                     console.log(error);
                 });
             // } else {
             //     this.snackbarBadValue = true;
             // }
-        }
+        },
     },
+
 
     beforeMount () {
         this.showPayments('all');

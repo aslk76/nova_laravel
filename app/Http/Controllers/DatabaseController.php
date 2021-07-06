@@ -10,6 +10,7 @@ use App\TopCurrent;
 use App\TopPrevious;
 use App\Payments;
 use App\Credits;
+use App\Paymentsv2;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -368,25 +369,34 @@ class DatabaseController extends Controller
     public function showPayments($faction) {
         switch ($faction) {
             case 'alliance':
-                $items = Credits::where('booster', 'LIKE', '%[A]')->get();
+                $items = Paymentsv2::where('booster', 'LIKE', '%[A]')->get();
                 break;
             case 'horde':
-                $items = Credits::where('booster', 'LIKE', '%[H]')->get();
+                $items = Paymentsv2::where('booster', 'LIKE', '%[H]')->get();
                 break;
             case 'all':
-                $items = Credits::all();
+                $items = Paymentsv2::all();
                 break;
+        }
+
+        foreach ($items as $item) {
+            $item->pending = $item->pre_balance - $item->paid;
         }
         return $items;
     }
     public function sendPayment(Request $request) {
         try {
-            if (is_numeric(preg_replace('/[.,]/', '', $request->item['paying']))) {
+            if (is_numeric(preg_replace('/[.,]/', '', $request->item['paid']))) {
                 $payment = new Payments();
+                $paymentv2 = Paymentsv2::where('booster', '=', $request->item['booster'])->first();
                 $payment->booster = $request->item['booster'];
                 $payment->paymentdate = date("Y-m-d H:i:s");
-                $payment->amount = preg_replace('/[.,]/', '', $request->item['paying']);
+                $payment->amount = preg_replace('/[.,]/', '', $request->item['paid']) - $paymentv2->paid;
                 $payment->save();
+
+                $paymentv2->timestamps = false;
+                $paymentv2->paid = $request->item['paid'];
+                $paymentv2->save();
             } else {
                 return Response('wrongvalue');
             }
