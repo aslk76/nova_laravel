@@ -405,13 +405,35 @@ class DatabaseController extends Controller
         }
     }
 
-    private function formatAbbreviationToNumber($number) {
-        $abbrevs = array(12 => "T", 9 => "B", 6 => "M", 3 => "K", 0 => "");
+    public function showMissingPayments($faction) {
+        switch ($faction) {
+            case 'alliance':
+                $items = DB::select("SELECT payments.booster, ov_creds.tot_balance AS total, ov_creds.tot_balance-((ov_creds.tot_balance-SUM(payments.amount))-ov_creds.cur_balance) AS paid, (ov_creds.tot_balance-SUM(payments.amount))-ov_creds.cur_balance AS missing FROM payments INNER JOIN ov_creds ON payments.booster = ov_creds.booster WHERE payments.booster LIKE '%[A]' GROUP BY 1 ORDER BY 1 ASC");
+                break;
+            case 'horde':
+                $items = DB::select("SELECT payments.booster, ov_creds.tot_balance AS total, ov_creds.tot_balance-((ov_creds.tot_balance-SUM(payments.amount))-ov_creds.cur_balance) AS paid, (ov_creds.tot_balance-SUM(payments.amount))-ov_creds.cur_balance AS missing FROM payments INNER JOIN ov_creds ON payments.booster = ov_creds.booster WHERE payments.booster LIKE '%[H]' GROUP BY 1 ORDER BY 1 ASC");
+                break;
+            case 'all':
+                $items = DB::select("SELECT payments.booster, ov_creds.tot_balance AS total, ov_creds.tot_balance-((ov_creds.tot_balance-SUM(payments.amount))-ov_creds.cur_balance) AS paid, (ov_creds.tot_balance-SUM(payments.amount))-ov_creds.cur_balance AS missing FROM payments INNER JOIN ov_creds ON payments.booster = ov_creds.booster GROUP BY 1 ORDER BY 1 ASC");
+                break;
+        }
 
-        foreach($abbrevs as $exponent => $abbrev) {
-            if(strtoupper(substr($number, -1)) == $abbrev) {
-                return substr_replace($number, "", -1) * pow(10, $exponent);
+        return $items;
+    }
+    public function sendMissingPayment(Request $request) {
+        try {
+            if (is_numeric(preg_replace('/[.,]/', '', $request->item['paid']))) {
+                $payment = new Payments();
+                $beforePaid = DB::select("SELECT ov_creds.tot_balance-((ov_creds.tot_balance-SUM(payments.amount))-ov_creds.cur_balance) AS paid FROM payments INNER JOIN ov_creds ON payments.booster = ov_creds.booster WHERE payments.booster = '".$request->item['booster']."'");
+                $payment->booster = $request->item['booster'];
+                $payment->paymentdate = date("Y-m-d H:i:s");
+                $payment->amount = preg_replace('/[.,]/', '', $request->item['paid']) - $beforePaid[0]->paid;
+                $payment->save();
+            } else {
+                return Response('wrongvalue');
             }
+        } catch (Exception $e) {
+            Log::error("Error in sendPayment: ". $e);
         }
     }
 }

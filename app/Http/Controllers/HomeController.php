@@ -66,4 +66,8 @@ class HomeController extends Controller
     {
         return view('payments');
     }
+    public function missingPayments()
+    {
+        return view('missingpayments');
+    }
 }

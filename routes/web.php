@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth', 'banker']], function() {
     Route::get('/topboosters', 'HomeController@topboosters')->name('topboosters');
     Route::get('/statistics', 'HomeController@statistics')->name('statistics');
     Route::get('/payments', 'HomeController@payments')->name('payments');
+    Route::get('/missingPayments', 'HomeController@missingPayments')->name('missingpayments');
 
     // ######################### MPLUS ROUTES ####################################
     Route::get('/getAllMplus/{id}', 'DatabaseController@getAllMplus');
@@ -87,7 +88,9 @@ Route::group(['middleware' => ['auth', 'banker']], function() {
     // ######################### PAYMENTS ROUTES ####################################
     Route::get('/payments/{faction}', 'DatabaseController@showPayments');
     Route::post('/payments/save', 'DatabaseController@sendPayment');
-    // Route::get('/getTotal/{weekId}', 'DatabaseController@getTotal');
+    Route::get('/missingPayments/{faction}', 'DatabaseController@showMissingPayments');
+    Route::post('/missingPayments/save', 'DatabaseController@sendMissingPayment');
+
     // ###########################################################################
 });
 Route::group(['middleware' => ['auth', 'manager']], function() {
