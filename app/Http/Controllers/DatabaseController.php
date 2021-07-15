@@ -408,13 +408,13 @@ class DatabaseController extends Controller
     public function showMissingPayments($faction) {
         switch ($faction) {
             case 'alliance':
-                $items = DB::select("SELECT payments.booster, ov_creds.tot_balance AS total, ov_creds.tot_balance-((ov_creds.tot_balance-SUM(payments.amount))-ov_creds.cur_balance) AS paid, (ov_creds.tot_balance-SUM(payments.amount))-ov_creds.cur_balance AS missing FROM payments INNER JOIN ov_creds ON payments.booster = ov_creds.booster WHERE payments.booster LIKE '%[A]' GROUP BY 1 ORDER BY 1 ASC");
+                $items = DB::select("SELECT ov_creds.booster, ov_creds.tot_balance-ov_creds.cur_balance AS total, COALESCE(SUM(payments.amount),0) AS paid, (ov_creds.tot_balance-COALESCE(SUM(payments.amount),0))-ov_creds.cur_balance AS missing FROM ov_creds LEFT JOIN payments ON payments.booster = ov_creds.booster WHERE payments.booster LIKE '%[A]' GROUP BY 1 ORDER BY 1 ASC");
                 break;
             case 'horde':
-                $items = DB::select("SELECT payments.booster, ov_creds.tot_balance AS total, ov_creds.tot_balance-((ov_creds.tot_balance-SUM(payments.amount))-ov_creds.cur_balance) AS paid, (ov_creds.tot_balance-SUM(payments.amount))-ov_creds.cur_balance AS missing FROM payments INNER JOIN ov_creds ON payments.booster = ov_creds.booster WHERE payments.booster LIKE '%[H]' GROUP BY 1 ORDER BY 1 ASC");
+                $items = DB::select("SELECT ov_creds.booster, ov_creds.tot_balance-ov_creds.cur_balance AS total, COALESCE(SUM(payments.amount),0) AS paid, (ov_creds.tot_balance-COALESCE(SUM(payments.amount),0))-ov_creds.cur_balance AS missing FROM ov_creds LEFT JOIN payments ON payments.booster = ov_creds.booster WHERE payments.booster LIKE '%[H]' GROUP BY 1 ORDER BY 1 ASC");
                 break;
             case 'all':
-                $items = DB::select("SELECT payments.booster, ov_creds.tot_balance AS total, ov_creds.tot_balance-((ov_creds.tot_balance-SUM(payments.amount))-ov_creds.cur_balance) AS paid, (ov_creds.tot_balance-SUM(payments.amount))-ov_creds.cur_balance AS missing FROM payments INNER JOIN ov_creds ON payments.booster = ov_creds.booster GROUP BY 1 ORDER BY 1 ASC");
+                $items = DB::select("SELECT ov_creds.booster, ov_creds.tot_balance-ov_creds.cur_balance AS total, COALESCE(SUM(payments.amount),0) AS paid, (ov_creds.tot_balance-COALESCE(SUM(payments.amount),0))-ov_creds.cur_balance AS missing FROM ov_creds LEFT JOIN payments ON payments.booster = ov_creds.booster GROUP BY 1 ORDER BY 1 ASC");
                 break;
         }
 
