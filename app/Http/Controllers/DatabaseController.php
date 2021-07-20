@@ -473,6 +473,7 @@ class DatabaseController extends Controller
         COALESCE(SUM(CASE WHEN which = 't_dps2' THEN v END),0) +
         COALESCE(SUM(CASE WHEN which = 't_v_adv' THEN v END),0) +
         COALESCE(SUM(CASE WHEN which = 't_v_tank' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 't_bal_ops' THEN v END),0) +
         COALESCE(SUM(CASE WHEN which = 't_collections' THEN v END),0) +
         COALESCE(SUM(CASE WHEN which = 't_raids' THEN v END),0)
         AS total_balance,
