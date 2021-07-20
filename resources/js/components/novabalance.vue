@@ -31,7 +31,7 @@
             search: '',
             items: [],
             headers: [
-                { text: 'Booster', value: 'booster'},
+                { text: 'Booster', value: 'name'},
                 { text: 'Total Balance', value: 'total_balance', filterable: false },
                 { text: 'Balance Operations', value: 'balance_ops', filterable: false },
                 { text: 'Balance from MPlus boost', value: 'mplus_booster_total', filterable: false },
