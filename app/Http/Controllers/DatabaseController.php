@@ -414,7 +414,7 @@ class DatabaseController extends Controller
                 FROM ov_creds
                 LEFT JOIN payments ON payments.booster = ov_creds.booster
                 LEFT JOIN paymentsv2 ON paymentsv2.booster = ov_creds.booster
-                WHERE payments.booster LIKE '%[A]'
+                WHERE payments.booster LIKE \"%[A]\"
                 GROUP BY 1
                 ORDER BY 1 ASC");
                 break;
@@ -425,7 +425,7 @@ class DatabaseController extends Controller
                 FROM ov_creds
                 LEFT JOIN payments ON payments.booster = ov_creds.booster
                 LEFT JOIN paymentsv2 ON paymentsv2.booster = ov_creds.booster
-                WHERE payments.booster LIKE '%[H]'
+                WHERE payments.booster LIKE \"%[H]\"
                 GROUP BY 1
                 ORDER BY 1 ASC");
                 break;
@@ -447,7 +447,10 @@ class DatabaseController extends Controller
         try {
             if (is_numeric(preg_replace('/[.,]/', '', $request->item['paid']))) {
                 $payment = new Payments();
-                $beforePaid = DB::select("SELECT COALESCE(SUM(payments.amount),0) AS paid FROM payments INNER JOIN ov_creds ON payments.booster = ov_creds.booster WHERE payments.booster = '".$request->item['booster']."'");
+                $beforePaid = DB::select("SELECT COALESCE(SUM(payments.amount),0)-COALESCE(paymentsv2.paid,0) AS paid FROM payments
+                LEFT JOIN ov_creds ON payments.booster = ov_creds.booster
+                LEFT JOIN paymentsv2 ON paymentsv2.booster = ov_creds.booster
+                WHERE payments.booster = \"".$request->item['booster']."\"");
                 $payment->booster = $request->item['booster'];
                 $payment->paymentdate = date("Y-m-d H:i:s");
                 $payment->amount = preg_replace('/[.,]/', '', $request->item['paid']) - $beforePaid[0]->paid;
