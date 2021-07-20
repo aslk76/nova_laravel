@@ -70,4 +70,8 @@ class HomeController extends Controller
     {
         return view('missingpayments');
     }
+    public function balance()
+    {
+        return view('balance');
+    }
 }

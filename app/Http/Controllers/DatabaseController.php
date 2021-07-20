@@ -462,4 +462,104 @@ class DatabaseController extends Controller
             Log::error("Error in sendPayment: ". $e);
         }
     }
+
+    public function balance(Request $request) {
+        $items = DB::select("SELECT
+        `name`,
+        COALESCE(SUM(CASE WHEN which = 't_adv' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 't_tank' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 't_healer' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 't_dps1' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 't_dps2' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 't_v_adv' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 't_v_tank' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 't_collections' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 't_raids' THEN v END),0)
+        AS total_balance,
+        COALESCE(SUM(CASE WHEN which = 't_bal_ops' THEN v END),0)
+        AS balance_ops,
+        COALESCE(SUM(CASE WHEN which = 't_tank' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 't_healer' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 't_dps1' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 't_dps2' THEN v END),0)
+        AS mplus_booster_total,
+        COALESCE(SUM(CASE WHEN which = 't_v_tank' THEN v END),0)
+        AS various_booster_total,
+        COALESCE(SUM(CASE WHEN which = 't_adv' THEN v END),0)
+        AS mplus_adv_total,
+        COALESCE(SUM(CASE WHEN which = 't_v_adv' THEN v END),0)
+        AS various_adv_total,
+        COALESCE(SUM(CASE WHEN which = 't_raids' THEN v END),0)
+        AS raids_total
+        FROM
+        (
+        #region total
+            SELECT CONCAT(adv_name, '-', adv_realm) AS 'Name', ANY_VALUE(SUM(adv_cut)) AS v, 't_adv' AS which
+                FROM m_plus WHERE deleted_at IS NULL
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(tank_name, '-', tank_realm) AS 'Name', ANY_VALUE(SUM(tank_cut)) AS v, 't_tank' AS which
+                FROM m_plus WHERE deleted_at IS NULL
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(healer_name, '-', healer_realm) AS 'Name', ANY_VALUE(SUM(healer_cut)) AS v, 't_healer' AS which
+                FROM m_plus WHERE deleted_at IS NULL
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(dps1_name, '-', dps1_realm) AS 'Name', ANY_VALUE(SUM(dps1_cut)) AS v, 't_dps1' AS which
+                FROM m_plus WHERE deleted_at IS NULL
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(dps2_name, '-', dps2_realm) AS 'Name', ANY_VALUE(SUM(dps2_cut)) AS v, 't_dps2' AS which
+                FROM m_plus WHERE deleted_at IS NULL
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(adv_name, '-', adv_realm) AS 'Name', ANY_VALUE(SUM(adv_cut)) AS v, 't_v_adv' AS which
+                FROM various WHERE deleted_at IS NULL
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(tank_name, '-', tank_realm) AS 'Name', ANY_VALUE(SUM(tank_cut)) AS v, 't_v_tank' AS which
+                FROM various WHERE deleted_at IS NULL
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(`name`, '-', realm) AS 'Name', ANY_VALUE(SUM(amount)) AS v, 't_bal_ops' AS which
+                FROM balance_ops WHERE deleted_at IS NULL
+                GROUP BY 1
+
+            UNION
+
+            SELECT collector AS 'Name', COUNT(collection_id)*5000 AS v, 't_collections' AS which
+                FROM collectors	WHERE deleted_at IS NULL
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(`name`, '-', realm) AS 'Name', ANY_VALUE(SUM(amount)) AS v , 't_raids' AS which
+                FROM raid_balance
+            JOIN (
+                SELECT MAX(`import_date`) AS m_impd
+                    FROM raid_balance GROUP BY YEARWEEK(DATE_ADD(`import_date`, INTERVAL 4 DAY))
+                ) t
+            ON `import_date` = m_impd
+            GROUP BY 1
+            #endregion
+
+        ) a
+        GROUP BY 1;");
+        return $items;
+    }
 }
