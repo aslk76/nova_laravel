@@ -33,6 +33,8 @@
             headers: [
                 { text: 'Booster', value: 'name'},
                 { text: 'Total Balance', value: 'total_balance', filterable: false },
+                { text: 'Current Balance', value: 'curr_balance', filterable: false },
+                { text: 'Previous Balance', value: 'pre_balance', filterable: false },
                 { text: 'Balance Operations', value: 'balance_ops', filterable: false },
                 { text: 'Balance from MPlus boost', value: 'mplus_booster_total', filterable: false },
                 { text: 'Balance from MPlus Adv', value: 'mplus_adv_total', filterable: false },

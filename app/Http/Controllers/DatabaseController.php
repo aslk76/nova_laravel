@@ -477,6 +477,28 @@ class DatabaseController extends Controller
         COALESCE(SUM(CASE WHEN which = 't_collections' THEN v END),0) +
         COALESCE(SUM(CASE WHEN which = 't_raids' THEN v END),0)
         AS total_balance,
+        COALESCE(SUM(CASE WHEN which = 'adv' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'tank' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'healer' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'dps1' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'dps2' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'v_adv' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'v_tank' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'bal_ops' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'collections' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'raids' THEN v END),0)
+        AS curr_balance,
+        COALESCE(SUM(CASE WHEN which = 'p_adv' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'p_tank' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'p_healer' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'p_dps1' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'p_dps2' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'p_v_adv' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'p_v_tank' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'p_bal_ops' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'p_collections' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'p_raids' THEN v END),0)
+        AS pre_balance,
         COALESCE(SUM(CASE WHEN which = 't_bal_ops' THEN v END),0)
         AS balance_ops,
         COALESCE(SUM(CASE WHEN which = 't_tank' THEN v END),0) +
@@ -494,7 +516,195 @@ class DatabaseController extends Controller
         AS raids_total
         FROM
         (
-        #region total
+        #region current week
+            SELECT CONCAT(adv_name, '-', adv_realm) AS 'Name', ANY_VALUE(SUM(adv_cut)) AS v, 'adv' AS which
+                FROM m_plus WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT cur1 FROM `variables` WHERE id = 1) AND
+                    (SELECT cur2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(tank_name, '-', tank_realm) AS 'Name', ANY_VALUE(SUM(tank_cut)) AS v, 'tank' AS which
+                FROM m_plus WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT cur1 FROM `variables` WHERE id = 1) AND
+                    (SELECT cur2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(healer_name, '-', healer_realm) AS 'Name', ANY_VALUE(SUM(healer_cut)) AS v, 'healer' AS which
+                FROM m_plus WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT cur1 FROM `variables` WHERE id = 1) AND
+                    (SELECT cur2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(dps1_name, '-', dps1_realm) AS 'Name', ANY_VALUE(SUM(dps1_cut)) AS v, 'dps1' AS which
+                FROM m_plus WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT cur1 FROM `variables` WHERE id = 1) AND
+                    (SELECT cur2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(dps2_name, '-', dps2_realm) AS 'Name', ANY_VALUE(SUM(dps2_cut)) AS v, 'dps2' AS which
+                FROM m_plus WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT cur1 FROM `variables` WHERE id = 1) AND
+                    (SELECT cur2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(adv_name, '-', adv_realm) AS 'Name', ANY_VALUE(SUM(adv_cut)) AS v, 'v_adv' AS which
+                FROM various WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT cur1 FROM `variables` WHERE id = 1) AND
+                    (SELECT cur2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(tank_name, '-', tank_realm) AS 'Name', ANY_VALUE(SUM(tank_cut)) AS v, 'v_tank' AS which
+                FROM various WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT cur1 FROM `variables` WHERE id = 1) AND
+                    (SELECT cur2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(`name`, '-', realm) AS 'Name', ANY_VALUE(SUM(amount)) AS v, 'bal_ops' AS which
+                FROM balance_ops WHERE deleted_at IS NULL AND
+                `date` BETWEEN
+                    (SELECT cur1 FROM `variables` WHERE id = 1) AND
+                    (SELECT cur2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT collector AS 'Name', COUNT(collection_id)*5000 AS v, 'collections' AS which
+                FROM collectors	WHERE deleted_at IS NULL AND
+                    date_collected BETWEEN
+                        (SELECT cur1 FROM `variables` WHERE id = 1) AND
+                        (SELECT cur2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT `Name`, MAX(v) AS v, which FROM (
+                SELECT CONCAT(`name`, '-', realm) AS 'Name', ANY_VALUE(SUM(amount)) AS v, 'raids' AS which
+                    FROM raid_balance WHERE deleted_at IS NULL AND
+                    `import_date` BETWEEN
+                        (SELECT cur1 FROM `variables` WHERE id = 1) AND
+                        (SELECT cur2 FROM `variables` WHERE id = 1)
+                    GROUP BY `import_date`,1
+            ) t
+            GROUP BY 1
+            #endregion
+
+            UNION
+            #region previous week
+            SELECT CONCAT(adv_name, '-', adv_realm) AS 'Name', ANY_VALUE(SUM(adv_cut)) AS v, 'p_adv' AS which
+                FROM m_plus WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT pre1 FROM `variables` WHERE id = 1) AND
+                    (SELECT pre2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(tank_name, '-', tank_realm) AS 'Name', ANY_VALUE(SUM(tank_cut)) AS v, 'p_tank' AS which
+                FROM m_plus WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT pre1 FROM `variables` WHERE id = 1) AND
+                    (SELECT pre2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(healer_name, '-', healer_realm) AS 'Name', ANY_VALUE(SUM(healer_cut)) AS v, 'p_healer' AS which
+                FROM m_plus WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT pre1 FROM `variables` WHERE id = 1) AND
+                    (SELECT pre2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(dps1_name, '-', dps1_realm) AS 'Name', ANY_VALUE(SUM(dps1_cut)) AS v, 'p_dps1' AS which
+                FROM m_plus WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT pre1 FROM `variables` WHERE id = 1) AND
+                    (SELECT pre2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(dps2_name, '-', dps2_realm) AS 'Name', ANY_VALUE(SUM(dps2_cut)) AS v, 'p_dps2' AS which
+                FROM m_plus WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT pre1 FROM `variables` WHERE id = 1) AND
+                    (SELECT pre2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(adv_name, '-', adv_realm) AS 'Name', ANY_VALUE(SUM(adv_cut)) AS v, 'p_v_adv' AS which
+                FROM various WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT pre1 FROM `variables` WHERE id = 1) AND
+                    (SELECT pre2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(tank_name, '-', tank_realm) AS 'Name', ANY_VALUE(SUM(tank_cut)) AS v, 'p_v_tank' AS which
+                FROM various WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT pre1 FROM `variables` WHERE id = 1) AND
+                    (SELECT pre2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(`name`, '-', realm) AS 'Name', ANY_VALUE(SUM(amount)) AS v, 'p_bal_ops' AS which
+                FROM balance_ops WHERE deleted_at IS NULL AND
+                `date` BETWEEN
+                    (SELECT pre1 FROM `variables` WHERE id = 1) AND
+                    (SELECT pre2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT collector AS 'Name', COUNT(collection_id)*5000 AS v, 'p_collections' AS which
+                FROM collectors WHERE deleted_at IS NULL AND
+                date_collected BETWEEN
+                    (SELECT pre1 FROM `variables` WHERE id = 1) AND
+                    (SELECT pre2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT `Name`, MAX(v) AS v, which FROM (
+                SELECT CONCAT(`name`, '-', realm) AS 'Name', ANY_VALUE(SUM(amount)) AS v, 'p_raids' AS which
+                    FROM raid_balance WHERE deleted_at IS NULL AND
+                        `import_date` BETWEEN
+                            (SELECT pre1 FROM `variables` WHERE id = 1) AND
+                            (SELECT pre2 FROM `variables` WHERE id = 1)
+                    GROUP BY `import_date`,1
+                ) t
+                GROUP BY 1
+            #endregion
+
+            UNION
+             #region total
             SELECT CONCAT(adv_name, '-', adv_realm) AS 'Name', ANY_VALUE(SUM(adv_cut)) AS v, 't_adv' AS which
                 FROM m_plus WHERE deleted_at IS NULL
                 GROUP BY 1
