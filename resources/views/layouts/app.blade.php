@@ -85,6 +85,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url('/topboosters') }}">Top Boosters</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/collections') }}">Collections</a>
+                            </li>
                         @endif
                     @endif
                     </ul>
