@@ -149,16 +149,16 @@
             .catch(error => console.log(error))
         },
         filterCollector(item) {
-            return item.author.toLowerCase().includes(this.collectorName.toLowerCase());
+            return item.collector.toLowerCase().includes(this.collectorName.toLowerCase());
         },
         filterTrial(item) {
-            return item.command.toLowerCase().includes(this.trialAdvertiser.toLowerCase());
+            return item.trialadv.toLowerCase().includes(this.trialAdvertiser.toLowerCase());
         },
         filterDateCollected(item) {
-            return item.name.toLowerCase().includes(this.dateCollected.toLowerCase());
+            return item.date_collected.toLowerCase().includes(this.dateCollected.toLowerCase());
         },
         filterCollectionId(item) {
-            return item.operation_id.toLowerCase().includes(this.collectionId.toLowerCase());
+            return item.collection_id.toLowerCase().includes(this.collectionId.toLowerCase());
         },
     },
     computed: {
