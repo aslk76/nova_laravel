@@ -11,6 +11,7 @@ use App\TopPrevious;
 use App\Payments;
 use App\Credits;
 use App\Paymentsv2;
+use App\Collections;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -772,5 +773,11 @@ class DatabaseController extends Controller
         ) a
         GROUP BY 1;");
         return $items;
+    }
+
+
+    public function getCollections() {
+        $collections = Collections::all();
+        return $collections;
     }
 }

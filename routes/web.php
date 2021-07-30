@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth', 'banker']], function() {
     Route::get('/payments', 'HomeController@payments')->name('payments');
     Route::get('/missingPayments', 'HomeController@missingPayments')->name('missingpayments');
     Route::get('/balance', 'HomeController@balance')->name('balance');
+    Route::get('/collections', 'HomeController@collections')->name('collections');
 
     // ######################### MPLUS ROUTES ####################################
     Route::get('/getAllMplus/{id}', 'DatabaseController@getAllMplus');
@@ -100,5 +101,6 @@ Route::group(['middleware' => ['auth', 'manager']], function() {
     Route::get('/topboosters/{faction}/{id}', 'DatabaseController@getTopBoosters');
     // ###########################################################################
     Route::get('/balanceCheck', 'DatabaseController@balance');
+    Route::get('/getCollections', 'DatabaseController@getCollections');
 });
 

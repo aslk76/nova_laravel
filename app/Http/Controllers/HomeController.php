@@ -74,4 +74,8 @@ class HomeController extends Controller
     {
         return view('balance');
     }
+    public function collections()
+    {
+        return view('collections');
+    }
 }
