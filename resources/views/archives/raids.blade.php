@@ -6,7 +6,7 @@
     </head>
     <body>
         <div id="app">
-            <nova-archives-mplus></nova-archives-mplus>
+            <nova-archives-raids></nova-archives-raids>
         </div>
     </body>
 @endsection
