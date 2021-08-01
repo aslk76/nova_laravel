@@ -340,6 +340,137 @@ class DatabaseController extends Controller
         return $arrayItems;
     }
 
+    public function getCountBoosters() {
+        $arrayItems = [];
+        $items = DB::select("SELECT
+        `name`,
+        COALESCE(SUM(CASE WHEN which = 'tank' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'healer' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'dps1' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'dps2' THEN v END),0)
+        AS Current_Week_Boosts,
+        COALESCE(SUM(CASE WHEN which = 'p_tank' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'p_healer' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'p_dps1' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 'p_dps2' THEN v END),0)
+        AS Previous_Week_Boosts,
+        COALESCE(SUM(CASE WHEN which = 't_tank' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 't_healer' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 't_dps1' THEN v END),0) +
+        COALESCE(SUM(CASE WHEN which = 't_dps2' THEN v END),0)
+        AS Total_Boosts
+        FROM
+        (
+        #region current week
+            SELECT CONCAT(tank_name, '-', tank_realm) AS 'Name', COUNT(*) AS v, 'tank' AS which
+                FROM m_plus WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT cur1 FROM `variables` WHERE id = 1) AND
+                    (SELECT cur2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(healer_name, '-', healer_realm) AS 'Name', COUNT(*) AS v, 'healer' AS which
+                FROM m_plus WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT cur1 FROM `variables` WHERE id = 1) AND
+                    (SELECT cur2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(dps1_name, '-', dps1_realm) AS 'Name', COUNT(*) AS v, 'dps1' AS which
+                FROM m_plus WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT cur1 FROM `variables` WHERE id = 1) AND
+                    (SELECT cur2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(dps2_name, '-', dps2_realm) AS 'Name', COUNT(*) AS v, 'dps2' AS which
+                FROM m_plus WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT cur1 FROM `variables` WHERE id = 1) AND
+                    (SELECT cur2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+            #endregion
+
+            UNION
+            #region previous week
+            SELECT CONCAT(tank_name, '-', tank_realm) AS 'Name', COUNT(*) AS v, 'p_tank' AS which
+                FROM m_plus WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT pre1 FROM `variables` WHERE id = 1) AND
+                    (SELECT pre2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(healer_name, '-', healer_realm) AS 'Name', COUNT(*) AS v, 'p_healer' AS which
+                FROM m_plus WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT pre1 FROM `variables` WHERE id = 1) AND
+                    (SELECT pre2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(dps1_name, '-', dps1_realm) AS 'Name', COUNT(*) AS v, 'p_dps1' AS which
+                FROM m_plus WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT pre1 FROM `variables` WHERE id = 1) AND
+                    (SELECT pre2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(dps2_name, '-', dps2_realm) AS 'Name', COUNT(*) AS v, 'p_dps2' AS which
+                FROM m_plus WHERE deleted_at IS NULL AND
+                boost_date BETWEEN
+                    (SELECT pre1 FROM `variables` WHERE id = 1) AND
+                    (SELECT pre2 FROM `variables` WHERE id = 1)
+                GROUP BY 1
+            #endregion
+
+            UNION
+             #region total
+            SELECT CONCAT(tank_name, '-', tank_realm) AS 'Name', COUNT(*) AS v, 't_tank' AS which
+                FROM m_plus WHERE deleted_at IS NULL
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(healer_name, '-', healer_realm) AS 'Name', COUNT(*) AS v, 't_healer' AS which
+                FROM m_plus WHERE deleted_at IS NULL
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(dps1_name, '-', dps1_realm) AS 'Name', COUNT(*) AS v, 't_dps1' AS which
+                FROM m_plus WHERE deleted_at IS NULL
+                GROUP BY 1
+
+            UNION
+
+            SELECT CONCAT(dps2_name, '-', dps2_realm) AS 'Name', COUNT(*) AS v, 't_dps2' AS which
+                FROM m_plus WHERE deleted_at IS NULL
+                GROUP BY 1
+
+        ) a
+        GROUP BY 1;");
+        foreach ($items as $item) {
+            $element = new \stdClass;
+            $element->name = $item->name;
+            $element->currweek = $item->Current_Week_Boosts;
+            $element->lastweek = $item->Previous_Week_Boosts;
+            $element->totalboost = $item->Total_Boosts;
+            array_push($arrayItems, $element);
+        }
+        return $arrayItems;
+    }
+
     // ########### BALANCE OPS API #############
     public function getSales($weekId) {
         if ($weekId == 1) {

@@ -2,7 +2,7 @@
 <v-app style="background: 0!important; padding-left: 10px; padding-right: 10px;">
     <div style="background: rgba(40, 41, 43, 0.9);border-radius: 5px;">
     <div style="text-align: center">
-        <v-btn
+        <!-- <v-btn
             elevation="6"
             fab
             large
@@ -20,7 +20,7 @@
             style="color:blue; font-size: 10px;"
             @click="showAllianceBoosters()"
         >ALLIANCE</v-btn>
-    </div>
+    </div> -->
     <v-select class="weekSelector blackComponent"
         v-model="selectedWeek"
         :items="weeks"
@@ -30,15 +30,40 @@
         single-line
         return-object
     ></v-select>
+    <v-divider></v-divider>
+    <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search for Booster Name"
+            single-line
+            hide-details
+            class="blackComponent"
+        ></v-text-field>
     <v-data-table
         :headers="headers"
         :items="items"
         :items-per-page="10"
+        :search="search"
         class="elevation-1 vueTable"
     >
     <template v-slot:item.balance="{ item }">
         {{item.balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}
     </template>
+    <v-text-field
+            v-model="searchCount"
+            append-icon="mdi-magnify"
+            label="Search for Booster Name"
+            single-line
+            hide-details
+            class="blackComponent"
+        ></v-text-field>
+    <v-data-table
+        :headers="headersCount"
+        :items="itemsCount"
+        :items-per-page="10"
+        :search="searchCount"
+        class="elevation-1 vueTable"
+    >
     </v-data-table>
 
     </div>
@@ -50,14 +75,23 @@
     data () {
       return {
             items: [],
+            itemsCount: [],
+            search:'',
+            searchCount:'',
             weeks: [
                 { id: 1, week: "This week"},
                 { id: 2, week: "Last week"},
             ],
             selectedWeek: {id: 1, week: "This week"},
             headers:  [
-              { text: 'Name', value: 'name', filterable: false },
+              { text: 'Name', value: 'name'},
               { text: 'Balance', value: 'balance', filterable: false },
+            ],
+            headersCount:  [
+              { text: 'Name', value: 'name'},
+              { text: 'This week', value: 'currweek', filterable: false },
+              { text: 'Last week', value: 'lastweek', filterable: false },
+              { text: 'Total', value: 'totalboost', filterable: false },
             ],
       }
     },
@@ -82,9 +116,19 @@
             })
             .catch(error => console.log(error))
         },
+        showCountBoosters() {
+            axios
+            .get('/topboosters/count')
+            .then ((response) => {
+                this.itemsCount = response.data
+                console.log(response.data)
+            })
+            .catch(error => console.log(error))
+        }
     },
     created () {
         this.showHordeBoosters();
+        this.showCountBoosters();
     }
   }
 </script>
