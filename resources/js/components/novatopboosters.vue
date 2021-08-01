@@ -23,22 +23,14 @@
     </div> -->
     <v-card-title>
         <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            label="Search for Boost Realm"
-            single-line
-            hide-details
-            class="blackComponent"
-        ></v-text-field>
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Search for Booster Name"
+                single-line
+                hide-details
+                class="blackComponent"
+            ></v-text-field>
     </v-card-title>
-    <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            label="Search for Booster Name"
-            single-line
-            hide-details
-            class="blackComponent"
-        ></v-text-field>
     <v-data-table
         :headers="headers"
         :items="items"
@@ -56,7 +48,7 @@
         <v-text-field
             v-model="searchCount"
             append-icon="mdi-magnify"
-            label="Search for Boost Realm"
+            label="Search for Booster Name"
             single-line
             hide-details
             class="blackComponent"
