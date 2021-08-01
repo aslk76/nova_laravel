@@ -137,11 +137,7 @@
                 console.log(response)
             })
             .catch(this.snackbarError = true)
-            if ((check == 'collected') && (status == true)) {
-                const index = this.items.indexOf(item)
-                this.items.splice(index, 1)
-            }
-            if ((check == 'missing') && (status == true)) {
+            if ((check == 'missing') && (status == false)) {
                 const index = this.items.indexOf(item)
                 this.items.splice(index, 1)
             }
