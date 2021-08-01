@@ -78,4 +78,8 @@ class HomeController extends Controller
     {
         return view('collections');
     }
+    public function raids()
+    {
+        return view('raids');
+    }
 }

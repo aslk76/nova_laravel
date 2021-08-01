@@ -397,7 +397,10 @@
                     </v-edit-dialog>
                 </template>
             </v-data-table>
-            <v-snackbar v-model="snackbarBadValue">
+            </div>
+            </v-card>
+        </v-dialog>
+        <v-snackbar v-model="snackbarBadValue">
             {{ text }}
             <template v-slot:action="{ attrs }">
                 <v-btn
@@ -410,9 +413,6 @@
                 </v-btn>
             </template>
             </v-snackbar>
-            </div>
-            </v-card>
-        </v-dialog>
         </template>
     </div>
 </v-app>

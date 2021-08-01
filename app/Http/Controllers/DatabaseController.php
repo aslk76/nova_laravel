@@ -12,6 +12,7 @@ use App\Payments;
 use App\Credits;
 use App\Paymentsv2;
 use App\Collections;
+use App\RaidCollecting;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -911,4 +912,28 @@ class DatabaseController extends Controller
         $collections = Collections::all();
         return $collections;
     }
+
+    public function getRaids() {
+        $raids = RaidCollecting::where('collected', 0)->where('missing', 0)->get();;
+        return $raids;
+    }
+
+    public function changeCheckboxRaids(Request $request) {
+
+        $item = RaidCollecting::where('id', $request->id)->first();
+        if ($request->check == 'collected') {
+            if ($request->status == true) {
+                $item->collected = 1;
+            } elseif ($request->status == false) {
+                $item->collected = 0;
+            }
+        } elseif ($request->check == 'missing') {
+            if ($request->status == true) {
+                $item->missing = 1;
+            } elseif ($request->status == false) {
+                $item->missing = 0;
+            }
+        }
+        $item->save();
+}
 }
