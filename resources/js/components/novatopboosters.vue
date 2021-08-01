@@ -21,15 +21,16 @@
             @click="showAllianceBoosters()"
         >ALLIANCE</v-btn>
     </div> -->
-    <v-select class="weekSelector blackComponent"
-        v-model="selectedWeek"
-        :items="weeks"
-        item-text="week"
-        item-value="id"
-        label="Week"
-        single-line
-        return-object
-    ></v-select>
+    <v-card-title>
+        <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search for Boost Realm"
+            single-line
+            hide-details
+            class="blackComponent"
+        ></v-text-field>
+    </v-card-title>
     <v-text-field
             v-model="search"
             append-icon="mdi-magnify"
@@ -51,14 +52,16 @@
     </template>
     </v-data-table>
     <v-divider></v-divider>
-    <v-text-field
+    <v-card-title>
+        <v-text-field
             v-model="searchCount"
             append-icon="mdi-magnify"
-            label="Search for Booster Name"
+            label="Search for Boost Realm"
             single-line
             hide-details
             class="blackComponent"
         ></v-text-field>
+    </v-card-title>
     <v-data-table
         :headers="headersCount"
         :items="itemsCount"
