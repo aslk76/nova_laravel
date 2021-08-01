@@ -524,6 +524,19 @@
                     </v-edit-dialog>
                 </template>
             </v-data-table>
+            <v-snackbar v-model="snackbarBadValue">
+            {{ text }}
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                color="pink"
+                text
+                v-bind="attrs"
+                @click="text = false"
+                >
+                Close
+                </v-btn>
+            </template>
+            </v-snackbar>
             </div>
             </v-card>
         </v-dialog>
@@ -540,6 +553,8 @@
             search: '',
             items: [],
             itemsFromDialog: [],
+            text: `There was an error, please, check if the server is off or ask Abufel.`,
+            snackbarBadValue: false,
             boostDate: '',
             factions: ["Horde", "Alliance"],
             realms: ["Aegwynn [A]", "AeriePeak [A]", "Agamaggan [A]", "Aggra [A]",
@@ -706,7 +721,7 @@
                 this.items = parsed
 
             })
-            .catch(error => console.log(error))
+            .catch(this.snackbarError = true)
         },
         onCheckboxClicked(item, check, status) {
             axios
@@ -718,7 +733,7 @@
             .then ((response) => {
                 console.log(response)
             })
-            .catch(error => console.log(error))
+            .catch(this.snackbarError = true)
             if ((check == 'collected') && (status == true)) {
                 const index = this.items.indexOf(item)
                 this.items.splice(index, 1)
@@ -736,7 +751,7 @@
                 console.log(parsed)
                 this.items = parsed
             })
-            .catch(error => console.log(error))
+            .catch(this.snackbarError = true)
         },
         showHordeRuns() {
             axios
@@ -746,7 +761,7 @@
                 console.log(parsed)
                 this.items = parsed
             })
-            .catch(error => console.log(error))
+            .catch(this.snackbarError = true)
         },
 
         showDialog(row) {
@@ -758,7 +773,7 @@
                 console.log(parsed)
                 this.itemsFromDialog = parsed
             })
-            .catch(error => console.log(error))
+            .catch(this.snackbarError = true)
             this.dialog = true;
         },
         saveRunMplus(item) {
@@ -769,7 +784,7 @@
             .then ((response) => {
                 console.log(response)
             })
-            .catch(error => console.log(error))
+            .catch(this.snackbarError = true)
             const index = this.items.indexOf(this.editingRow)
             this.items[index].boost_faction = item[0].boost_faction
             this.items[index].boost_date = item[0].boost_date
