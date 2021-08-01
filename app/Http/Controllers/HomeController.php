@@ -82,4 +82,12 @@ class HomeController extends Controller
     {
         return view('raids');
     }
+    public function raidsArchives()
+    {
+        return view('archives.raids');
+    }
+    public function raidsMissing()
+    {
+        return view('missing.raids');
+    }
 }
