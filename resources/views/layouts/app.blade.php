@@ -42,6 +42,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url('/various') }}">Various Services</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/raids') }}">Raids</a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     Archives
@@ -49,6 +52,7 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ url('/archives/mplus') }}">Mythic Plus</a>
                                     <a class="dropdown-item" href="{{ url('/archives/various') }}">Various Services</a>
+                                    <a class="dropdown-item" href="{{ url('/archives/raids') }}">Raids</a>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">
@@ -58,6 +62,7 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ url('/missing/mplus') }}">Mythic Plus</a>
                                     <a class="dropdown-item" href="{{ url('/missing/various') }}">Various Services</a>
+                                    <a class="dropdown-item" href="{{ url('/missing/raids') }}">Raids</a>
                                 </div>
                             </li>
                             <li class="nav-item">
