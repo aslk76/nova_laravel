@@ -1,7 +1,7 @@
 <template>
 <v-app style="background: 0!important; padding-left: 10px; padding-right: 10px;">
     <div style="background: rgba(40, 41, 43, 0.9);border-radius: 5px;">
-    <div style="text-align: center">
+    <!-- <div style="text-align: center"> -->
         <!-- <v-btn
             elevation="6"
             fab
@@ -30,7 +30,6 @@
         single-line
         return-object
     ></v-select>
-    <v-divider></v-divider>
     <v-text-field
             v-model="search"
             append-icon="mdi-magnify"
@@ -49,6 +48,7 @@
     <template v-slot:item.balance="{ item }">
         {{item.balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}
     </template>
+    <v-divider></v-divider>
     <v-text-field
             v-model="searchCount"
             append-icon="mdi-magnify"
