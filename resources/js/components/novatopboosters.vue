@@ -45,9 +45,11 @@
         :search="search"
         class="elevation-1 vueTable"
     >
+
     <template v-slot:item.balance="{ item }">
         {{item.balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}
     </template>
+    </v-data-table>
     <v-divider></v-divider>
     <v-text-field
             v-model="searchCount"
