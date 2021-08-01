@@ -99,6 +99,7 @@ Route::group(['middleware' => ['auth', 'manager']], function() {
     // ######################### BALANCE OPERATIONS ROUTES ####################################
     Route::get('/getBalanceOps/{id}', 'DatabaseController@getBalanceOps');
     Route::get('/topboosters/{faction}/{id}', 'DatabaseController@getTopBoosters');
+    Route::get('/topboosters/count', 'DatabaseController@getCountBoosters');
     // ###########################################################################
     Route::get('/balanceCheck', 'DatabaseController@balance');
     Route::get('/getCollections', 'DatabaseController@getCollections');
