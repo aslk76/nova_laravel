@@ -39,6 +39,8 @@ Vue.component('nova-missingpayments', require('./components/novamissingpayments.
 Vue.component('nova-balance', require('./components/novabalance.vue').default);
 Vue.component('nova-collections', require('./components/novacollections.vue').default);
 Vue.component('nova-raids', require('./components/novaraids.vue').default);
+Vue.component('nova-archives-raids', require('./components/archives/novaraids.vue').default);
+Vue.component('nova-missing-raids', require('./components/missing/novaraids.vue').default);
 Vue.config.silent = true
 /**
  * Next, we will create a fresh Vue application instance and attach it to

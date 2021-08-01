@@ -119,7 +119,7 @@
     methods: {
         getItems() {
             axios
-            .get('/getRaids')
+            .get('/getMissingRaids')
             .then ((response) => {
                 this.items = response.data
 

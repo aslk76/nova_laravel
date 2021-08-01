@@ -12,7 +12,8 @@ class RaidCollecting extends Model
 {
     protected $table = 'raid_collecting';
     protected $primaryKey = 'id';
-    protected $fillable = [ 'import_date', 'name', 'paidin', 'amount', 'collected', 'missing', 'edited_at'];
-    const EDITED_AT = 'edited_at'
+    protected $fillable = [ 'import_date', 'name', 'paidin', 'amount', 'collected', 'missing', 'edited_at' ];
+    const EDITED_AT = 'edited_at';
+    const UPDATED_AT = 'updated_at';
 
 }

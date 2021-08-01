@@ -119,10 +119,9 @@
     methods: {
         getItems() {
             axios
-            .get('/getRaids')
+            .get('/getArchiveRaids')
             .then ((response) => {
                 this.items = response.data
-
             })
             .catch(this.snackbarError = true)
         },

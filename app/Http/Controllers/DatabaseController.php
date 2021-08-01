@@ -914,7 +914,7 @@ class DatabaseController extends Controller
     }
 
     public function getRaids() {
-        $raids = RaidCollecting::where('collected', 0)->where('missing', 0)->get();;
+        $raids = RaidCollecting::where('collected', 0)->where('missing', 0)->get();
         return $raids;
     }
 
@@ -935,5 +935,15 @@ class DatabaseController extends Controller
             }
         }
         $item->save();
-}
+    }
+    public function getArchiveRaids()
+    {
+        $items = RaidCollecting::where('collected', 1)->orderBy('edited_at', 'DESC')->get();
+        return $items;
+    }
+    public function getMissingRaids()
+    {
+        $items = RaidCollecting::where('missing', 1)->orderBy('edited_at', 'DESC')->get();
+        return $items;
+    }
 }
