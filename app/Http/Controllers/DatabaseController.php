@@ -737,7 +737,7 @@ class DatabaseController extends Controller
                     `import_date` BETWEEN
                         (SELECT cur1 FROM `variables` WHERE id = 1) AND
                         (SELECT cur2 FROM `variables` WHERE id = 1)
-                    GROUP BY `import_date`,1
+                    GROUP BY `Name`,1
             ) t
             GROUP BY 1
             #endregion
@@ -831,7 +831,7 @@ class DatabaseController extends Controller
                         `import_date` BETWEEN
                             (SELECT pre1 FROM `variables` WHERE id = 1) AND
                             (SELECT pre2 FROM `variables` WHERE id = 1)
-                    GROUP BY `import_date`,1
+                    GROUP BY `Name`,1
                 ) t
                 GROUP BY 1
             #endregion
@@ -898,7 +898,7 @@ class DatabaseController extends Controller
                 SELECT MAX(`import_date`) AS m_impd
                     FROM raid_balance GROUP BY YEARWEEK(DATE_ADD(`import_date`, INTERVAL 4 DAY))
                 ) t
-            ON `import_date` = m_impd
+            ON `import_date` < m_impd
             GROUP BY 1
             #endregion
 
