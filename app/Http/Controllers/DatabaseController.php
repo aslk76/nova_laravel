@@ -898,7 +898,7 @@ class DatabaseController extends Controller
                 SELECT MAX(`import_date`) AS m_impd
                     FROM raid_balance GROUP BY YEARWEEK(DATE_ADD(`import_date`, INTERVAL 4 DAY))
                 ) t
-            ON `import_date` < m_impd
+            ON `import_date` = m_impd
             GROUP BY 1
             #endregion
 
