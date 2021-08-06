@@ -914,7 +914,7 @@ class DatabaseController extends Controller
     }
 
     public function getRaids() {
-        $raids = RaidCollecting::where('collected', 0)->where('missing', 0)->get();
+        $raids = RaidCollecting::where('collected', 0)->where('missing', 0)->orderBy('import_date', 'DESC')->get();
         return $raids;
     }
 
