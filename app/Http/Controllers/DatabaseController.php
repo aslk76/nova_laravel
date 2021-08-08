@@ -502,13 +502,13 @@ class DatabaseController extends Controller
     public function showPayments($faction) {
         switch ($faction) {
             case 'alliance':
-                $items = Paymentsv2::where('booster', 'LIKE', '%[A]')->get();
+                $items = Paymentsv2::where('booster', 'LIKE', '%[A]')->where('pre_balance', '>', 0)->get();
                 break;
             case 'horde':
-                $items = Paymentsv2::where('booster', 'LIKE', '%[H]')->get();
+                $items = Paymentsv2::where('booster', 'LIKE', '%[H]')->where('pre_balance', '>', 0)->get();
                 break;
             case 'all':
-                $items = Paymentsv2::all();
+                $items = Paymentsv2::where('pre_balance', '>', 0)->get();
                 break;
         }
 
@@ -548,6 +548,7 @@ class DatabaseController extends Controller
                 LEFT JOIN payments ON payments.booster = ov_creds.booster
                 LEFT JOIN paymentsv2 ON paymentsv2.booster = ov_creds.booster
                 WHERE payments.booster LIKE \"%[A]\"
+                AND missing > 0
                 GROUP BY 1
                 ORDER BY 1 ASC");
                 break;
@@ -559,6 +560,7 @@ class DatabaseController extends Controller
                 LEFT JOIN payments ON payments.booster = ov_creds.booster
                 LEFT JOIN paymentsv2 ON paymentsv2.booster = ov_creds.booster
                 WHERE payments.booster LIKE \"%[H]\"
+                AND missing > 0
                 GROUP BY 1
                 ORDER BY 1 ASC");
                 break;
@@ -569,6 +571,7 @@ class DatabaseController extends Controller
                 FROM ov_creds
                 LEFT JOIN payments ON payments.booster = ov_creds.booster
                 LEFT JOIN paymentsv2 ON paymentsv2.booster = ov_creds.booster
+                where missing > 0
                 GROUP BY 1
                 ORDER BY 1 ASC");
                 break;
