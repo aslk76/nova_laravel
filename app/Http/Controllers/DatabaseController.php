@@ -548,7 +548,6 @@ class DatabaseController extends Controller
                 LEFT JOIN payments ON payments.booster = ov_creds.booster
                 LEFT JOIN paymentsv2 ON paymentsv2.booster = ov_creds.booster
                 WHERE payments.booster LIKE \"%[A]\"
-                AND (ov_creds.tot_balance-ov_creds.cur_balance-ov_creds.pre_balance-(COALESCE(SUM(payments.amount),0)-COALESCE(paymentsv2.paid,0))) > 0
                 GROUP BY 1
                 ORDER BY 1 ASC");
                 break;
@@ -560,7 +559,6 @@ class DatabaseController extends Controller
                 LEFT JOIN payments ON payments.booster = ov_creds.booster
                 LEFT JOIN paymentsv2 ON paymentsv2.booster = ov_creds.booster
                 WHERE payments.booster LIKE \"%[H]\"
-                AND (ov_creds.tot_balance-ov_creds.cur_balance-ov_creds.pre_balance-(COALESCE(SUM(payments.amount),0)-COALESCE(paymentsv2.paid,0))) > 0
                 GROUP BY 1
                 ORDER BY 1 ASC");
                 break;
@@ -571,7 +569,6 @@ class DatabaseController extends Controller
                 FROM ov_creds
                 LEFT JOIN payments ON payments.booster = ov_creds.booster
                 LEFT JOIN paymentsv2 ON paymentsv2.booster = ov_creds.booster
-                where (ov_creds.tot_balance-ov_creds.cur_balance-ov_creds.pre_balance-(COALESCE(SUM(payments.amount),0)-COALESCE(paymentsv2.paid,0))) > 0
                 GROUP BY 1
                 ORDER BY 1 ASC");
                 break;
