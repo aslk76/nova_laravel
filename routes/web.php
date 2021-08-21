@@ -95,7 +95,7 @@ Route::group(['middleware' => ['auth', 'banker']], function() {
     Route::post('/payments/save', 'DatabaseController@sendPayment');
     Route::get('/missingPayments/{faction}', 'DatabaseController@showMissingPayments');
     Route::post('/missingPayments/save', 'DatabaseController@sendMissingPayment');
-
+    Route::get('/payments/getPaymentsRealm/{realm}', 'DatabaseController@getPaymentsRealm');
     // ###########################################################################
 
     // ######################### RAIDS ROUTES ####################################

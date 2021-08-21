@@ -946,4 +946,16 @@ class DatabaseController extends Controller
         $items = RaidCollecting::where('missing', 1)->orderBy('edited_at', 'DESC')->get();
         return $items;
     }
+
+    public function getPaymentsRealm($realm)
+    {
+        $items = DB::select("SELECT SUM(amount) as total FROM payments
+        WHERE booster LIKE '%".$realm."' AND paymentdate BETWEEN (SELECT cur1 FROM `variables` WHERE id = 1) AND
+        (SELECT cur2 FROM `variables` WHERE id = 1);");
+
+        if ($items[0]->total == null) {
+            $items[0]->total = 0;
+        }
+        return $items;
+    }
 }
