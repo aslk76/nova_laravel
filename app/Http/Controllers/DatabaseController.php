@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
 use App\Mplus;
 use App\Various;
 use App\Balanceops;
@@ -588,6 +589,7 @@ class DatabaseController extends Controller
                 $payment->booster = $request->item['booster'];
                 $payment->paymentdate = date("Y-m-d H:i:s");
                 $payment->amount = preg_replace('/[.,]/', '', $request->item['paid']) - $beforePaid[0]->paid;
+                $payment->banker = Auth::user()->name;
                 $payment->save();
             } else {
                 return Response('wrongvalue');
