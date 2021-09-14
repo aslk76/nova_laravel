@@ -12,7 +12,7 @@ class Payments extends Model
 {
     protected $table = 'payments';
     protected $primaryKey = 'id';
-    protected $fillable = [ 'booster', 'paymentdate', 'amount' ];
+    protected $fillable = [ 'booster', 'paymentdate', 'amount', 'banker'];
     const UPDATED_AT = 'updated_at';
 
 }

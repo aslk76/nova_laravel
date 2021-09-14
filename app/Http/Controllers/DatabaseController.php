@@ -525,6 +525,7 @@ class DatabaseController extends Controller
                 $payment->booster = $request->item['booster'];
                 $payment->paymentdate = date("Y-m-d H:i:s");
                 $payment->amount = preg_replace('/[.,]/', '', $request->item['paid']) - $paymentv2->paid;
+                $payment->banker = Auth::user()->name;
                 $payment->save();
 
                 $paymentv2->timestamps = false;
