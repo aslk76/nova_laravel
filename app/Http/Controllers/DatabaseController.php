@@ -279,7 +279,7 @@ class DatabaseController extends Controller
     public function getBalanceOps($weekid)
     {
         if ($weekid == 1) {
-            $items = Balanceops::whereNull('deleted_at')->get();
+            $items = Balanceops::whereNull('deleted_at')->where('command', '<>', 'Casino')->where('command', '<>', 'Lottery')->get();
             return $items;
         }
         if ($weekid == 2) {
