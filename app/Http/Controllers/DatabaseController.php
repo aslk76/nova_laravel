@@ -279,7 +279,7 @@ class DatabaseController extends Controller
     public function getBalanceOps($weekid)
     {
         if ($weekid == 1) {
-            $items = Balanceops::whereNull('deleted_at')->where('command', '<>', 'Casino')->where('command', '<>', 'Lottery')->take(2000)->get();
+            $items = Balanceops::whereNull('deleted_at')->where('command', '<>', 'Casino')->where('command', '<>', 'Lottery')->orderBy('id', 'DESC')->take(2000)->get();
             return $items;
         }
         if ($weekid == 2) {
@@ -295,7 +295,7 @@ class DatabaseController extends Controller
             $startday = date('Y/m/d', strtotime($week[0]->pre1. ' - 7 days'));
             $endday = date('Y/m/d', strtotime($week[0]->pre2. ' - 6 days'));
         }
-        $items = Balanceops::whereNull('deleted_at')->whereBetween('date', [$startday, $endday])->where('command', '<>', 'Casino')->where('command', '<>', 'Lottery')->take(2000)->get();
+        $items = Balanceops::whereNull('deleted_at')->whereBetween('date', [$startday, $endday])->where('command', '<>', 'Casino')->where('command', '<>', 'Lottery')->orderBy('id', 'DESC')->take(2000)->get();
         return $items;
     }
 
