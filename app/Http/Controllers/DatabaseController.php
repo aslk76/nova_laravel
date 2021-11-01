@@ -214,64 +214,64 @@ class DatabaseController extends Controller
     // ########### MPLUS ARCHIVES API ############
     public function getAllArchivesMplus()
     {
-        $items = Mplus::whereNull('deleted_at')->where('collected', 1)->orderBy('edited_at', 'DESC')->get();
+        $items = Mplus::whereNull('deleted_at')->where('collected', 1)->orderBy('edited_at', 'DESC')->take(2000)->get();
         return $items;
     }
     public function getAllAllianceArchivesMplus() {
-        $items = Mplus::whereNull('deleted_at')->where('boost_faction', 'Alliance')->where('collected', 1)->orderBy('edited_at', 'DESC')->get();
+        $items = Mplus::whereNull('deleted_at')->where('boost_faction', 'Alliance')->where('collected', 1)->orderBy('edited_at', 'DESC')->take(2000)->get();
         return $items;
     }
 
     public function getAllHordeArchivesMplus() {
-        $items = Mplus::whereNull('deleted_at')->where('boost_faction', 'Horde')->where('collected', 1)->orderBy('edited_at', 'DESC')->get();
+        $items = Mplus::whereNull('deleted_at')->where('boost_faction', 'Horde')->where('collected', 1)->orderBy('edited_at', 'DESC')->take(2000)->get();
         return $items;
     }
 
     // ########### VARIOUS ARCHIVES API ############
     public function getAllArchivesVarious()
     {
-        $items = Various::whereNull('deleted_at')->where('collected', 1)->orderBy('edited_at', 'DESC')->get();
+        $items = Various::whereNull('deleted_at')->where('collected', 1)->orderBy('edited_at', 'DESC')->take(2000)->get();
         return $items;
     }
     public function getAllAllianceArchivesVarious() {
-        $items = Various::whereNull('deleted_at')->where('boost_faction', 'Alliance')->where('collected', 1)->orderBy('edited_at', 'DESC')->get();
+        $items = Various::whereNull('deleted_at')->where('boost_faction', 'Alliance')->where('collected', 1)->orderBy('edited_at', 'DESC')->take(2000)->get();
         return $items;
     }
 
     public function getAllHordeArchivesVarious() {
-        $items = Various::whereNull('deleted_at')->where('boost_faction', 'Horde')->where('collected', 1)->orderBy('edited_at', 'DESC')->get();
+        $items = Various::whereNull('deleted_at')->where('boost_faction', 'Horde')->where('collected', 1)->orderBy('edited_at', 'DESC')->take(2000)->get();
         return $items;
     }
 
     // ########### MPLUS MISSING API ############
     public function getAllMissingMplus()
     {
-        $items = Mplus::whereNull('deleted_at')->where('missing', 1)->orderBy('edited_at', 'DESC')->get();
+        $items = Mplus::whereNull('deleted_at')->where('missing', 1)->orderBy('edited_at', 'DESC')->take(2000)->get();
         return $items;
     }
     public function getAllAllianceMissingMplus() {
-        $items = Mplus::whereNull('deleted_at')->where('boost_faction', 'Alliance')->where('missing', 1)->orderBy('edited_at', 'DESC')->get();
+        $items = Mplus::whereNull('deleted_at')->where('boost_faction', 'Alliance')->where('missing', 1)->orderBy('edited_at', 'DESC')->take(2000)->get();
         return $items;
     }
 
     public function getAllHordeMissingMplus() {
-        $items = Mplus::whereNull('deleted_at')->where('boost_faction', 'Horde')->where('missing', 1)->orderBy('edited_at', 'DESC')->get();
+        $items = Mplus::whereNull('deleted_at')->where('boost_faction', 'Horde')->where('missing', 1)->orderBy('edited_at', 'DESC')->take(2000)->get();
         return $items;
     }
 
     // ########### VARIOUS MISSING API ############
     public function getAllMissingVarious()
     {
-        $items = Various::whereNull('deleted_at')->where('missing', 1)->orderBy('edited_at', 'DESC')->get();
+        $items = Various::whereNull('deleted_at')->where('missing', 1)->orderBy('edited_at', 'DESC')->take(2000)->get();
         return $items;
     }
     public function getAllAllianceMissingVarious() {
-        $items = Various::whereNull('deleted_at')->where('boost_faction', 'Alliance')->where('missing', 1)->orderBy('edited_at', 'DESC')->get();
+        $items = Various::whereNull('deleted_at')->where('boost_faction', 'Alliance')->where('missing', 1)->orderBy('edited_at', 'DESC')->take(2000)->get();
         return $items;
     }
 
     public function getAllHordeMissingVarious() {
-        $items = Various::whereNull('deleted_at')->where('boost_faction', 'Horde')->where('missing', 1)->orderBy('edited_at', 'DESC')->get();
+        $items = Various::whereNull('deleted_at')->where('boost_faction', 'Horde')->where('missing', 1)->orderBy('edited_at', 'DESC')->take(2000)->get();
         return $items;
     }
 
@@ -279,7 +279,7 @@ class DatabaseController extends Controller
     public function getBalanceOps($weekid)
     {
         if ($weekid == 1) {
-            $items = Balanceops::whereNull('deleted_at')->where('command', '<>', 'Casino')->where('command', '<>', 'Lottery')->get();
+            $items = Balanceops::whereNull('deleted_at')->where('command', '<>', 'Casino')->where('command', '<>', 'Lottery')->take(2000)->get();
             return $items;
         }
         if ($weekid == 2) {
@@ -295,7 +295,7 @@ class DatabaseController extends Controller
             $startday = date('Y/m/d', strtotime($week[0]->pre1. ' - 7 days'));
             $endday = date('Y/m/d', strtotime($week[0]->pre2. ' - 6 days'));
         }
-        $items = Balanceops::whereNull('deleted_at')->whereBetween('date', [$startday, $endday])->where('command', '<>', 'Casino')->where('command', '<>', 'Lottery')->get();
+        $items = Balanceops::whereNull('deleted_at')->whereBetween('date', [$startday, $endday])->where('command', '<>', 'Casino')->where('command', '<>', 'Lottery')->take(2000)->get();
         return $items;
     }
 
