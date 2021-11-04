@@ -19,6 +19,15 @@ class ApiController extends Controller
         LEFT JOIN `nova_applications`.realms realms_adv ON raid_book.adv_realm_id  = realms_adv.id
         WHERE raid_id = ". $request->id);
 
-        dd($values);
+        foreach ($values as $value) {
+            $collect = new RaidCollecting;
+            $collect->import_date = date('Y-m-d');
+            $collect->name = $value->name;
+            $collect->paidin = $value->paidin;
+            $collect->amount = $value->amount;
+            $collect->save();
+        }
+
+        return response()->json('OK');
     }
 }
