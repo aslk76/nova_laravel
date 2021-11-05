@@ -33,9 +33,7 @@ class ApiController extends Controller
         if (date('D') == 'Tue') {
             $date = date('Y-m-d');
         } else {
-            $date = new DateTime();
-            $date->modify('next friday');
-            $timestamp = strtotime($date);
+            $timestamp = strtotime('next tuesday');
             $date = date('Y-m-d', $timestamp);
         }
         dd($date);
