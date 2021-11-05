@@ -38,7 +38,8 @@ class ApiController extends Controller
         }
         $values = collect(\DB::select("SELECT leader_id, guild_id, boosters, rl_cut, booster_cut from `nova_applications`.raid where id = " . $request->id))->first();
         if (!is_null($values->guild_id)) {
-            $grep = explode("-", collect(\DB::select("SELECT pay_character from `nova_applications`.guilds where id = ".$values->guild_id))->first());
+            $grep = collect(\DB::select("SELECT pay_character from `nova_applications`.guilds where id = ".$values->guild_id))->first();
+            $grep = explode("-", $grep->pay_character);
             $balance = new RaidBalance;
             $balance->import_date = $date;
             $balance->name = $grep[0];
