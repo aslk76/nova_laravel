@@ -30,7 +30,8 @@ class ApiController extends Controller
             $collect->save();
         }
 
-        if (date('D') == 'Tue') {
+        if (date('D') == 'Fri') {
+            dd('h9');
             $date = date('Y-m-d');
         } else {
             $timestamp = strtotime('next tuesday');
