@@ -29,8 +29,14 @@ class ApiController extends Controller
             $collect->amount = $value->amount;
             $collect->save();
         }
-        $date = new DateTime();
-        $date->modify('next friday');
+
+        if (date('D') == 'Tue') {
+            $date = date('Y-m-d');
+        } else {
+            $date = new DateTime();
+            $date->modify('next friday');
+            $date = date('Y-m-d', $date);
+
         dd($date);
         $values = collect(\DB::select("SELECT leader_id, guild_id, boosters, rl_cut, booster_cut from `nova_applications`.raid where id = " . $request->id))->first();
         dd($values);
