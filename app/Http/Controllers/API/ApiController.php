@@ -54,6 +54,7 @@ class ApiController extends Controller
                 WHERE raid.id = ".$request->id))->first();
                 $boosters = str_replace(["[","]"],"",$values->boosters);
                 $boosters = explode(",", $boosters);
+                dd($boosters);
                 foreach ($boosters as $booster) {
                     $fullname = collect(\DB::select("SELECT name from users where id = ".$booster))->first();
                     $splitname = explode("-", $fullname->name);
