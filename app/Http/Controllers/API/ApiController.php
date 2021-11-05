@@ -36,7 +36,7 @@ class ApiController extends Controller
             $date = new DateTime();
             $date->modify('next friday');
             $timestamp = strtotime($date);
-            $date = date('Y-m-d', $date);
+            $date = date('Y-m-d', $timestamp);
         }
         dd($date);
         $values = collect(\DB::select("SELECT leader_id, guild_id, boosters, rl_cut, booster_cut from `nova_applications`.raid where id = " . $request->id))->first();
