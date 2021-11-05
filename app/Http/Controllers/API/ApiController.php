@@ -62,7 +62,11 @@ class ApiController extends Controller
                     $balance->import_date = $date;
                     $balance->name = $splitname[0];
                     $balance->realm = $splitname[1];
-                    $balance->amount = $values->booster_cut;
+                    if ($raidleader->name == $fullname->name) {
+                        $balance->amount = $values->booster_cut + $values->rl_cut;
+                    } else {
+                        $balance->amount = $values->booster_cut;
+                    }
                     $balance->save();
 
                 }
