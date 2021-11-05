@@ -57,17 +57,17 @@ class ApiController extends Controller
                 foreach ($boosters as $booster) {
                     $fullname = collect(\DB::select("SELECT name from `nova_applications`.users where id = ".$booster))->first();
                     $splitname = explode("-", $fullname->name);
-                    $balance = new RaidBalance;
-                    $balance->import_date = $date;
-                    $balance->name = $splitname[0];
-                    $balance->realm = $splitname[1];
                     if ($raidleader->name == $fullname->name) {
-                        $balance->amount = $values->booster_cut + $values->rl_cut;
+                        DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
+                        VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$values->booster_cut + $values->rl_cut.")
+                        ON DUPLICATE KEY UPDATE
+                        `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);")
                     } else {
-                        $balance->amount = $values->booster_cut;
+                        DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
+                        VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$values->booster_cut.")
+                        ON DUPLICATE KEY UPDATE
+                        `import_date`=VALUES(`import_date`), `amount`="`amount`"+VALUES(`amount`);")
                     }
-                    $balance->save();
-
                 }
             }
 
