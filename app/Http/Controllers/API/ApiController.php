@@ -46,6 +46,8 @@ class ApiController extends Controller
             $balance->realm = $grep[1];
             $balance->amount = $values->rl_cut + $values->booster_cut;
             $balance->save();
+        } else {
+            dd($values->boosters);
         }
     }
 }
