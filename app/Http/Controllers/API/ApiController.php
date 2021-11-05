@@ -51,7 +51,7 @@ class ApiController extends Controller
                 $boosters = str_replace(["[","]"],"",$values->boosters);
                 $boosters = explode(",", $boosters);
                 foreach ($boosters as $booster) {
-                    $fullname = collect(\DB::sellect("SELECT name from users where id = ".$booster))->first();
+                    $fullname = collect(\DB::select("SELECT name from users where id = ".$booster))->first();
                     $splitname = explode("-", $fullname);
                     $balance = new RaidBalance;
                     $balance->import_date = $date;
