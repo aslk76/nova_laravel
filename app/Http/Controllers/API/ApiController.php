@@ -57,6 +57,7 @@ class ApiController extends Controller
                 foreach ($boosters as $booster) {
                     $fullname = collect(\DB::select("SELECT name from users where id = ".$booster))->first();
                     $splitname = explode("-", $fullname->name);
+                    dd($splitname);
                     $balance = new RaidBalance;
                     $balance->import_date = $date;
                     $balance->name = $splitname[0];
