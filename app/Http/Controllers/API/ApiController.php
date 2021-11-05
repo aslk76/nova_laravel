@@ -27,7 +27,7 @@ class ApiController extends Controller
             $collect->amount = $value->amount;
             $collect->save();
         }
-
+        dd($values);
         return response()->json('OK');
     }
 }
