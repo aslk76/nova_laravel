@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use Auth;
 use App\RaidCollecting;
+use App\RaidBalance;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -27,7 +28,13 @@ class ApiController extends Controller
             $collect->amount = $value->amount;
             $collect->save();
         }
+
+        $values = collect(\DB::select("SELECT leader_id, guild_id, boosters, rl_cut, booster_cut from raid where id = 0" . $request->id))->first();
         dd($values);
-        return response()->json('OK');
+        if (!is_null($values->guild_id)) {
+            $grep = DB::select("SELECT pay_character from guilds where id = ".$values->guild_id);
+
+
+        }
     }
 }
