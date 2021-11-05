@@ -66,7 +66,7 @@ class ApiController extends Controller
                         DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
                         VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$values->booster_cut.")
                         ON DUPLICATE KEY UPDATE
-                        `import_date`=VALUES(`import_date`), `amount`="`amount`"+VALUES(`amount`);");
+                        `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
                     }
                 }
             }
