@@ -58,8 +58,9 @@ class ApiController extends Controller
                     $fullname = collect(\DB::select("SELECT name from `nova_applications`.users where id = ".$booster))->first();
                     $splitname = explode("-", $fullname->name);
                     if ($raidleader->name == $fullname->name) {
+                        $rlpot = $values->booster_cut + $values->rl_cut;
                         DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
-                        VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$values->booster_cut + $values->rl_cut.")
+                        VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$rlpot.")
                         ON DUPLICATE KEY UPDATE
                         `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
                     } else {
