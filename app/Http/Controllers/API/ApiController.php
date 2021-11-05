@@ -28,11 +28,13 @@ class ApiController extends Controller
             $collect->amount = $value->amount;
             $collect->save();
         }
-
+        $date = new DateTime();
+        $date->modify('next friday');
+        dd($date);
         $values = collect(\DB::select("SELECT leader_id, guild_id, boosters, rl_cut, booster_cut from `nova_applications`.raid where id = " . $request->id))->first();
         dd($values);
         if (!is_null($values->guild_id)) {
-            $grep = DB::select("SELECT pay_character from guilds where id = ".$values->guild_id);
+            $grep = collect(\DB::select("SELECT pay_character from guilds where id = ".$values->guild_id))->first();
 
 
         }
