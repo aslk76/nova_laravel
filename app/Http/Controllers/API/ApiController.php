@@ -29,7 +29,7 @@ class ApiController extends Controller
             $collect->save();
         }
 
-        $values = collect(\DB::select("SELECT leader_id, guild_id, boosters, rl_cut, booster_cut from raid where id = 0" . $request->id))->first();
+        $values = collect(\DB::select("SELECT leader_id, guild_id, boosters, rl_cut, booster_cut from `nova_applications`.raid where id = " . $request->id))->first();
         dd($values);
         if (!is_null($values->guild_id)) {
             $grep = DB::select("SELECT pay_character from guilds where id = ".$values->guild_id);
