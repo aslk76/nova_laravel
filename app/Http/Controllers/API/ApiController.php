@@ -52,7 +52,6 @@ class ApiController extends Controller
                 FROM `nova_applications`.raid
                 LEFT JOIN `nova_applications`.users leader_name ON raid.leader_id = leader_name.id
                 WHERE raid.id = ".$request->id))->first();
-                dd($raidleader);
                 $boosters = str_replace(["[","]"],"",$values->boosters);
                 $boosters = explode(",", $boosters);
                 foreach ($boosters as $booster) {
