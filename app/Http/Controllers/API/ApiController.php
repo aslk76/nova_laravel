@@ -35,6 +35,7 @@ class ApiController extends Controller
         } else {
             $date = new DateTime();
             $date->modify('next friday');
+            $timestamp = strtotime($date);
             $date = date('Y-m-d', $date);
         }
         dd($date);
