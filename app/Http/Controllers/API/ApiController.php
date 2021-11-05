@@ -47,7 +47,8 @@ class ApiController extends Controller
             $balance->amount = $values->rl_cut + $values->booster_cut;
             $balance->save();
         } else {
-            dd($values->boosters);
+            $boosters = str_replace(["[","]"],"",$values->boosters);
+            dd($boosters);
         }
     }
 }
