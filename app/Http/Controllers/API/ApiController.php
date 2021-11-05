@@ -48,6 +48,7 @@ class ApiController extends Controller
             $balance->save();
         } else {
             $boosters = str_replace(["[","]"],"",$values->boosters);
+            $boosters = explode(",", $boosters);
             dd($boosters);
         }
     }
