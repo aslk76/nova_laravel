@@ -64,27 +64,27 @@ class ApiController extends Controller
                     }
                     if ($raidleader->name == $splitname[0]."-".$splitname[1]) {
                         $rlpot = $values->booster_cut + $values->rl_cut;
-                        // $addData = ['import_date' => $date, 'name' => $splitname[0], 'realm' => $splitname[1], 'amount' => $rlpot];
-                        DB::transaction(function () use ($date, $splitname, $rlpot) {
-                            DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
-                            VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$rlpot.")
-                            ON DUPLICATE KEY UPDATE
-                            `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
-                        }, 5);
+                        $addData = ['import_date' => $date, 'name' => $splitname[0], 'realm' => $splitname[1], 'amount' => $rlpot];
+                        // DB::transaction(function () use ($date, $splitname, $rlpot) {
+                        //     DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
+                        //     VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$rlpot.")
+                        //     ON DUPLICATE KEY UPDATE
+                        //     `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
+                        // }, 5);
                     } else {
-                        // $addData = ['import_date' => $date, 'name' => $splitname[0], 'realm' => $splitname[1], 'amount' => $values->booster_cut];
-                        DB::transaction(function () use ($date, $splitname, $values) {
-                            DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
-                            VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$values->booster_cut.")
-                            ON DUPLICATE KEY UPDATE
-                            `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
-                        }, 5);
+                        $addData = ['import_date' => $date, 'name' => $splitname[0], 'realm' => $splitname[1], 'amount' => $values->booster_cut];
+                        // DB::transaction(function () use ($date, $splitname, $values) {
+                        //     DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
+                        //     VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$values->booster_cut.")
+                        //     ON DUPLICATE KEY UPDATE
+                        //     `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
+                        // }, 5);
                     }
-                    // array_push($data, $addData);
+                    array_push($data, $addData);
                 }
-                // DB::transaction(function () use ($data) {
-                //     DB::table('raid_balance')->upsert($data);
-                // }, 5);
+                DB::transaction(function () use ($data) {
+                    DB::table('raid_balance')->upsert($data, ['import_date', 'name', 'realm']);
+                }, 5);
             }
 
             return response()->json('OK');
