@@ -82,7 +82,6 @@ class ApiController extends Controller
                     }
                     array_push($data, $addData);
                 }
-                dd($data);
                 DB::transaction(function () {
                     DB::table('raid_balance')->insert($data);
                 }, 5);
