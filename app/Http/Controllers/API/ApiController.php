@@ -63,6 +63,7 @@ class ApiController extends Controller
                         $splitname = explode("-", $fullname->name);
                     }
                     if ($raidleader->name == $splitname[0].$splitname[1]) {
+                        dd($date);
                         $rlpot = $values->booster_cut + $values->rl_cut;
                         $data += ['import_date' => $date, 'name' => $splitname[0], 'realm' => $splitname[1], 'amount' => $rlpot]
                         // DB::transaction(function () {
@@ -72,6 +73,7 @@ class ApiController extends Controller
                         //     `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
                         // }, 5);
                     } else {
+                        dd($date);
                         $data += ['import_date' => $date, 'name' => $splitname[0], 'realm' => $splitname[1], 'amount' => $values->booster_cut]
                         // DB::transaction(function () {
                         //     DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
