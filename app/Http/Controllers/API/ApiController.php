@@ -62,7 +62,7 @@ class ApiController extends Controller
                     } else {
                         $splitname = explode("-", $fullname->name);
                     }
-                    if ($raidleader->name == $splitname[0].$splitname[1]) {
+                    if ($raidleader->name == $splitname[0]."-".$splitname[1]) {
                         $rlpot = $values->booster_cut + $values->rl_cut;
                         $data += ['import_date' => $date, 'name' => $splitname[0], 'realm' => $splitname[1], 'amount' => $rlpot];
                         // DB::transaction(function () {
