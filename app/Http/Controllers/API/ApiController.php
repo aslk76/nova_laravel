@@ -55,9 +55,13 @@ class ApiController extends Controller
                 $boosters = str_replace(["[","]"],"",$values->boosters);
                 $boosters = explode(",", $boosters);
                 foreach ($boosters as $booster) {
-                    $fullname = collect(\DB::select("SELECT name from `nova_applications`.users where id = ".$booster))->first();
-                    $splitname = explode("-", $fullname->name);
-                    if ($raidleader->name == $fullname->name) {
+                    $fullname = collect(\DB::select("SELECT name, staff_name from `nova_applications`.users where id = ".$booster))->first();
+                    if (!is_null($fullname->staff_name)) {
+                        $splitname = explode("-", $fullname->staff_name);
+                    } else {
+                        $splitname = explode("-", $fullname->name);
+                    }
+                    if ($raidleader->name == $splitname[0].$splitname[1]) {
                         $rlpot = $values->booster_cut + $values->rl_cut;
                         DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
                         VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$rlpot.")
