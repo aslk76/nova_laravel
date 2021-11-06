@@ -62,7 +62,6 @@ class ApiController extends Controller
                     } else {
                         $splitname = explode("-", $fullname->name);
                     }
-                    dd($fullname->staff_name, $fullname->name, $splitname[0]."-".$splitname[1]);
                     if ($raidleader->name == $splitname[0]."-".$splitname[1]) {
                         $rlpot = $values->booster_cut + $values->rl_cut;
                         $addData = ['import_date' => $date, 'name' => $splitname[0], 'realm' => $splitname[1], 'amount' => $rlpot];
