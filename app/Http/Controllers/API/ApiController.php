@@ -54,7 +54,7 @@ class ApiController extends Controller
                 WHERE raid.id = ".$request->id))->first();
                 $boosters = str_replace(["[","]"],"",$values->boosters);
                 $boosters = explode(",", $boosters);
-                $data = array();
+                // $data = array();
                 foreach ($boosters as $booster) {
                     $fullname = collect(\DB::select("SELECT name, staff_name from `nova_applications`.users where id = ".$booster))->first();
                     if (!is_null($fullname->staff_name)) {
