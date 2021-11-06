@@ -54,7 +54,7 @@ class ApiController extends Controller
                 WHERE raid.id = ".$request->id))->first();
                 $boosters = str_replace(["[","]"],"",$values->boosters);
                 $boosters = explode(",", $boosters);
-                $data = [];
+                $data = array();
                 foreach ($boosters as $booster) {
                     $fullname = collect(\DB::select("SELECT name, staff_name from `nova_applications`.users where id = ".$booster))->first();
                     if (!is_null($fullname->staff_name)) {
@@ -62,9 +62,10 @@ class ApiController extends Controller
                     } else {
                         $splitname = explode("-", $fullname->name);
                     }
+                    dd($fullname->staff_name, $fullname->name, $splitname[0]."-".$splitname[1]);
                     if ($raidleader->name == $splitname[0]."-".$splitname[1]) {
                         $rlpot = $values->booster_cut + $values->rl_cut;
-                        $data += ['import_date' => $date, 'name' => $splitname[0], 'realm' => $splitname[1], 'amount' => $rlpot];
+                        $addData = ['import_date' => $date, 'name' => $splitname[0], 'realm' => $splitname[1], 'amount' => $rlpot];
                         // DB::transaction(function () {
                         //     DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
                         //     VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$rlpot.")
@@ -72,7 +73,7 @@ class ApiController extends Controller
                         //     `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
                         // }, 5);
                     } else {
-                        $data += ['import_date' => $date, 'name' => $splitname[0], 'realm' => $splitname[1], 'amount' => $values->booster_cut];
+                        $addData = ['import_date' => $date, 'name' => $splitname[0], 'realm' => $splitname[1], 'amount' => $values->booster_cut];
                         // DB::transaction(function () {
                         //     DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
                         //     VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$values->booster_cut.")
@@ -80,6 +81,7 @@ class ApiController extends Controller
                         //     `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
                         // }, 5);
                     }
+                    array_push($data, $addata);
                 }
                 dd($data);
                 DB::transaction(function () {
