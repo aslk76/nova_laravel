@@ -80,11 +80,11 @@ class ApiController extends Controller
                         //     `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
                         // }, 5);
                     }
-                    dd($data);
-                    DB::transaction(function () {
-                        DB::table('raid_balance')->insert($data);
-                    }, 5);
                 }
+                dd($data);
+                DB::transaction(function () {
+                    DB::table('raid_balance')->insert($data);
+                }, 5);
             }
 
             return response()->json('OK');
