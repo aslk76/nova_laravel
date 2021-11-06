@@ -63,15 +63,19 @@ class ApiController extends Controller
                     }
                     if ($raidleader->name == $splitname[0].$splitname[1]) {
                         $rlpot = $values->booster_cut + $values->rl_cut;
-                        DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
-                        VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$rlpot.")
-                        ON DUPLICATE KEY UPDATE
-                        `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
+                        DB::transaction(function () {
+                            DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
+                            VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$rlpot.")
+                            ON DUPLICATE KEY UPDATE
+                            `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
+                        }, 5);
                     } else {
-                        DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
-                        VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$values->booster_cut.")
-                        ON DUPLICATE KEY UPDATE
-                        `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
+                        DB::transaction(function () {
+                            DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
+                            VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$values->booster_cut.")
+                            ON DUPLICATE KEY UPDATE
+                            `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
+                        }, 5);
                     }
                 }
             }
