@@ -28,7 +28,7 @@ class ApiController extends Controller
                 $timestamp = strtotime('next tuesday');
                 $date = date('Y-m-d', $timestamp);
             }
-            $faction = collect(\DB::select("SELECT faction from `nova_applications`.raid where id = ".$request->id))->first();
+            $faction = collect(\DB::select("SELECT faction, type_id from `nova_applications`.raid where id = ".$request->id))->first();
             foreach ($values as $value) {
                 $collect = new RaidCollecting;
                 $collect->import_date = date('Y-m-d');
@@ -48,15 +48,19 @@ class ApiController extends Controller
                 } elseif ($value->client_ticket == 1) {
                     $advpot = $value->amount*0.10;
                 } else {
-                    $roles = str_replace(["[\"","\"]"],"",$fullname->discord_rank);
-                    $roles = str_replace(["\"","\""],"",$roles);
-                    $roles = explode(",", $roles);
-                    if ($faction->faction == "horde" && array_search('Hotshot Advertiser [H]', $roles) >= 0) {
-                        $advpot = $value->amount*0.21;
-                    } elseif ($faction->faction == "alliance" && array_search('Hotshot Advertiser [A]', $roles) >= 0) {
-                        $advpot = $value->amount*0.21;
+                    if ($faction->type_id != 3) {
+                        $roles = str_replace(["[\"","\"]"],"",$fullname->discord_rank);
+                        $roles = str_replace(["\"","\""],"",$roles);
+                        $roles = explode(",", $roles);
+                        if ($faction->faction == "horde" && array_search('Hotshot Advertiser [H]', $roles) >= 0) {
+                            $advpot = $value->amount*0.21;
+                        } elseif ($faction->faction == "alliance" && array_search('Hotshot Advertiser [A]', $roles) >= 0) {
+                            $advpot = $value->amount*0.21;
+                        } else {
+                            $advpot = $value->amount*0.17;
+                        }
                     } else {
-                        $advpot = $value->amount*0.17;
+                        $advpot = $value->amount*0.10;
                     }
                 }
                 DB::transaction(function () use ($date, $splitname, $advpot) {
