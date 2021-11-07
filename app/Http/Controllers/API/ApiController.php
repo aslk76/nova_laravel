@@ -60,7 +60,13 @@ class ApiController extends Controller
                             $advpot = $value->amount*0.17;
                         }
                     } else {
-                        $advpot = $value->amount*0.10;
+                        if ($value->inhouse_ticket == 1) {
+                            $advpot = $value->amount * 0;
+                        } elseif ($value->client_ticket == 1) {
+                            $advpot = $value->amount*0.05;
+                        } else {
+                            $advpot = $value->amount*0.10;
+                        }
                     }
                 }
                 DB::transaction(function () use ($date, $splitname, $advpot) {
