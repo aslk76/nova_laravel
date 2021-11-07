@@ -50,7 +50,7 @@ class ApiController extends Controller
                 } else {
                     $roles = str_replace(["[","]"],"",$fullname->discord_rank);
                     $roles = explode(",", $roles);
-                    dd($roles, array_search('Hotshot Advertiser [H]'));
+                    dd($roles, array_search('Hotshot Advertiser [H]', $roles));
                     if ($faction->faction == "horde" && array_search('Hotshot Advertiser [H]', $roles) > 0) {
                         $advpot = $value->amount*0.21;
                     } elseif ($faction->faction == "alliance" && array_search('Hotshot Advertiser [A]', $roles) > 0) {
