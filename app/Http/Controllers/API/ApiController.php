@@ -48,7 +48,7 @@ class ApiController extends Controller
                 } elseif ($value->client_ticket == 1) {
                     $advpot = $value->amount*0.10;
                 } else {
-                    $roles = str_replace(["[","]"],"",$values->discord_rank);
+                    $roles = str_replace(["[","]"],"",$fullname->discord_rank);
                     $roles = explode(",", $roles);
                     $faction = DB::select("SELECT faction from raid where id = ".$request->id)->first();
                     if ($faction->faction == "horde" && array_search('Hotshot Advertiser [H]', $roles) > 0) {
