@@ -28,7 +28,7 @@ class ApiController extends Controller
                 $timestamp = strtotime('next tuesday');
                 $date = date('Y-m-d', $timestamp);
             }
-
+            $faction = collect(\DB::select("SELECT faction from `nova_applications`.raid where id = ".$request->id))->first();
             foreach ($values as $value) {
                 $collect = new RaidCollecting;
                 $collect->import_date = date('Y-m-d');
@@ -50,7 +50,7 @@ class ApiController extends Controller
                 } else {
                     $roles = str_replace(["[","]"],"",$fullname->discord_rank);
                     $roles = explode(",", $roles);
-                    $faction = collect(\DB::select("SELECT faction from `nova_applications`.raid where id = ".$request->id))->first();
+                    dd($roles, array_search('Hotshot Advertiser [H]'));
                     if ($faction->faction == "horde" && array_search('Hotshot Advertiser [H]', $roles) > 0) {
                         $advpot = $value->amount*0.21;
                     } elseif ($faction->faction == "alliance" && array_search('Hotshot Advertiser [A]', $roles) > 0) {
