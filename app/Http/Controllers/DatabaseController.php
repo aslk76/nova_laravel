@@ -83,7 +83,9 @@ class DatabaseController extends Controller
                     $item->missing = 0;
                 }
             }
-            $item->save();
+            DB::transaction(function () use ($item) {
+                $item->save();
+            }, 5);
     }
 
     public function saveRunMplus(Request $request) {
@@ -108,7 +110,9 @@ class DatabaseController extends Controller
             $itemDB->dps2_name = $request->item[0]['dps2_name'];
             $itemDB->dps2_realm = $request->item[0]['dps2_realm'];
             $itemDB->dps2_cut = $request->item[0]['dps2_cut'];
-            $itemDB->save();
+            DB::transaction(function () use ($itemDB) {
+                $itemDB->save();
+            }, 5);
         } catch (Exception $e) {
             return response('Data Error', 400);
         }
@@ -180,7 +184,9 @@ class DatabaseController extends Controller
                     $item->missing = 0;
                 }
             }
-            $item->save();
+            DB::transaction(function () use ($item) {
+                $item->save();
+            }, 5);
     }
     public function saveRunVarious(Request $request) {
         $itemDB = Various::where('id', $request->item[0]['id'])->first();
@@ -204,7 +210,9 @@ class DatabaseController extends Controller
             $itemDB->dps2_name = $request->item[0]['dps2_name'];
             $itemDB->dps2_realm = $request->item[0]['dps2_realm'];
             $itemDB->dps2_cut = $request->item[0]['dps2_cut'];
-            $itemDB->save();
+            DB::transaction(function () use ($itemDB) {
+                $itemDB->save();
+            }, 5);
         } catch (Exception $e) {
             return response('Data Error', 400);
         }
@@ -937,7 +945,9 @@ class DatabaseController extends Controller
                 $item->missing = 0;
             }
         }
-        $item->save();
+        DB::transaction(function () use ($item) {
+            $item->save();
+        }, 5);
     }
     public function getArchiveRaids()
     {
