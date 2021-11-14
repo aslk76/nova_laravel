@@ -98,7 +98,7 @@ class ApiController extends Controller
                         $splitname = explode("-", $fullname->name);
                     }
 
-                    DB::transaction(function () use ($date, $splitname, $booster) {
+                    DB::transaction(function () use ($date, $fullname, $booster) {
                         DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
                         VALUES ('".$date."', '".$fullname[0]."', '".$fullname[1]."', ".$booster->cut.")
                         ON DUPLICATE KEY UPDATE
