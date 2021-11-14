@@ -15,7 +15,7 @@ use App\Http\Controllers\Controller as Controller;
 class ApiController extends Controller
 {
     public function sendRaidToDB(Request $request) {
-        // try {
+        try {
             $values = DB::select("SELECT raid_book.advertiser_name AS `name`, realms_paid.name AS paidin, raid_book.paid AS amount, realms_adv.name AS advertiser_realm, user_id, inhouse_ticket, client_ticket
             FROM `nova_applications`.raid_book
             LEFT JOIN `nova_applications`.realms realms_paid ON raid_book.paid_realm_id = realms_paid.id
@@ -91,7 +91,6 @@ class ApiController extends Controller
                         `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
                     }, 5);
                 } else {
-                    dd($booster->user_id);
                     $fullname = collect(\DB::select("SELECT name, staff_name from `nova_applications`.users where id = ".$booster->user_id))->first();
                     if (!is_null($fullname->staff_name)) {
                         $splitname = explode("-", $fullname->staff_name);
@@ -153,9 +152,9 @@ class ApiController extends Controller
             // }
 
             return response()->json('OK');
-        // } catch (Exception $e) {
-        //     Log::error($e);
-        //     return response()->json('KO');
-        // }
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json('KO');
+        }
     }
 }
