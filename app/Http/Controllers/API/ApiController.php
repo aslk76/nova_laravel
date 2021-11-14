@@ -91,7 +91,7 @@ class ApiController extends Controller
                         `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
                     }, 5);
                 } else {
-                    dd($booster['user_id']);
+                    dd($booster->user_id);
                     $fullname = collect(\DB::select("SELECT name, staff_name from `nova_applications`.users where id = ".$booster->user_id))->first();
                     if (!is_null($fullname->staff_name)) {
                         $splitname = explode("-", $fullname->staff_name);
