@@ -77,7 +77,7 @@ class ApiController extends Controller
             //     }, 5);
             // }
 
-            $values = DB::select("SELECT user_id, guild_id, payment_character, cut from `nova_applications`.raid_cuts where raid_id = ".$request->id)->get();
+            $values = DB::select("SELECT user_id, guild_id, payment_character, cut from `nova_applications`.raid_cuts where raid_id = ".$request->id);
             dd($values);
             // $values = collect(\DB::select("SELECT leader_id, guild_id, boosters, rl_cut, booster_cut from `nova_applications`.raid where id = " . $request->id))->first();
             // if (!is_null($values->guild_id)) {
