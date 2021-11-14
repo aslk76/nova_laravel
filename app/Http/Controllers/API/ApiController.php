@@ -82,7 +82,7 @@ class ApiController extends Controller
             $values = DB::select("SELECT user_id, guild_id, payment_character, cut from `nova_applications`.raid_cuts where raid_id = ".$request->id);
 
             foreach ($values as $booster) {
-                if (!is_null($booster->user_id)) {
+                if (is_null($booster->user_id)) {
                     $name = explode("-", $booster->payment_character);
                     DB::transaction(function () use ($date, $name, $booster) {
                         DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
