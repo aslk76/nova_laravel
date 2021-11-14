@@ -43,32 +43,34 @@ class ApiController extends Controller
                 } else {
                     $splitname = explode("-", $fullname->name);
                 }
-                if ($value->inhouse_ticket == 1) {
-                    $advpot = $value->amount * 0.07;
-                } elseif ($value->client_ticket == 1) {
-                    $advpot = $value->amount*0.10;
-                } else {
-                    if ($faction->type_id != 3) {
-                        $roles = str_replace(["[\"","\"]"],"",$fullname->discord_rank);
-                        $roles = str_replace(["\"","\""],"",$roles);
-                        $roles = explode(",", $roles);
-                        if ($faction->faction == "horde" && array_search('Hotshot Advertiser [H]', $roles) >= 0) {
-                            $advpot = $value->amount*0.21;
-                        } elseif ($faction->faction == "alliance" && array_search('Hotshot Advertiser [A]', $roles) >= 0) {
-                            $advpot = $value->amount*0.21;
-                        } else {
-                            $advpot = $value->amount*0.17;
-                        }
+                if ($faction->type_id != 3) {
+                    $roles = str_replace(["[\"","\"]"],"",$fullname->discord_rank);
+                    $roles = str_replace(["\"","\""],"",$roles);
+                    $roles = explode(",", $roles);
+                    if ($faction->faction == "horde" && array_search('Hotshot Advertiser [H]', $roles) >= 0) {
+                        $advpot = $value->amount*0.21;
+                    } elseif ($faction->faction == "alliance" && array_search('Hotshot Advertiser [A]', $roles) >= 0) {
+                        $advpot = $value->amount*0.21;
                     } else {
-                        if ($value->inhouse_ticket == 1) {
-                            $advpot = $value->amount * 0;
-                        } elseif ($value->client_ticket == 1) {
-                            $advpot = $value->amount*0.05;
-                        } else {
-                            $advpot = $value->amount*0.10;
-                        }
+                        $advpot = $value->amount*0.17;
+                    }
+
+                    if ($value->inhouse_ticket == 1) {
+                        $advpot = $value->amount * 0.07;
+                    } elseif ($value->client_ticket == 1) {
+                        $advpot = $value->amount*0.10;
+                    }
+
+                } else {
+                    if ($value->inhouse_ticket == 1) {
+                        $advpot = $value->amount * 0;
+                    } elseif ($value->client_ticket == 1) {
+                        $advpot = $value->amount*0.05;
+                    } else {
+                        $advpot = $value->amount*0.10;
                     }
                 }
+
                 DB::transaction(function () use ($date, $splitname, $advpot) {
                     DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
                     VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$advpot.")
