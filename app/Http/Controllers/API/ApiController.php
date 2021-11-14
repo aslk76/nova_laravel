@@ -82,11 +82,12 @@ class ApiController extends Controller
             $values = DB::select("SELECT user_id, guild_id, payment_character, cut from `nova_applications`.raid_cuts where raid_id = ".$request->id);
 
             foreach ($values as $booster) {
+                $cut = $booster->cut;
                 if (is_null($booster->user_id)) {
                     $name = explode("-", $booster->payment_character);
-                    DB::transaction(function () use ($date, $name, $booster) {
+                    DB::transaction(function () use ($date, $name, $cut) {
                         DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
-                        VALUES ('".$date."', '".$name[0]."', '".$name[1]."', ".$booster->cut.")
+                        VALUES ('".$date."', '".$name[0]."', '".$name[1]."', ".$cut.")
                         ON DUPLICATE KEY UPDATE
                         `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
                     }, 5);
@@ -98,9 +99,9 @@ class ApiController extends Controller
                         $splitname = explode("-", $fullname->name);
                     }
 
-                    DB::transaction(function () use ($date, $fullname, $booster) {
+                    DB::transaction(function () use ($date, $fullname, $cut) {
                         DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
-                        VALUES ('".$date."', '".$fullname[0]."', '".$fullname[1]."', ".$booster->cut.")
+                        VALUES ('".$date."', '".$fullname[0]."', '".$fullname[1]."', ".$cut.")
                         ON DUPLICATE KEY UPDATE
                         `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
                     }, 5);
