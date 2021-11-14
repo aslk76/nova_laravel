@@ -16,118 +16,113 @@ class ApiController extends Controller
 {
     public function sendRaidToDB(Request $request) {
         // try {
-            $values = DB::select("SELECT raid_book.advertiser_name AS `name`, realms_paid.name AS paidin, raid_book.paid AS amount, realms_adv.name AS advertiser_realm, user_id, inhouse_ticket, client_ticket
-            FROM `nova_applications`.raid_book
-            LEFT JOIN `nova_applications`.realms realms_paid ON raid_book.paid_realm_id = realms_paid.id
-            LEFT JOIN `nova_applications`.realms realms_adv ON raid_book.adv_realm_id  = realms_adv.id
-            WHERE raid_id = ". $request->id);
+            // $values = DB::select("SELECT raid_book.advertiser_name AS `name`, realms_paid.name AS paidin, raid_book.paid AS amount, realms_adv.name AS advertiser_realm, user_id, inhouse_ticket, client_ticket
+            // FROM `nova_applications`.raid_book
+            // LEFT JOIN `nova_applications`.realms realms_paid ON raid_book.paid_realm_id = realms_paid.id
+            // LEFT JOIN `nova_applications`.realms realms_adv ON raid_book.adv_realm_id  = realms_adv.id
+            // WHERE raid_id = ". $request->id);
 
-             if (date('D') == 'Tue') {
-                $date = date('Y-m-d');
-            } else {
-                $timestamp = strtotime('next tuesday');
-                $date = date('Y-m-d', $timestamp);
-            }
-            $faction = collect(\DB::select("SELECT faction, type_id from `nova_applications`.raid where id = ".$request->id))->first();
-            foreach ($values as $value) {
-                $collect = new RaidCollecting;
-                $collect->import_date = date('Y-m-d');
-                $collect->name = $value->name;
-                $collect->paidin = $value->paidin;
-                $collect->amount = $value->amount;
-                $collect->save();
+            //  if (date('D') == 'Tue') {
+            //     $date = date('Y-m-d');
+            // } else {
+            //     $timestamp = strtotime('next tuesday');
+            //     $date = date('Y-m-d', $timestamp);
+            // }
+            // $faction = collect(\DB::select("SELECT faction, type_id from `nova_applications`.raid where id = ".$request->id))->first();
+            // foreach ($values as $value) {
+            //     $collect = new RaidCollecting;
+            //     $collect->import_date = date('Y-m-d');
+            //     $collect->name = $value->name;
+            //     $collect->paidin = $value->paidin;
+            //     $collect->amount = $value->amount;
+            //     $collect->save();
 
-                $fullname = collect(\DB::select("SELECT name, staff_name, discord_rank from `nova_applications`.users where id = ".$value->user_id))->first();
-                if (!is_null($fullname->staff_name)) {
-                    $splitname = explode("-", $fullname->staff_name);
-                } else {
-                    $splitname = explode("-", $fullname->name);
-                }
-                if ($value->inhouse_ticket == 1) {
-                    $advpot = $value->amount * 0.07;
-                } elseif ($value->client_ticket == 1) {
-                    $advpot = $value->amount*0.10;
-                } else {
-                    if ($faction->type_id != 3) {
-                        $roles = str_replace(["[\"","\"]"],"",$fullname->discord_rank);
-                        $roles = str_replace(["\"","\""],"",$roles);
-                        $roles = explode(",", $roles);
-                        if ($faction->faction == "horde" && array_search('Hotshot Advertiser [H]', $roles) >= 0) {
-                            $advpot = $value->amount*0.21;
-                        } elseif ($faction->faction == "alliance" && array_search('Hotshot Advertiser [A]', $roles) >= 0) {
-                            $advpot = $value->amount*0.21;
-                        } else {
-                            $advpot = $value->amount*0.17;
-                        }
-                    } else {
-                        if ($value->inhouse_ticket == 1) {
-                            $advpot = $value->amount * 0;
-                        } elseif ($value->client_ticket == 1) {
-                            $advpot = $value->amount*0.05;
-                        } else {
-                            $advpot = $value->amount*0.10;
-                        }
-                    }
-                }
-                DB::transaction(function () use ($date, $splitname, $advpot) {
-                    DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
-                    VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$advpot.")
-                    ON DUPLICATE KEY UPDATE
-                    `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
-                }, 5);
-            }
+            //     $fullname = collect(\DB::select("SELECT name, staff_name, discord_rank from `nova_applications`.users where id = ".$value->user_id))->first();
+            //     if (!is_null($fullname->staff_name)) {
+            //         $splitname = explode("-", $fullname->staff_name);
+            //     } else {
+            //         $splitname = explode("-", $fullname->name);
+            //     }
+            //     if ($value->inhouse_ticket == 1) {
+            //         $advpot = $value->amount * 0.07;
+            //     } elseif ($value->client_ticket == 1) {
+            //         $advpot = $value->amount*0.10;
+            //     } else {
+            //         if ($faction->type_id != 3) {
+            //             $roles = str_replace(["[\"","\"]"],"",$fullname->discord_rank);
+            //             $roles = str_replace(["\"","\""],"",$roles);
+            //             $roles = explode(",", $roles);
+            //             if ($faction->faction == "horde" && array_search('Hotshot Advertiser [H]', $roles) >= 0) {
+            //                 $advpot = $value->amount*0.21;
+            //             } elseif ($faction->faction == "alliance" && array_search('Hotshot Advertiser [A]', $roles) >= 0) {
+            //                 $advpot = $value->amount*0.21;
+            //             } else {
+            //                 $advpot = $value->amount*0.17;
+            //             }
+            //         } else {
+            //             if ($value->inhouse_ticket == 1) {
+            //                 $advpot = $value->amount * 0;
+            //             } elseif ($value->client_ticket == 1) {
+            //                 $advpot = $value->amount*0.05;
+            //             } else {
+            //                 $advpot = $value->amount*0.10;
+            //             }
+            //         }
+            //     }
+            //     DB::transaction(function () use ($date, $splitname, $advpot) {
+            //         DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
+            //         VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$advpot.")
+            //         ON DUPLICATE KEY UPDATE
+            //         `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
+            //     }, 5);
+            // }
 
-
-            $values = collect(\DB::select("SELECT leader_id, guild_id, boosters, rl_cut, booster_cut from `nova_applications`.raid where id = " . $request->id))->first();
-            if (!is_null($values->guild_id)) {
-                $grep = collect(\DB::select("SELECT pay_character from `nova_applications`.guilds where id = ".$values->guild_id))->first();
-                $grep = explode("-", $grep->pay_character);
-                $rlpot = $values->booster_cut + $values->rl_cut;
-                DB::transaction(function () use ($date, $splitname, $rlpot) {
-                    DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
-                    VALUES ('".$date."', '".$grep[0]."', '".$grep[1]."', ".$rlpot.")
-                    ON DUPLICATE KEY UPDATE
-                    `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
-                }, 5);
-            } else {
-                $raidleader = collect(\DB::select("SELECT leader_name.name
-                FROM `nova_applications`.raid
-                LEFT JOIN `nova_applications`.users leader_name ON raid.leader_id = leader_name.id
-                WHERE raid.id = ".$request->id))->first();
-                $boosters = str_replace(["[","]"],"",$values->boosters);
-                $boosters = explode(",", $boosters);
-                // $data = array();
-                foreach ($boosters as $booster) {
-                    $fullname = collect(\DB::select("SELECT name, staff_name from `nova_applications`.users where id = ".$booster))->first();
-                    if (!is_null($fullname->staff_name)) {
-                        $splitname = explode("-", $fullname->staff_name);
-                    } else {
-                        $splitname = explode("-", $fullname->name);
-                    }
-                    if ($raidleader->name == $splitname[0]."-".$splitname[1]) {
-                        $rlpot = $values->booster_cut + $values->rl_cut;
-                        // $addData = ['import_date' => $date, 'name' => $splitname[0], 'realm' => $splitname[1], 'amount' => $rlpot];
-                        DB::transaction(function () use ($date, $splitname, $rlpot) {
-                            DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
-                            VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$rlpot.")
-                            ON DUPLICATE KEY UPDATE
-                            `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
-                        }, 5);
-                    } else {
-                        // $addData = ['import_date' => $date, 'name' => $splitname[0], 'realm' => $splitname[1], 'amount' => $values->booster_cut];
-                        DB::transaction(function () use ($date, $splitname, $values) {
-                            DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
-                            VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$values->booster_cut.")
-                            ON DUPLICATE KEY UPDATE
-                            `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
-                        }, 5);
-                    }
-                    // array_push($data, $addData);
-                }
-                // DB::transaction(function () use ($data) {
-                //     DB::table('raid_balance')->upsert($data, ['import_date', 'name', 'realm']);
-                // }, 5);
-            }
+            $values = DB::select("SELECT user_id, guild_id, payment_character, cut from `nova_applications`.raid_cuts where raid_id = ".$request->id)->get();
+            dd($values);
+            // $values = collect(\DB::select("SELECT leader_id, guild_id, boosters, rl_cut, booster_cut from `nova_applications`.raid where id = " . $request->id))->first();
+            // if (!is_null($values->guild_id)) {
+            //     $grep = collect(\DB::select("SELECT pay_character from `nova_applications`.guilds where id = ".$values->guild_id))->first();
+            //     $grep = explode("-", $grep->pay_character);
+            //     $rlpot = $values->booster_cut + $values->rl_cut;
+            //     DB::transaction(function () use ($date, $splitname, $rlpot) {
+            //         DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
+            //         VALUES ('".$date."', '".$grep[0]."', '".$grep[1]."', ".$rlpot.")
+            //         ON DUPLICATE KEY UPDATE
+            //         `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
+            //     }, 5);
+            // } else {
+            //     $raidleader = collect(\DB::select("SELECT leader_name.name
+            //     FROM `nova_applications`.raid
+            //     LEFT JOIN `nova_applications`.users leader_name ON raid.leader_id = leader_name.id
+            //     WHERE raid.id = ".$request->id))->first();
+            //     $boosters = str_replace(["[","]"],"",$values->boosters);
+            //     $boosters = explode(",", $boosters);
+            //     // $data = array();
+            //     foreach ($boosters as $booster) {
+            //         $fullname = collect(\DB::select("SELECT name, staff_name from `nova_applications`.users where id = ".$booster))->first();
+            //         if (!is_null($fullname->staff_name)) {
+            //             $splitname = explode("-", $fullname->staff_name);
+            //         } else {
+            //             $splitname = explode("-", $fullname->name);
+            //         }
+            //         if ($raidleader->name == $splitname[0]."-".$splitname[1]) {
+            //             $rlpot = $values->booster_cut + $values->rl_cut;
+            //             DB::transaction(function () use ($date, $splitname, $rlpot) {
+            //                 DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
+            //                 VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$rlpot.")
+            //                 ON DUPLICATE KEY UPDATE
+            //                 `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
+            //             }, 5);
+            //         } else {
+            //             DB::transaction(function () use ($date, $splitname, $values) {
+            //                 DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
+            //                 VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$values->booster_cut.")
+            //                 ON DUPLICATE KEY UPDATE
+            //                 `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
+            //             }, 5);
+            //         }
+            //     }
+            // }
 
             return response()->json('OK');
         // } catch (Exception $e) {
