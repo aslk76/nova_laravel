@@ -51,8 +51,10 @@ class ApiController extends Controller
                         $advpot = $value->amount*0.21;
                     } elseif ($faction->faction == "alliance" && array_search('Hotshot Advertiser [A]', $roles) >= 0) {
                         $advpot = $value->amount*0.21;
-                    } else {
+                    } elseif ($faction->faction == "horde") {
                         $advpot = $value->amount*0.17;
+                    } elseif ($faction->faction == "alliance") {
+                        $advpot = $value->amount*0.20;
                     }
 
                     if ($value->inhouse_ticket == 1) {
