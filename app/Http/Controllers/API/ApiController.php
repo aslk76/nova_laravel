@@ -80,7 +80,7 @@ class ApiController extends Controller
                     VALUES ('".$date."', '".$splitname[0]."', '".$splitname[1]."', ".$advpot.")
                     ON DUPLICATE KEY UPDATE
                     `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
-                }, 5);
+                }, 60);
             }
 
             $values = DB::select("SELECT user_id, guild_id, payment_character, cut from `nova_applications`.raid_cuts where raid_id = ".$request->id);
@@ -94,7 +94,7 @@ class ApiController extends Controller
                         VALUES ('".$date."', '".$name[0]."', '".$name[1]."', ".$cut.")
                         ON DUPLICATE KEY UPDATE
                         `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
-                    }, 5);
+                    }, 60);
                 } else {
                     $fullname = collect(\DB::select("SELECT name, staff_name from `nova_applications`.users where id = ".$booster->user_id))->first();
                     if (!is_null($fullname->staff_name)) {
@@ -108,7 +108,7 @@ class ApiController extends Controller
                         VALUES ('".$date."','".$splitname[0]."','".$splitname[1]."',".$cut.")
                         ON DUPLICATE KEY UPDATE
                         `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
-                    }, 5);
+                    }, 60);
                 }
             }
             return response()->json('OK');
@@ -134,7 +134,7 @@ class ApiController extends Controller
 
             DB::transaction(function () use ($date, $fullname, $amountChange) {
                 DB::statement("UPDATE raid_balance SET amount = amount - ".$amountChange." WHERE import_date = ".$date." AND NAME = '".$fullname[0]."' AND realm = '".$fullname[1]."'");
-            }, 5);
+            }, 60);
 
             return response()->json('OK');
         } catch (Exception $e) {
