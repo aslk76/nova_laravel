@@ -120,7 +120,6 @@ class ApiController extends Controller
     public function editBoosterCut(Request $request) {
         try {
             $amountChange = $request->old_pot - $request->new_pot
-            dd($request->raid_time, $amountChange);
             $raidTime = strtotime($request->raid_time);
             if (date('D', $raidTime) == 'Tue') {
                 $date = date('Y-m-d', $raidTime);
@@ -137,7 +136,7 @@ class ApiController extends Controller
 
             return response()->json('OK');
         } catch (Exception $e) {
-            Log::error($e);
+            Log::error($raidTime);
             return response()->json('KO');
         }
     }
