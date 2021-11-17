@@ -19,6 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'v1'], function () {
-    Route::post('sendRaidToDB', 'API\ApiController@sendRaidToDB');
-    Route::post('editBoosterCut', 'API\ApiController@editBoosterCut');
+    Route::post('/sendRaidToDB', 'API\ApiController@sendRaidToDB');
+    Route::post('/editBoosterCut', 'API\ApiController@editBoosterCut');
 });
