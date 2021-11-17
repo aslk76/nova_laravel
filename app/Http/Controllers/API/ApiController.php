@@ -16,13 +16,15 @@ class ApiController extends Controller
 {
     public function sendRaidToDB(Request $request) {
         try {
-            $values = DB::select("SELECT raid_book.advertiser_name AS `name`, realms_paid.name AS paidin, raid_book.paid AS amount, realms_adv.name AS advertiser_realm, user_id, inhouse_ticket, client_ticket
+            $values = DB::select("SELECT raid_book.advertiser_name AS `name`, realms_paid.name AS paidin, raid.date_and_time, raid_book.paid AS amount, realms_adv.name AS advertiser_realm, user_id, inhouse_ticket, client_ticket
             FROM `nova_applications`.raid_book
             LEFT JOIN `nova_applications`.realms realms_paid ON raid_book.paid_realm_id = realms_paid.id
             LEFT JOIN `nova_applications`.realms realms_adv ON raid_book.adv_realm_id  = realms_adv.id
+            INNER JOIN `nova_applications`.raid ON raid_book.raid_id = raid.id
             WHERE raid_id = ". $request->id);
 
-             if (date('D') == 'Tue') {
+            $raidTime = strtotime($values[0]->date_and_time);
+             if (date('D', $raidTime) == 'Tue') {
                 $date = date('Y-m-d');
             } else {
                 $timestamp = strtotime('next tuesday');
