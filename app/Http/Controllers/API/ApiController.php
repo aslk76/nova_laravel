@@ -27,7 +27,7 @@ class ApiController extends Controller
              if (date('D', $raidTime) == 'Tue') {
                 $date = date('Y-m-d');
             } else {
-                $timestamp = strtotime('next tuesday');
+                $timestamp = strtotime('next tuesday', $raidTime);
                 $date = date('Y-m-d', $timestamp);
             }
             $faction = collect(\DB::select("SELECT faction, type_id from `nova_applications`.raid where id = ".$request->id))->first();
