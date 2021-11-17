@@ -76,7 +76,7 @@ class ApiController extends Controller
                 }
                 DB::transaction(function () use ($date, $splitname, $advpot) {
                     DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
-                    VALUES ('".$date."', '".$splitname[0]."', '".mysql_real_escape_string($splitname[1])."', ".$advpot.")
+                    VALUES ('".$date."', '".$splitname[0]."', '".mysqli_real_escape_string($splitname[1])."', ".$advpot.")
                     ON DUPLICATE KEY UPDATE
                     `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
                 }, 60);
@@ -90,7 +90,7 @@ class ApiController extends Controller
                     $name = explode("-", $booster->payment_character);
                     DB::transaction(function () use ($date, $name, $cut) {
                         DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
-                        VALUES ('".$date."', '".$name[0]."', '".mysql_real_escape_string($name[1])."', ".$cut.")
+                        VALUES ('".$date."', '".$name[0]."', '".mysqli_real_escape_string($name[1])."', ".$cut.")
                         ON DUPLICATE KEY UPDATE
                         `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
                     }, 60);
@@ -104,7 +104,7 @@ class ApiController extends Controller
 
                     DB::transaction(function () use ($date, $splitname, $cut) {
                         DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
-                        VALUES ('".$date."','".$splitname[0]."','".mysql_real_escape_string($splitname[1])."',".$cut.")
+                        VALUES ('".$date."','".$splitname[0]."','".mysqli_real_escape_string($splitname[1])."',".$cut.")
                         ON DUPLICATE KEY UPDATE
                         `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
                     }, 60);
