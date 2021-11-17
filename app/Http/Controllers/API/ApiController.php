@@ -24,9 +24,8 @@ class ApiController extends Controller
             WHERE raid_id = ". $request->id);
 
             $raidTime = strtotime($values[0]->date_and_time);
-            dd(date('D', $raidTime));
              if (date('D', $raidTime) == 'Tue') {
-                $date = date('Y-m-d');
+                $date = date('Y-m-d', $raidTime);
             } else {
                 $timestamp = strtotime('next tuesday', $raidTime);
                 $date = date('Y-m-d', $timestamp);
