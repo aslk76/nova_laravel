@@ -110,12 +110,11 @@ class ApiController extends Controller
                     }, 60);
                 }
             }
-            return response()->json('OK');
+            return response()->json('OK', 200);
         } catch (Exception $e) {
             Log::error($e);
-            return response()->json('KO');
+            return response()->json('KO', 500);
         }
-        return response()->json('OK');
     }
 
     public function editBoosterCut(Request $request) {
@@ -135,10 +134,10 @@ class ApiController extends Controller
                 DB::statement("UPDATE raid_balance SET amount = amount - ".$amountChange." WHERE import_date = ".$date." AND NAME = '".$fullname[0]."' AND realm = '".mysql_real_escape_string($fullname[1])."'");
             }, 60);
 
-            return response()->json('OK');
+            return response()->json('OK', 200);
         } catch (Exception $e) {
             Log::error($raidTime);
-            return response()->json('KO');
+            return response()->json('KO', 500);
         }
     }
 }
