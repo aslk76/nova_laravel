@@ -118,6 +118,7 @@ class ApiController extends Controller
     }
 
     public function editBoosterCut(Request $request) {
+        dd($request);
         try {
             $amountChange = $request->old_pot - $request->new_pot
             $raidTime = strtotime($request->raid_time);
