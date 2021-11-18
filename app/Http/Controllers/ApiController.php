@@ -118,13 +118,12 @@ class ApiController extends Controller
 
     public function editBoosterCut(Request $request) {
         try {
-            dd($request);
-            $amountChange = $request->old_pot - $request->new_pot
-            $raid = strtotime($request->raid_time);
-            if (date('D', $raid) == 'Tue') {
-                $date = date('Y-m-d', $raid);
+            $amountChange = $request->old_pot - $request->new_pot;
+            $raidTime = strtotime($request->raid_time);
+            if (date('D', $raidTime) == 'Tue') {
+                $date = date('Y-m-d', $raidTime);
             } else {
-                $timestamp = strtotime('next tuesday', $raid);
+                $timestamp = strtotime('next tuesday', $raidTime);
                 $date = date('Y-m-d', $timestamp);
             }
 
@@ -136,7 +135,7 @@ class ApiController extends Controller
 
             return response()->json('OK', 200);
         } catch (Exception $e) {
-            Log::error($raid);
+            Log::error($raidTime);
             return response()->json('KO', 500);
         }
     }
