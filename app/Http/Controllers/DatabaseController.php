@@ -951,12 +951,12 @@ class DatabaseController extends Controller
     }
     public function getArchiveRaids()
     {
-        $items = RaidCollecting::where('collected', 1)->orderBy('edited_at', 'DESC')->get();
+        $items = RaidCollecting::where('collected', 1)->orderBy('edited_at', 'DESC')->take(2000)->get();
         return $items;
     }
     public function getMissingRaids()
     {
-        $items = RaidCollecting::where('missing', 1)->orderBy('edited_at', 'DESC')->get();
+        $items = RaidCollecting::where('missing', 1)->orderBy('edited_at', 'DESC')->take(2000)->get();
         return $items;
     }
 
