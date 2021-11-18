@@ -115,29 +115,30 @@ class ApiController extends Controller
             Log::error($e);
             return response()->json('KO');
         }
+        return response()->json('OK');
     }
 
-    // public function editBoosterCut(Request $request) {
-    //     try {
-    //         $amountChange = $request->old_pot - $request->new_pot
-    //         $raidTime = strtotime($request->raid_time);
-    //         if (date('D', $raidTime) == 'Tue') {
-    //             $date = date('Y-m-d', $raidTime);
-    //         } else {
-    //             $timestamp = strtotime('next tuesday', $raidTime);
-    //             $date = date('Y-m-d', $timestamp);
-    //         }
+    public function editBoosterCut(Request $request) {
+        try {
+            $amountChange = $request->old_pot - $request->new_pot
+            $raidTime = strtotime($request->raid_time);
+            if (date('D', $raidTime) == 'Tue') {
+                $date = date('Y-m-d', $raidTime);
+            } else {
+                $timestamp = strtotime('next tuesday', $raidTime);
+                $date = date('Y-m-d', $timestamp);
+            }
 
-    //         $fullname = explode("-", $request->user_name);
+            $fullname = explode("-", $request->user_name);
 
-    //         DB::transaction(function () use ($date, $fullname, $amountChange) {
-    //             DB::statement("UPDATE raid_balance SET amount = amount - ".$amountChange." WHERE import_date = ".$date." AND NAME = '".$fullname[0]."' AND realm = '".mysql_real_escape_string($fullname[1])."'");
-    //         }, 60);
+            DB::transaction(function () use ($date, $fullname, $amountChange) {
+                DB::statement("UPDATE raid_balance SET amount = amount - ".$amountChange." WHERE import_date = ".$date." AND NAME = '".$fullname[0]."' AND realm = '".mysql_real_escape_string($fullname[1])."'");
+            }, 60);
 
-    //         return response()->json('OK');
-    //     } catch (Exception $e) {
-    //         Log::error($raidTime);
-    //         return response()->json('KO');
-    //     }
-    // }
+            return response()->json('OK');
+        } catch (Exception $e) {
+            Log::error($raidTime);
+            return response()->json('KO');
+        }
+    }
 }
