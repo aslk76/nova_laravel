@@ -15,7 +15,7 @@ class ApiController extends Controller
 {
     public function sendRaidToDB(Request $request) {
         try {
-            $values = DB::select("SELECT raid_book.advertiser_name AS `name`, realms_paid.name AS paidin, raid.date_and_time, raid_book.paid AS amount, realms_adv.name AS advertiser_realm, user_id, inhouse_ticket, client_ticket
+            $values = DB::select("SELECT raid_book.advertiser_name AS `name`, realms_paid.name AS paidin, raid.date_and_time, raid_book.paid AS amount, realms_adv.name AS advertiser_realm, user_id, inhouse_ticket, client_ticket, collector
             FROM `nova_applications`.raid_book
             LEFT JOIN `nova_applications`.realms realms_paid ON raid_book.paid_realm_id = realms_paid.id
             LEFT JOIN `nova_applications`.realms realms_adv ON raid_book.adv_realm_id  = realms_adv.id
@@ -37,33 +37,43 @@ class ApiController extends Controller
                 $collect->paidin = $value->paidin;
                 $collect->amount = $value->amount;
                 $collect->save();
-
-                $fullname = collect(\DB::select("SELECT name, staff_name, discord_rank from `nova_applications`.users where id = ".$value->user_id))->first();
+                if (is_null($value->collector)) {
+                    $fullname = collect(\DB::select("SELECT name, staff_name, discord_rank from `nova_applications`.users where id = ".$value->user_id))->first();
+                } else {
+                    $fullname = $value->name.'-'.$value->advertiser_realm;
+                }
                 if (!is_null($fullname->staff_name)) {
                     $splitname = explode("-", $fullname->staff_name);
                 } else {
                     $splitname = explode("-", $fullname->name);
                 }
                 if ($faction->type_id != 3) {
-                    $roles = str_replace(["[\"","\"]"],"",$fullname->discord_rank);
-                    $roles = str_replace(["\"","\""],"",$roles);
-                    $roles = explode(",", $roles);
-                    if ($faction->faction == "horde" && array_search('Hotshot Advertiser [H]', $roles) >= 0) {
-                        $advpot = $value->amount*0.21;
-                    } elseif ($faction->faction == "alliance" && array_search('Hotshot Advertiser [A]', $roles) >= 0) {
-                        $advpot = $value->amount*0.21;
-                    } elseif ($faction->faction == "horde") {
-                        $advpot = $value->amount*0.17;
-                    } elseif ($faction->faction == "alliance") {
-                        $advpot = $value->amount*0.20;
-                    }
+                    if (is_null($value->collector)) {
+                        $roles = str_replace(["[\"","\"]"],"",$fullname->discord_rank);
+                        $roles = str_replace(["\"","\""],"",$roles);
+                        $roles = explode(",", $roles);
+                        if ($faction->faction == "horde" && array_search('Hotshot Advertiser [H]', $roles) >= 0) {
+                            $advpot = $value->amount*0.21;
+                        } elseif ($faction->faction == "alliance" && array_search('Hotshot Advertiser [A]', $roles) >= 0) {
+                            $advpot = $value->amount*0.21;
+                        } elseif ($faction->faction == "horde") {
+                            $advpot = $value->amount*0.17;
+                        } elseif ($faction->faction == "alliance") {
+                            $advpot = $value->amount*0.20;
+                        }
 
-                    if ($value->inhouse_ticket == 1) {
-                        $advpot = $value->amount * 0.07;
-                    } elseif ($value->client_ticket == 1) {
-                        $advpot = $value->amount*0.10;
+                        if ($value->inhouse_ticket == 1) {
+                            $advpot = $value->amount * 0.07;
+                        } elseif ($value->client_ticket == 1) {
+                            $advpot = $value->amount*0.10;
+                        }
+                    } else {
+                        if ($faction->faction == "horde") {
+                            $advpot = $value->amount*0.17;
+                        } elseif ($faction->faction == "alliance") {
+                            $advpot = $value->amount*0.20;
+                        }
                     }
-
                 } else {
                     if ($value->inhouse_ticket == 1) {
                         $advpot = $value->amount * 0;
@@ -130,7 +140,7 @@ class ApiController extends Controller
             $fullname = explode("-", $request->user_name);
 
             DB::transaction(function () use ($date, $fullname, $amountChange) {
-                DB::statement("UPDATE raid_balance SET amount = amount - ".$amountChange." WHERE import_date = ".$date." AND NAME = '".$fullname[0]."' AND realm = '".mysql_real_escape_string($fullname[1])."'");
+                DB::statement("UPDATE raid_balance SET amount = amount - ".$amountChange." WHERE import_date = ".$date." AND NAME = '".$fullname[0]."' AND realm = '".addslashes($fullname[1])."'");
             }, 60);
 
             return response()->json('OK', 200);
