@@ -140,7 +140,7 @@ class ApiController extends Controller
             $fullname = explode("-", $request->user_name);
 
             DB::transaction(function () use ($date, $fullname, $amountChange) {
-                DB::statement("UPDATE raid_balance SET amount = amount - ".$amountChange." WHERE import_date = ".$date." AND NAME = '".$fullname[0]."' AND realm = '".addslashes($fullname[1])."'");
+                DB::statement("UPDATE raid_balance SET amount = amount - ".$amountChange." WHERE import_date = '".$date."' AND NAME = '".$fullname[0]."' AND realm = '".addslashes($fullname[1])."'");
             }, 60);
 
             return response()->json('OK', 200);
