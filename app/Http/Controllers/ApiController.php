@@ -137,6 +137,7 @@ class ApiController extends Controller
 
                 }
             }
+            dd($imports);
             DB::transaction(function () use ($imports) {
                 foreach ($imports as $import) {
                     DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
@@ -150,7 +151,6 @@ class ApiController extends Controller
             }, 60);
             return response()->json('OK', 200);
         } catch (Exception $e) {
-            dd($import);
             Log::error($e);
             return response()->json('KO', 500);
         }
