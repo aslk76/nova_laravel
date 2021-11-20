@@ -140,7 +140,10 @@ class ApiController extends Controller
             DB::transaction(function () use ($imports) {
                 foreach ($imports as $import) {
                     DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
-                    VALUES ('".$import['date']."','".$import['splitname'][0]."','".addslashes($import['splitname'][1])."',".$import['pot'].")
+                    VALUES ('".$import['date']."',
+                    '".$import['splitname'][0]."',
+                    '".addslashes($import['splitname'][1])."',
+                    ".$import['pot'].")
                     ON DUPLICATE KEY UPDATE
                     `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
                 }
