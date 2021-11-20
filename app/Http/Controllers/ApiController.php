@@ -15,7 +15,7 @@ class ApiController extends Controller
 {
     public function sendRaidToDB(Request $request) {
         try {
-            $imports = [];
+            $imports = array();
 
             $values = DB::select("SELECT raid_book.advertiser_name AS `name`, realms_paid.name AS paidin, raid.date_and_time, raid_book.paid AS amount, realms_adv.name AS advertiser_realm, user_id, inhouse_ticket, client_ticket, collector
             FROM `nova_applications`.raid_book
@@ -87,11 +87,11 @@ class ApiController extends Controller
                     }
                 }
 
-                $el = {
+                $el = [
                     "date" => $date,
                     "splitname" = $splitname,
                     "pot" = $advpot,
-                }
+                ];
 
                 array_push($imports, $el);
                 dd($imports);
