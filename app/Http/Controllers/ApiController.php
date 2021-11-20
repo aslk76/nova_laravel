@@ -150,6 +150,7 @@ class ApiController extends Controller
             }, 60);
             return response()->json('OK', 200);
         } catch (Exception $e) {
+            dd($import);
             Log::error($e);
             return response()->json('KO', 500);
         }
