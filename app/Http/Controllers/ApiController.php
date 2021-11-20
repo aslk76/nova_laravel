@@ -30,6 +30,7 @@ class ApiController extends Controller
                 $date = date('Y-m-d', $timestamp);
             }
             $faction = collect(\DB::select("SELECT faction, type_id from `nova_applications`.raid where id = ".$request->id))->first();
+            dd($values);
             foreach ($values as $value) {
                 $collect = new RaidCollecting;
                 $collect->import_date = date('Y-m-d');
@@ -121,7 +122,7 @@ class ApiController extends Controller
             }
             return response()->json('OK', 200);
         } catch (Exception $e) {
-            Log::error($values, $e);
+            Log::error($e);
             return response()->json('KO', 500);
         }
     }
