@@ -48,6 +48,7 @@ class ApiController extends Controller
                     }
                 } else {
                     $fullname = $value->name.'-'.$value->advertiser_realm;
+                    $splitname = explode("-", $fullname);
                 }
 
                 if ($faction->type_id != 3) {
@@ -89,7 +90,7 @@ class ApiController extends Controller
 
                 $el = [
                     "date" => $date,
-                    "splitname" => $splitname,
+                    "splitname" => $fullname,
                     "pot" => $advpot,
                 ];
 
