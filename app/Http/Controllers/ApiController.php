@@ -34,12 +34,12 @@ class ApiController extends Controller
             $faction = collect(\DB::select("SELECT faction, type_id from `nova_applications`.raid where id = ".$request->id))->first();
             foreach ($values as $value) {
                 //REMOVED TEMP - 20/11/2021
-                // $collect = new RaidCollecting;
-                // $collect->import_date = date('Y-m-d');
-                // $collect->name = $value->name;
-                // $collect->paidin = $value->paidin;
-                // $collect->amount = $value->amount;
-                // $collect->save();
+                $collect = new RaidCollecting;
+                $collect->import_date = date('Y-m-d');
+                $collect->name = $value->name;
+                $collect->paidin = $value->paidin;
+                $collect->amount = $value->amount;
+                $collect->save();
                 if (is_null($value->collector)) {
                     $fullname = collect(\DB::select("SELECT name, staff_name, discord_rank from `nova_applications`.users where id = ".$value->user_id))->first();
                     if (!is_null($fullname->staff_name)) {
