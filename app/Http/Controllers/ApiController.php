@@ -39,14 +39,15 @@ class ApiController extends Controller
                 $collect->save();
                 if (is_null($value->collector)) {
                     $fullname = collect(\DB::select("SELECT name, staff_name, discord_rank from `nova_applications`.users where id = ".$value->user_id))->first();
+                    if (!is_null($fullname->staff_name)) {
+                        $splitname = explode("-", $fullname->staff_name);
+                    } else {
+                        $splitname = explode("-", $fullname->name);
+                    }
                 } else {
                     $fullname = $value->name.'-'.addslashes($value->advertiser_realm);
                 }
-                if (!is_null($fullname->staff_name)) {
-                    $splitname = explode("-", $fullname->staff_name);
-                } else {
-                    $splitname = explode("-", $fullname->name);
-                }
+
                 if ($faction->type_id != 3) {
                     if (is_null($value->collector)) {
                         $roles = str_replace(["[\"","\"]"],"",$fullname->discord_rank);
@@ -121,7 +122,6 @@ class ApiController extends Controller
             }
             return response()->json('OK', 200);
         } catch (Exception $e) {
-            dd($fullname);
             Log::error($e);
             return response()->json('KO', 500);
         }
