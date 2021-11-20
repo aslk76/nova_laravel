@@ -94,13 +94,12 @@ class ApiController extends Controller
                 ];
 
                 array_push($imports, $el);
-                dd($imports);
-                DB::transaction(function () use ($date, $splitname, $advpot) {
-                    DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
-                    VALUES ('".$date."', '".$splitname[0]."', '".addslashes($splitname[1])."', ".$advpot.")
-                    ON DUPLICATE KEY UPDATE
-                    `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
-                }, 60);
+                // DB::transaction(function () use ($date, $splitname, $advpot) {
+                //     DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
+                //     VALUES ('".$date."', '".$splitname[0]."', '".addslashes($splitname[1])."', ".$advpot.")
+                //     ON DUPLICATE KEY UPDATE
+                //     `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
+                // }, 60);
             }
 
             $values = DB::select("SELECT user_id, guild_id, payment_character, cut from `nova_applications`.raid_cuts where raid_id = ".$request->id);
@@ -109,12 +108,18 @@ class ApiController extends Controller
                 $cut = (string) $booster->cut;
                 if (is_null($booster->user_id)) {
                     $name = explode("-", $booster->payment_character);
-                    DB::transaction(function () use ($date, $name, $cut) {
-                        DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
-                        VALUES ('".$date."', '".$name[0]."', '".addslashes($name[1])."', ".$cut.")
-                        ON DUPLICATE KEY UPDATE
-                        `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
-                    }, 60);
+                    $el = [
+                        "date" => $date,
+                        "splitname" => $name,
+                        "pot" => $cut,
+                    ];
+                    array_push($imports, $el);
+                    // DB::transaction(function () use ($date, $name, $cut) {
+                    //     DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
+                    //     VALUES ('".$date."', '".$name[0]."', '".addslashes($name[1])."', ".$cut.")
+                    //     ON DUPLICATE KEY UPDATE
+                    //     `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
+                    // }, 60);
                 } else {
                     $fullname = collect(\DB::select("SELECT name, staff_name from `nova_applications`.users where id = ".$booster->user_id))->first();
                     if (!is_null($fullname->staff_name)) {
@@ -122,14 +127,23 @@ class ApiController extends Controller
                     } else {
                         $splitname = explode("-", $fullname->name);
                     }
+                    $el = [
+                        "date" => $date,
+                        "splitname" => $splitname,
+                        "pot" => $cut,
+                    ];
+                    array_push($imports, $el);
 
-                    DB::transaction(function () use ($date, $splitname, $cut) {
-                        DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
-                        VALUES ('".$date."','".$splitname[0]."','".addslashes($splitname[1])."',".$cut.")
-                        ON DUPLICATE KEY UPDATE
-                        `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
-                    }, 60);
                 }
+            }
+            DB::transaction(function () use ($imports) {
+                foreach ($imports as $import) {
+                    DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
+                    VALUES ('".$import['date']."','".$import['splitname'][0]."','".addslashes($import['splitname'][0])."',".$import['pot'].")
+                    ON DUPLICATE KEY UPDATE
+                    `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
+                }
+            }, 60);
             }
             return response()->json('OK', 200);
         } catch (Exception $e) {
