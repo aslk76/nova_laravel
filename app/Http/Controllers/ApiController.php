@@ -89,8 +89,8 @@ class ApiController extends Controller
 
                 $el = [
                     "date" => $date,
-                    "splitname" = $splitname,
-                    "pot" = $advpot,
+                    "splitname" => $splitname,
+                    "pot" => $advpot,
                 ];
 
                 array_push($imports, $el);
