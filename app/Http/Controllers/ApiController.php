@@ -144,7 +144,6 @@ class ApiController extends Controller
                     `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
                 }
             }, 60);
-            }
             return response()->json('OK', 200);
         } catch (Exception $e) {
             Log::error($e);
