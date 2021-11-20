@@ -90,7 +90,7 @@ class ApiController extends Controller
 
                 $el = [
                     "date" => $date,
-                    "splitname" => $fullname,
+                    "splitname" => $splitname,
                     "pot" => $advpot,
                 ];
 
@@ -137,7 +137,6 @@ class ApiController extends Controller
 
                 }
             }
-            dd($imports);
             DB::transaction(function () use ($imports) {
                 foreach ($imports as $import) {
                     DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
