@@ -15,6 +15,8 @@ class ApiController extends Controller
 {
     public function sendRaidToDB(Request $request) {
         try {
+            $imports = [];
+
             $values = DB::select("SELECT raid_book.advertiser_name AS `name`, realms_paid.name AS paidin, raid.date_and_time, raid_book.paid AS amount, realms_adv.name AS advertiser_realm, user_id, inhouse_ticket, client_ticket, collector
             FROM `nova_applications`.raid_book
             LEFT JOIN `nova_applications`.realms realms_paid ON raid_book.paid_realm_id = realms_paid.id
@@ -84,6 +86,15 @@ class ApiController extends Controller
                         $advpot = $value->amount*0.10;
                     }
                 }
+
+                $el = {
+                    "date" => $date,
+                    "splitname" = $splitname,
+                    "pot" = $advpot,
+                }
+
+                array_push($imports, $el);
+                dd($imports);
                 DB::transaction(function () use ($date, $splitname, $advpot) {
                     DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
                     VALUES ('".$date."', '".$splitname[0]."', '".addslashes($splitname[1])."', ".$advpot.")
