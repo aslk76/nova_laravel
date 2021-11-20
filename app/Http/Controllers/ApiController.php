@@ -121,7 +121,7 @@ class ApiController extends Controller
             }
             return response()->json('OK', 200);
         } catch (Exception $e) {
-            Log::error($e);
+            Log::error($values, $e);
             return response()->json('KO', 500);
         }
     }
