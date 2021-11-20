@@ -30,7 +30,6 @@ class ApiController extends Controller
                 $date = date('Y-m-d', $timestamp);
             }
             $faction = collect(\DB::select("SELECT faction, type_id from `nova_applications`.raid where id = ".$request->id))->first();
-            dd($values);
             foreach ($values as $value) {
                 $collect = new RaidCollecting;
                 $collect->import_date = date('Y-m-d');
@@ -41,7 +40,7 @@ class ApiController extends Controller
                 if (is_null($value->collector)) {
                     $fullname = collect(\DB::select("SELECT name, staff_name, discord_rank from `nova_applications`.users where id = ".$value->user_id))->first();
                 } else {
-                    $fullname = $value->name.'-'.$value->advertiser_realm;
+                    $fullname = $value->name.'-'.addslashes($value->advertiser_realm);
                 }
                 if (!is_null($fullname->staff_name)) {
                     $splitname = explode("-", $fullname->staff_name);
