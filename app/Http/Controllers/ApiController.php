@@ -45,7 +45,7 @@ class ApiController extends Controller
                         $splitname = explode("-", $fullname->name);
                     }
                 } else {
-                    $fullname = $value->name.'-'.addslashes($value->advertiser_realm);
+                    $fullname = $value->name.'-'.$value->advertiser_realm;
                 }
 
                 if ($faction->type_id != 3) {
