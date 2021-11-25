@@ -26,12 +26,13 @@ class ApiController extends Controller
             $raidName = $values[0]->raid_name;
             $raidDateTime = $values[0]->date_and_time;
             $raidTime = strtotime($values[0]->date_and_time);
-             if (date('D', $raidTime) == 'Tue') {
-                $date = date('Y-m-d', $raidTime);
-            } else {
-                $timestamp = strtotime('next tuesday', $raidTime);
-                $date = date('Y-m-d', $timestamp);
-            }
+            $date = date('Y-m-d', $raidTime);
+            //  if (date('D', $raidTime) == 'Tue') {
+            //     $date = date('Y-m-d', $raidTime);
+            // } else {
+            //     $timestamp = strtotime('next tuesday', $raidTime);
+            //     $date = date('Y-m-d', $timestamp);
+            // }
             $faction = collect(\DB::select("SELECT faction, type_id from `nova_applications`.raid where id = ".$request->id))->first();
             foreach ($values as $value) {
                 //REMOVED TEMP - 20/11/2021
