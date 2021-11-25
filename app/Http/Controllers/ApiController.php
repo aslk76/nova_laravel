@@ -23,7 +23,8 @@ class ApiController extends Controller
             LEFT JOIN `nova_applications`.realms realms_adv ON raid_book.adv_realm_id  = realms_adv.id
             INNER JOIN `nova_applications`.raid ON raid_book.raid_id = raid.id
             WHERE raid_id = ". $request->id." AND raid_book.deleted_at is null");
-
+            $raidName = $values[0]->raid_name;
+            $raidDateTime = $values[0]->date_and_time;
             $raidTime = strtotime($values[0]->date_and_time);
              if (date('D', $raidTime) == 'Tue') {
                 $date = date('Y-m-d', $raidTime);
@@ -94,6 +95,9 @@ class ApiController extends Controller
                 $el = [
                     "date" => $date,
                     "splitname" => $splitname,
+                    "raid_name" => $raidName,
+                    "raid_time" => $raidDateTime,
+                    "type" => 'Advertiser',
                     "pot" => $advpot,
                 ];
 
@@ -109,12 +113,16 @@ class ApiController extends Controller
             $values = DB::select("SELECT user_id, guild_id, payment_character, cut from `nova_applications`.raid_cuts where raid_id = ".$request->id);
 
             foreach ($values as $booster) {
+                $type = "Booster";
                 $cut = (string) $booster->cut;
                 if (is_null($booster->user_id)) {
                     $name = explode("-", $booster->payment_character);
                     $el = [
                         "date" => $date,
                         "splitname" => $name,
+                        "raid_name" => $raidName,
+                        "raid_time" => $raidDateTime,
+                        "type" => 'Booster',
                         "pot" => $cut,
                     ];
                     array_push($imports, $el);
@@ -134,6 +142,9 @@ class ApiController extends Controller
                     $el = [
                         "date" => $date,
                         "splitname" => $splitname,
+                        "raid_name" => $raidName,
+                        "raid_time" => $raidDateTime,
+                        "type" => 'Booster',
                         "pot" => $cut,
                     ];
                     array_push($imports, $el);
@@ -142,13 +153,14 @@ class ApiController extends Controller
             }
             DB::transaction(function () use ($imports) {
                 foreach ($imports as $import) {
-                    DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
+                    DB::statement("INSERT INTO `raid_balance_copy` (`import_date`,`name`,`realm`, `raid_name`, `raid_time`, `type`, `amount`)
                     VALUES ('".$import['date']."',
                     '".$import['splitname'][0]."',
                     '".addslashes($import['splitname'][1])."',
-                    ".$import['pot'].")
-                    ON DUPLICATE KEY UPDATE
-                    `import_date`=VALUES(`import_date`), `amount`=`amount`+VALUES(`amount`);");
+                    '".addslashes($import['raid_name'])."',
+                    '".$import['raid_time']."',
+                    '".$import['type']."',
+                    ".$import['pot'].");");
                 }
             }, 60);
             return response()->json('OK', 200);
