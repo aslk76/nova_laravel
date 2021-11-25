@@ -109,6 +109,8 @@
               { text: 'Import Date', value: 'import_date', filterable: false },
               { text: 'Advertiser Name', value: 'name', filterable: false },
               { text: 'Raid paid in', value: 'paidin' },
+              { text: 'Raid name', value: 'raid_name', filterable: false},
+              { text: 'Raid time', value: 'raid_time', filterable: false},
               { text: 'Amount', value: 'amount', filterable: false},
               { text: 'Collected', value: 'collected', filterable: false },
               { text: 'Missing', value: 'missing', filterable: false },
