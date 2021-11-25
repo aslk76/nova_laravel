@@ -17,7 +17,7 @@ class ApiController extends Controller
         try {
             $imports = array();
 
-            $values = DB::select("SELECT raid_book.advertiser_name AS `name`, realms_paid.name AS paidin, raid.date_and_time, raid_book.paid AS amount, realms_adv.name AS advertiser_realm, user_id, inhouse_ticket, client_ticket, collector
+            $values = DB::select("SELECT raid_book.advertiser_name AS `name`, realms_paid.name AS paidin, raid.name as 'raid_name', raid.date_and_time, raid_book.paid AS amount, realms_adv.name AS advertiser_realm, user_id, inhouse_ticket, client_ticket, collector
             FROM `nova_applications`.raid_book
             LEFT JOIN `nova_applications`.realms realms_paid ON raid_book.paid_realm_id = realms_paid.id
             LEFT JOIN `nova_applications`.realms realms_adv ON raid_book.adv_realm_id  = realms_adv.id
@@ -38,6 +38,8 @@ class ApiController extends Controller
                 $collect->import_date = date('Y-m-d');
                 $collect->name = $value->name;
                 $collect->paidin = $value->paidin;
+                $collect->raid_name = $value->raid_name;
+                $collect->raid_time = $value->date_and_time;
                 $collect->amount = $value->amount;
                 $collect->save();
                 if (is_null($value->collector)) {
