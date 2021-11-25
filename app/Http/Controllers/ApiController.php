@@ -153,7 +153,7 @@ class ApiController extends Controller
             }
             DB::transaction(function () use ($imports) {
                 foreach ($imports as $import) {
-                    DB::statement("INSERT INTO `raid_balance_copy` (`import_date`,`name`,`realm`, `raid_name`, `raid_time`, `type`, `amount`)
+                    DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`, `raid_name`, `raid_time`, `type`, `amount`)
                     VALUES ('".$import['date']."',
                     '".$import['splitname'][0]."',
                     '".addslashes($import['splitname'][1])."',
@@ -184,7 +184,12 @@ class ApiController extends Controller
             $fullname = explode("-", $request->user_name);
 
             DB::transaction(function () use ($date, $fullname, $amountChange) {
-                DB::statement("UPDATE raid_balance SET amount = amount - ".$amountChange." WHERE import_date = '".$date."' AND NAME = '".$fullname[0]."' AND realm = '".addslashes($fullname[1])."'");
+                DB::statement("UPDATE raid_balance
+                SET amount = amount - ".$amountChange." WHERE import_date = '".$date."'
+                AND `name` = '".$fullname[0]."'
+                AND `realm` = '".addslashes($fullname[1])."';");
+                // and `raid_name` = '".$request->raid_name."'
+                // and `raid_time` ='".$request->raid_time."';");
             }, 60);
 
             return response()->json('OK', 200);
