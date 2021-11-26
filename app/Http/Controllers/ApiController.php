@@ -188,9 +188,9 @@ class ApiController extends Controller
                 DB::statement("UPDATE raid_balance
                 SET amount = amount - ".$amountChange." WHERE import_date = '".$date."'
                 AND `name` = '".$fullname[0]."'
-                AND `realm` = '".addslashes($fullname[1])."';");
-                // and `raid_name` = '".$request->raid_name."'
-                // and `raid_time` ='".$request->raid_time."';");
+                AND `realm` = '".addslashes($fullname[1])."'
+                AND `raid_name` = '".$request->raid_name."'
+                AND `raid_time` ='".$request->raid_time."';");
             }, 60);
 
             return response()->json('OK', 200);
