@@ -175,6 +175,8 @@ class ApiController extends Controller
         try {
             $amountChange = $request->old_pot - $request->new_pot;
             $raidTime = strtotime($request->raid_time);
+            $raidName = $request->raid_name;
+            $raidDateTime = $request->raid_time;
             if (date('D', $raidTime) == 'Tue') {
                 $date = date('Y-m-d', $raidTime);
             } else {
@@ -184,13 +186,13 @@ class ApiController extends Controller
 
             $fullname = explode("-", $request->user_name);
 
-            DB::transaction(function () use ($date, $fullname, $amountChange) {
+            DB::transaction(function () use ($date, $fullname, $amountChange, $raidName, $raidDateTime) {
                 DB::statement("UPDATE raid_balance
                 SET amount = amount - ".$amountChange." WHERE import_date = '".$date."'
                 AND `name` = '".$fullname[0]."'
                 AND `realm` = '".addslashes($fullname[1])."'
-                AND `raid_name` = '".$request->raid_name."'
-                AND `raid_time` ='".$request->raid_time."';");
+                AND `raid_name` = '".$raidName."'
+                AND `raid_time` ='".$raidDateTime."';");
             }, 60);
 
             return response()->json('OK', 200);
