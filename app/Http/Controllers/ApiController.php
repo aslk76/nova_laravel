@@ -176,14 +176,7 @@ class ApiController extends Controller
             $amountChange = $request->old_pot - $request->new_pot;
             $raidTime = strtotime($request->raid_time);
             $raidName = $request->raid_name;
-            $raidDateTime = $request->raid_time;
-            if (date('D', $raidTime) == 'Tue') {
-                $date = date('Y-m-d', $raidTime);
-            } else {
-                $timestamp = strtotime('next tuesday', $raidTime);
-                $date = date('Y-m-d', $timestamp);
-            }
-
+            $raidDateTime = date('Y-m-d HH:ii:ss', $raidTime);
             $fullname = explode("-", $request->user_name);
 
             DB::transaction(function () use ($date, $fullname, $amountChange, $raidName, $raidDateTime) {
