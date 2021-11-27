@@ -177,7 +177,7 @@ class ApiController extends Controller
             $raidTime = strtotime($request->raid_time);
             $raidName = $request->raid_name;
             $date = date('Y-m-d', $raidTime);
-            $raidDateTime = date('Y-m-d HH:ii:ss', $raidTime);
+            $raidDateTime = date('Y-m-d H:i:s', $raidTime);
             $fullname = explode("-", $request->user_name);
 
             DB::transaction(function () use ($date, $fullname, $amountChange, $raidName, $raidDateTime) {
