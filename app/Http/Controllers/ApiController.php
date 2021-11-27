@@ -176,6 +176,7 @@ class ApiController extends Controller
             $amountChange = $request->old_pot - $request->new_pot;
             $raidTime = strtotime($request->raid_time);
             $raidName = $request->raid_name;
+            $date = date('Y-m-d', $raidTime);
             $raidDateTime = date('Y-m-d HH:ii:ss', $raidTime);
             $fullname = explode("-", $request->user_name);
 
