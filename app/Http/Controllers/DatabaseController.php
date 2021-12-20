@@ -552,8 +552,8 @@ class DatabaseController extends Controller
         switch ($faction) {
             case 'alliance':
                 $items = DB::select("SELECT ov_creds.booster, ov_creds.tot_balance-ov_creds.cur_balance-ov_creds.pre_balance AS total,
-                COALESCE(SUM(payments.amount),0)-COALESCE(paymentsv2.paid,0) AS paid,
-                ov_creds.tot_balance-ov_creds.cur_balance-ov_creds.pre_balance-(COALESCE(SUM(payments.amount),0)-COALESCE(paymentsv2.paid,0)) AS missing
+                COALESCE(SUM(payments.amount),0) AS paid,
+                ov_creds.tot_balance-ov_creds.cur_balance-ov_creds.pre_balance-(COALESCE(SUM(payments.amount),0)) AS missing
                 FROM ov_creds
                 LEFT JOIN payments ON payments.booster = ov_creds.booster
                 LEFT JOIN paymentsv2 ON paymentsv2.booster = ov_creds.booster
@@ -563,8 +563,8 @@ class DatabaseController extends Controller
                 break;
             case 'horde':
                 $items = DB::select("SELECT ov_creds.booster, ov_creds.tot_balance-ov_creds.cur_balance-ov_creds.pre_balance AS total,
-                COALESCE(SUM(payments.amount),0)-COALESCE(paymentsv2.paid,0) AS paid,
-                ov_creds.tot_balance-ov_creds.cur_balance-ov_creds.pre_balance-(COALESCE(SUM(payments.amount),0)-COALESCE(paymentsv2.paid,0)) AS missing
+                COALESCE(SUM(payments.amount),0) AS paid,
+                ov_creds.tot_balance-ov_creds.cur_balance-ov_creds.pre_balance-(COALESCE(SUM(payments.amount),0)) AS missing
                 FROM ov_creds
                 LEFT JOIN payments ON payments.booster = ov_creds.booster
                 LEFT JOIN paymentsv2 ON paymentsv2.booster = ov_creds.booster
@@ -574,8 +574,8 @@ class DatabaseController extends Controller
                 break;
             case 'all':
                 $items = DB::select("SELECT ov_creds.booster, ov_creds.tot_balance-ov_creds.cur_balance-ov_creds.pre_balance AS total,
-                COALESCE(SUM(payments.amount),0)-COALESCE(paymentsv2.paid,0) AS paid,
-                ov_creds.tot_balance-ov_creds.cur_balance-ov_creds.pre_balance-(COALESCE(SUM(payments.amount),0)-COALESCE(paymentsv2.paid,0)) AS missing
+                COALESCE(SUM(payments.amount),0) AS paid,
+                ov_creds.tot_balance-ov_creds.cur_balance-ov_creds.pre_balance-(COALESCE(SUM(payments.amount),0)) AS missing
                 FROM ov_creds
                 LEFT JOIN payments ON payments.booster = ov_creds.booster
                 LEFT JOIN paymentsv2 ON paymentsv2.booster = ov_creds.booster
