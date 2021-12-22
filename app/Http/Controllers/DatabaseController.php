@@ -31,6 +31,8 @@ class DatabaseController extends Controller
             $startday = date('Y/m/d', strtotime($week[0]->pre1));
             $endday = date('Y/m/d', strtotime($week[0]->pre2. ' + 1 day'));
         }
+
+        dd($startday, $endday);
         $items = Mplus::whereNull('deleted_at')->whereBetween('boost_date', [$startday, $endday])->where('collected', 0)->where('missing', 0)->get();
         return $items;
     }
