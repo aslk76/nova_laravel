@@ -102,7 +102,6 @@ class ApiController extends Controller
                     "pot" => $advpot,
                 ];
 
-                dd($el);
                 array_push($imports, $el);
                 // DB::transaction(function () use ($date, $splitname, $advpot) {
                 //     DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
