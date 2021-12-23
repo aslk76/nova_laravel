@@ -101,7 +101,7 @@ class ApiController extends Controller
                     "type" => 'Advertiser',
                     "pot" => $advpot,
                 ];
-                dd($el);
+                dd($el, array_search('Hotshot Advertiser [H]', $roles));
 
                 array_push($imports, $el);
                 // DB::transaction(function () use ($date, $splitname, $advpot) {
