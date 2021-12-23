@@ -61,7 +61,7 @@ class ApiController extends Controller
                         $roles = str_replace(["[\"","\"]"],"",$fullname->discord_rank);
                         $roles = str_replace(["\"","\""],"",$roles);
                         $roles = explode(",", $roles);
-                        if ($faction->faction == "horde" && array_search('Hotshot Advertiser [H]', $roles) != false) {
+                        if ($faction->faction == "horde" && array_search('Hotshot Advertiser [H]', $roles)) {
                             $advpot = $value->amount*0.21;
                         } elseif ($faction->faction == "alliance" && array_search('Hotshot Advertiser [A]', $roles) != false) {
                             $advpot = $value->amount*0.21;
@@ -101,8 +101,8 @@ class ApiController extends Controller
                     "type" => 'Advertiser',
                     "pot" => $advpot,
                 ];
-                dd($el, array_search('Hotshot Advertiser [H]', $roles));
 
+                dd($el);
                 array_push($imports, $el);
                 // DB::transaction(function () use ($date, $splitname, $advpot) {
                 //     DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`,`amount`)
