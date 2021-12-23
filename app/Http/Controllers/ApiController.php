@@ -62,7 +62,6 @@ class ApiController extends Controller
                         $roles = str_replace(["\"","\""],"",$roles);
                         $roles = explode(",", $roles);
                         if ($faction->faction == "horde" && array_search('Hotshot Advertiser [H]', $roles) != false) {
-                            dd('hi it works im inside');
                             $advpot = $value->amount*0.21;
                         } elseif ($faction->faction == "alliance" && array_search('Hotshot Advertiser [A]', $roles) != false) {
                             $advpot = $value->amount*0.21;
@@ -102,6 +101,7 @@ class ApiController extends Controller
                     "type" => 'Advertiser',
                     "pot" => $advpot,
                 ];
+                dd($el);
 
                 array_push($imports, $el);
                 // DB::transaction(function () use ($date, $splitname, $advpot) {
