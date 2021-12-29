@@ -166,7 +166,7 @@ class ApiController extends Controller
                         ".$import['pot'].");");
                     }
                 }, 60);
-                return response()->json('OK', 200);
+                //return response()->json('OK', 200);
             }
         } catch (Exception $e) {
             Log::info($imports);
