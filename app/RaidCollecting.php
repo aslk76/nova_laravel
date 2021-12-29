@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class RaidCollecting extends Model
 {
-    protected $table = 'raid_collecting';
+    protected $table = 'raid_collecting_copy';
     protected $primaryKey = 'id';
     protected $fillable = [ 'import_date', 'name', 'paidin', 'raid_name', 'raid_time', 'amount', 'collected', 'missing', 'edited_at' ];
     const EDITED_AT = 'edited_at';

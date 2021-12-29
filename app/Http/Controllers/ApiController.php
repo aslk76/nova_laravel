@@ -37,7 +37,7 @@ class ApiController extends Controller
             foreach ($values as $value) {
                 //REMOVED TEMP - 20/11/2021
                 $collect = new RaidCollecting;
-                $collect->import_date = date('Y-m-d');
+                $collect->import_date = $date;
                 $collect->name = $value->name;
                 $collect->paidin = $value->paidin;
                 $collect->raid_name = $value->raid_name;
@@ -154,7 +154,7 @@ class ApiController extends Controller
             }
             DB::transaction(function () use ($imports) {
                 foreach ($imports as $import) {
-                    DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`, `raid_name`, `raid_time`, `type`, `amount`)
+                    DB::statement("INSERT INTO `raid_balance_copy` (`import_date`,`name`,`realm`, `raid_name`, `raid_time`, `type`, `amount`)
                     VALUES ('".$import['date']."',
                     '".$import['splitname'][0]."',
                     '".addslashes($import['splitname'][1])."',
