@@ -154,6 +154,7 @@ class ApiController extends Controller
 
                     }
                 }
+            }
                 DB::transaction(function () use ($imports) {
                     foreach ($imports as $import) {
                         DB::statement("INSERT INTO `raid_balance_copy` (`import_date`,`name`,`realm`, `raid_name`, `raid_time`, `type`, `amount`)
@@ -167,9 +168,8 @@ class ApiController extends Controller
                     }
                 }, 60);
 
-                $imports = array();
                 //return response()->json('OK', 200);
-            }
+
         } catch (Exception $e) {
             Log::info($imports);
             Log::error($e);
