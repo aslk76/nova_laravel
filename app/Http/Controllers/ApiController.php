@@ -15,8 +15,10 @@ class ApiController extends Controller
 {
     public function sendRaidToDB(Request $request) {
         try {
-            $imports = array();
 
+            $raids = [986, 1001, 906, 1014, 891, 992, 999, 898, 985, 1006, 905, 989, 975, 955, 890, 974, 973, 894, 984, 972, 896, 954, 993, 889, 871, 971, 916, 981, 970, 980, 969, 1007, 991, 904, 888, 983, 903, 968, 979, 887, 967, 966, 988, 958, 965, 925, 987, 976, 915, 978, 886, 953, 964, 990, 952, 924, 982, 977, 923, 957, 922, 951, 885, 1010, 1011, 950, 963, 938, 934, 949, 870, 945, 962, 948, 961, 877, 869, 921, 1009, 866, 882, 947, 862, 880, 864, 861, 932, 956, 920, 1005, 914, 960, 878, 884, 946, 959, 944, 902];
+            $imports = array();
+            dd($raids);
             $values = DB::select("SELECT raid_book.advertiser_name AS `name`, realms_paid.name AS paidin, raid.name as 'raid_name', raid.date_and_time, raid_book.paid AS amount, realms_adv.name AS advertiser_realm, user_id, inhouse_ticket, client_ticket, collector
             FROM `nova_applications`.raid_book
             LEFT JOIN `nova_applications`.realms realms_paid ON raid_book.paid_realm_id = realms_paid.id
