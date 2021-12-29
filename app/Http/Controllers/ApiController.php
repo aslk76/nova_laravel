@@ -166,6 +166,8 @@ class ApiController extends Controller
                         ".$import['pot'].");");
                     }
                 }, 60);
+
+                $imports = array();
                 //return response()->json('OK', 200);
             }
         } catch (Exception $e) {
