@@ -33,7 +33,7 @@ class ApiController extends Controller
             //     $timestamp = strtotime('next tuesday', $raidTime);
             //     $date = date('Y-m-d', $timestamp);
             // }
-            $faction = collect(\DB::select("SELECT faction, type_id from `nova_applications`.raid where id = ".$index))->first();
+            $faction = collect(\DB::select("SELECT faction, type_id from `nova_applications`.raid where id = ".$request->id))->first();
             foreach ($values as $value) {
                 //REMOVED TEMP - 20/11/2021
                 $collect = new RaidCollecting;
@@ -111,7 +111,7 @@ class ApiController extends Controller
                 // }, 60);
             }
 
-            $values = DB::select("SELECT user_id, guild_id, payment_character, cut from `nova_applications`.raid_cuts where raid_id = ".$index);
+            $values = DB::select("SELECT user_id, guild_id, payment_character, cut from `nova_applications`.raid_cuts where raid_id = ".$request->id);
 
             foreach ($values as $booster) {
                 $type = "Booster";
