@@ -154,7 +154,7 @@ class ApiController extends Controller
             }
             DB::transaction(function () use ($imports) {
                 foreach ($imports as $import) {
-                    DB::statement("INSERT INTO `raid_balance_copy` (`import_date`,`name`,`realm`, `raid_name`, `raid_time`, `type`, `amount`)
+                    DB::statement("INSERT INTO `raid_balance` (`import_date`,`name`,`realm`, `raid_name`, `raid_time`, `type`, `amount`)
                     VALUES ('".$import['date']."',
                     '".$import['splitname'][0]."',
                     '".addslashes($import['splitname'][1])."',
