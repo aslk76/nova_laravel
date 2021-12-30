@@ -22,7 +22,7 @@ class ApiController extends Controller
             LEFT JOIN `nova_applications`.realms realms_paid ON raid_book.paid_realm_id = realms_paid.id
             LEFT JOIN `nova_applications`.realms realms_adv ON raid_book.adv_realm_id  = realms_adv.id
             INNER JOIN `nova_applications`.raid ON raid_book.raid_id = raid.id
-            WHERE raid_id = ". $index." AND raid_book.deleted_at is null");
+            WHERE raid_id = ". $request->id." AND raid_book.deleted_at is null");
             $raidName = $values[0]->raid_name;
             $raidDateTime = $values[0]->date_and_time;
             $raidTime = strtotime($values[0]->date_and_time);
