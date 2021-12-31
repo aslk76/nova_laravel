@@ -35,7 +35,7 @@
                     <thead>
                         <tr>
                             <th>REALM</th>
-                            <th>SALES</th>
+                            <th>HAVE IN</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,7 +51,7 @@
                     <thead>
                         <tr>
                             <th>REALM</th>
-                            <th>EARNS</th>
+                            <th>NEED IN</th>
                         </tr>
                     </thead>
                     <tbody>
