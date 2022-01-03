@@ -576,13 +576,13 @@
                 status: status
             })
             .then ((response) => {
-                console.log(response)
+                if ((check == 'missing') && (status == false)) {
+                    const index = this.items.indexOf(item)
+                    this.items.splice(index, 1)
+                }
             })
             .catch(error => console.log(error))
-            if ((check == 'missing') && (status == false)) {
-                const index = this.items.indexOf(item)
-                this.items.splice(index, 1)
-            }
+
         },
         showAllianceRuns() {
             axios

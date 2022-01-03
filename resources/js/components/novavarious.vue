@@ -594,17 +594,17 @@
                 status: status
             })
             .then ((response) => {
-                console.log(response)
+                if ((check == 'collected') && (status == true)) {
+                const index = this.items.indexOf(item)
+                this.items.splice(index, 1)
+                }
+                if ((check == 'missing') && (status == true)) {
+                    const index = this.items.indexOf(item)
+                    this.items.splice(index, 1)
+                }
             })
             .catch(this.snackbarError = true)
-            if ((check == 'collected') && (status == true)) {
-                const index = this.items.indexOf(item)
-                this.items.splice(index, 1)
-            }
-            if ((check == 'missing') && (status == true)) {
-                const index = this.items.indexOf(item)
-                this.items.splice(index, 1)
-            }
+
         },
         showAllianceRuns() {
             axios
