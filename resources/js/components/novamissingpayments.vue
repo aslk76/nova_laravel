@@ -153,7 +153,6 @@
                     }
                 })
                 .catch(function (error) {
-                    this.loading = false;
                     console.log(error);
                 });
             // } else {
