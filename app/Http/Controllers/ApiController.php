@@ -45,12 +45,12 @@ class ApiController extends Controller
                 $collect->amount = $value->amount;
                 $collect->save();
                 if (is_null($value->collector)) {
-                    $fullname = collect(\DB::select("SELECT name, staff_name, discord_rank from `nova_applications`.users where id = ".$value->user_id))->first();
+                    $fullname = collect(\DB::select("SELECT name, staff_name, discord_rank, discord_id from `nova_applications`.users where id = ".$value->user_id))->first();
                     if (!is_null($fullname->staff_name)) {
                         $splitname = explode("-", $fullname->staff_name);
                     } else {
                         if ($faction->faction == "alliance") {
-                            $crossfaction = collect(\DB::select("SELECT discord_id, alliance_name from `nova_ops`.cross_faction_boosters"))->first();
+                            $crossfaction = collect(\DB::select("SELECT discord_id, alliance_name from `nova_ops`.cross_faction_boosters where discord_id = " + $fullname->discord_id))->first();
                             if (!is_null($crossfaction)) {
                                 $splitname = explode("-", $crossfaction->alliance_name);
                             } else {
