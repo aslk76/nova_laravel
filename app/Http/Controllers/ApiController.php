@@ -50,7 +50,7 @@ class ApiController extends Controller
                         $splitname = explode("-", $fullname->staff_name);
                     } else {
                         if ($faction->faction == "alliance") {
-                            $crossfaction = collect(\DB::select("SELECT discord_id, alliance_name from `nova_ops`.cross_faction_boosters where discord_id = " + $fullname->discord_id))->first();
+                            $crossfaction = collect(\DB::select("SELECT discord_id, alliance_name from `nova_ops`.cross_faction_boosters where discord_id = '" + $fullname->discord_id + "'"))->first();
                             if (!is_null($crossfaction)) {
                                 $splitname = explode("-", $crossfaction->alliance_name);
                             } else {
